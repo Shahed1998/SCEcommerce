@@ -1,0 +1,4 @@
+IF NOT EXISTS (SELECT TOP 1 name FROM sys.databases WHERE name='SCEcommerceDB')
+BEGIN
+	CREATE DATABASE SCEcommerceDB
+END
