@@ -11,5 +11,7 @@ namespace repository.Interfaces
     public interface IUnitOfWork
     {
         Repository<Category> CategoryRepository { get; }
+        bool Save();
+        void Dispose();
     }
 }

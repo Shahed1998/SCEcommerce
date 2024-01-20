@@ -45,6 +45,7 @@ namespace repository.Implementations
             this.disposed = true;
         }
 
+        // called explicitly by the programmer
         public void Dispose()
         {
             Dispose(true);
