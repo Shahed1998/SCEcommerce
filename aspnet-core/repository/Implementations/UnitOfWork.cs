@@ -7,27 +7,29 @@ namespace repository.Implementations
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly DatabaseContext _databaseContext;
-        private readonly Repository<Category> _categoryRepository;
+        private readonly IRepository<Category> _categoryRepository;
         public UnitOfWork(
             DatabaseContext databaseContext,
-            Repository<Category> categoryRepository
+            IRepository<Category> categoryRepository
         ) 
         {
             _databaseContext = databaseContext;
             _categoryRepository = categoryRepository;
         }
 
-        public Repository<Category> CategoryRepository 
+        #region Repositories
+        IRepository<Category> IUnitOfWork.CategoryRepository
         {
             get
-            {
-                return _categoryRepository == null ? new Repository<Category>(_databaseContext) : _categoryRepository;
+            { 
+                return _categoryRepository ?? new Repository<Category>(_databaseContext);
             }
         }
+        #endregion
 
-        public bool Save()
+        public async Task<bool> Save()
         {
-            return _databaseContext.SaveChanges() > 0;
+            return await _databaseContext.SaveChangesAsync() > 0;
         }
 
         #region Dispose

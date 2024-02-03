@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
+using entity.general_entities;
 
 namespace entity.business_entities
 {
@@ -17,5 +18,29 @@ namespace entity.business_entities
         [Required]
         [DisplayName("Image")]
         public string? Image { get; set; }
+
+        #region Mapping
+        public static explicit operator CategoryDTO(Category category)
+        {
+            return new CategoryDTO
+            {
+                Id = category.Id, 
+                Name = category.Name,
+                Description = category.Description,
+                Image = category.Image,
+            };
+        }
+
+        public static explicit operator Category(CategoryDTO dto)
+        {
+            return new Category
+            {
+                Id = dto.Id,
+                Name = dto.Name,
+                Description = dto.Description,
+                Image = dto.Image,
+            };
+        }
+        #endregion
     }
 }

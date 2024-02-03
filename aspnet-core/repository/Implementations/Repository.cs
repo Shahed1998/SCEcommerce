@@ -1,9 +1,10 @@
 ﻿using entity.DataContext;
 using Microsoft.EntityFrameworkCore;
+using repository.Interfaces;
 
 namespace repository.Implementations
 {
-    public class Repository<TEntity> where TEntity : class
+    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
     {
         private readonly DatabaseContext _databaseContext;
         private readonly DbSet<TEntity> _dbSet;
@@ -14,35 +15,34 @@ namespace repository.Implementations
             _dbSet = databaseContext.Set<TEntity>();
         }
 
-        public async void Delete(object Id)
+        public virtual async Task Insert(TEntity entity)
         {
-            var entity = await _dbSet.FindAsync(Id);
-            if (entity != null)
-            {
-                _dbSet.Remove(entity);
-            }
+            await _dbSet.AddAsync(entity);
         }
 
         public virtual IQueryable<TEntity> Get()
         {
-            IQueryable<TEntity> query = _dbSet;
-            return query;
+            return _dbSet.AsQueryable();
         }
 
-        public async virtual Task<TEntity?> GetById(int Id)
+        public virtual async Task<TEntity?> GetById(int Id)
         {
             return await _dbSet.FindAsync(Id);
-        }
-
-        public virtual void Insert(TEntity entity)
-        {
-            _dbSet.AddAsync(entity);
         }
 
         public virtual void Update(TEntity entityToUpdate)
         {
             _dbSet.Attach(entityToUpdate);
             _databaseContext.Entry(entityToUpdate).State = EntityState.Modified;
+        }
+
+        public virtual async Task Delete(object Id)
+        {
+            var entity = await _dbSet.FindAsync(Id);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+            }
         }
     }
 }

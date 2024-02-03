@@ -1,3 +1,10 @@
+using entity.DataContext;
+using manager.Implementations;
+using manager.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using repository.Implementations;
+using repository.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -7,7 +14,23 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-var app = builder.Build();
+#region DatabaseContext Register
+// Register DatabaseContext
+builder.Services.AddDbContext<DatabaseContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+#endregion
+
+#region Service
+builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+#endregion
+
+#region Repository
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); // registering generic repository
+#endregion
+
+
+var app = builder.Build(); // Need fix
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -20,5 +20,6 @@ namespace entity.general_entities
         [Required]
         [DisplayName("Image")]
         public string? Image { get; set; }
+
     }
 }
