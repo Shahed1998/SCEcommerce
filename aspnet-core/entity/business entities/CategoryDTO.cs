@@ -19,17 +19,22 @@ namespace entity.business_entities
         [DisplayName("Image")]
         public string? Image { get; set; }
 
+        public string? Modified { get; set; }
+
         #region Mapping
         public static explicit operator CategoryDTO(Category category)
         {
             return new CategoryDTO
             {
-                Id = category.Id, 
+                Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
                 Image = category.Image,
+                Modified = $"I am {category.Id} and {category.Name}"
             };
         }
+
+
 
         public static explicit operator Category(CategoryDTO dto)
         {

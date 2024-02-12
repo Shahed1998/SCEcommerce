@@ -1,6 +1,5 @@
 ﻿using entity.business_entities;
 using manager.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace api.Controllers
@@ -28,6 +27,32 @@ namespace api.Controllers
                 return BadRequest();
             }
             catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            try
+            {
+                return Ok(await _categoryManager.Get());
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, ex.Message);
+            }
+        }
+
+        [HttpGet("{Id}")]
+        public async Task<IActionResult> GetById(int Id)
+        {
+            try
+            {
+                return Ok(await _categoryManager.GetById(Id));
+            }
+            catch (Exception ex)
             {
                 return StatusCode(500, ex.Message);
             }

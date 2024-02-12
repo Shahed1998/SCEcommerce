@@ -27,10 +27,12 @@ namespace repository.Implementations
         }
         #endregion
 
+        #region Transactions
         public async Task<bool> Save()
         {
             return await _databaseContext.SaveChangesAsync() > 0;
         }
+        #endregion
 
         #region Dispose
         private bool disposed = false;

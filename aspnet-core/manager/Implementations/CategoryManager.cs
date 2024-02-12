@@ -1,6 +1,7 @@
 ﻿using entity.business_entities;
 using entity.general_entities;
 using manager.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using repository.Interfaces;
 
 namespace manager.Implementations
@@ -17,20 +18,22 @@ namespace manager.Implementations
             throw new NotImplementedException();
         }
 
-        public IEnumerable<CategoryDTO> Get()
+        public async Task<IEnumerable<CategoryDTO>> Get()
         {
-            throw new NotImplementedException();
+            var categories =  await _unitOfWork.CategoryRepository.Get().AsNoTracking().ToListAsync();
+            return categories.Select(category => (CategoryDTO) category);
         }
 
-        public CategoryDTO GetById(int Id)
+        public async Task<CategoryDTO?> GetById(int Id)
         {
-            throw new NotImplementedException();
+            var category = await _unitOfWork.CategoryRepository.GetById(Id);
+            return category == null ? null : (CategoryDTO) category;
         }
 
         public async Task<bool> Insert(CategoryDTO dto)
         {
             dto.Id = 0;
-            _unitOfWork.CategoryRepository.Insert((Category) dto);
+            await _unitOfWork.CategoryRepository.Insert((Category) dto);
             var ret = await _unitOfWork.Save();
             return ret;
         }
