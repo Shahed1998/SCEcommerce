@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using repository.Helpers;
+using System.Net;
 using System.Text.Json;
 
 namespace api.Middlewares
@@ -25,13 +26,14 @@ namespace api.Middlewares
                 context.Response.ContentType = "application/json";
                 object response;
 
-                if (!env.IsDevelopment())
+                if (env.IsDevelopment())
                 {
-                    response = new { message = "An error occured" };
+                    response = new { message = ex.Message, stackTrace = ex.StackTrace };
                 }
                 else
                 {
-                    response = new { message = ex.Message, stackTrace = ex.StackTrace };
+                    response = new { message = "An error occured" };
+                    HelperSerilog.LogException(ex);
                 }
                 
                 await context.Response.WriteAsync(JsonSerializer.Serialize(response));
