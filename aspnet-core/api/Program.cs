@@ -1,3 +1,4 @@
+using api.Middlewares;
 using entity.DataContext;
 using manager.Implementations;
 using manager.Interfaces;
@@ -38,6 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

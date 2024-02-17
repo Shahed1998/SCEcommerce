@@ -17,45 +17,24 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(CategoryDTO dto)
         {
-            try
+            var isSaved = await _categoryManager.Insert(dto);
+            if (isSaved == true)
             {
-                var isSaved = await _categoryManager.Insert(dto);
-                if (isSaved == true)
-                {
-                    return Ok(new { isSaved });
-                }
-                return BadRequest();
+                return Ok(new { isSaved });
             }
-            catch(Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return BadRequest();
         }
 
         [HttpGet]
         public async Task<IActionResult> Get()
         {
-            try
-            {
-                return Ok(await _categoryManager.Get());
-            }
-            catch(Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(await _categoryManager.Get());
         }
 
         [HttpGet("{Id}")]
         public async Task<IActionResult> GetById(int Id)
         {
-            try
-            {
-                return Ok(await _categoryManager.GetById(Id));
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, ex.Message);
-            }
+            return Ok(await _categoryManager.GetById(Id));
         }
     }
 }
