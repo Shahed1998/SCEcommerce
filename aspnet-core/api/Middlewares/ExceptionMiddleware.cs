@@ -1,4 +1,5 @@
-﻿using repository.Helpers;
+﻿using entity.Business_Entities;
+using repository.Helpers;
 using System.Net;
 using System.Text.Json;
 
@@ -32,7 +33,15 @@ namespace api.Middlewares
                 }
                 else
                 {
-                    response = new { message = "An error occured" };
+                    if(ex.Message == ExceptionMessages.ImageUploadMessage)
+                    {
+                        response = new { message = ex.Message };
+                    }
+                    else
+                    {
+                        response = new { message = "An error occured" };
+                    }
+                    
                     HelperSerilog.LogException(ex);
                 }
                 

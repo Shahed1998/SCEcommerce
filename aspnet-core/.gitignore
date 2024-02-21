@@ -1,3 +1,5 @@
+api/wwwroot/Images
+
 *.swp
 *.*~
 project.lock.json

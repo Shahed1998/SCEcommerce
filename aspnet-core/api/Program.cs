@@ -3,8 +3,10 @@ using entity.DataContext;
 using manager.Implementations;
 using manager.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using repository.Helpers;
 using repository.Implementations;
 using repository.Interfaces;
+using repository.Interfaces.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,13 +23,17 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 #endregion
 
-#region Service
+#region Services
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
 #endregion
 
-#region Repository
+#region Repositories
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); // registering generic repository
+#endregion
+
+#region Helpers
+builder.Services.AddScoped<IHelperFileHandler, HelperFileHandler>();
 #endregion
 
 
@@ -35,6 +41,12 @@ var app = builder.Build(); // Need fix
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+// for testing purpose
+else
 {
     app.UseSwagger();
     app.UseSwaggerUI();

@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel;
 using entity.general_entities;
+using entity.Business_Entities;
 
 namespace entity.business_entities
 {
@@ -15,11 +16,7 @@ namespace entity.business_entities
         [MaxLength(100)]
         [DisplayName("Description")]
         public string? Description { get; set; }
-        [Required]
-        [DisplayName("Image")]
-        public string? Image { get; set; }
-
-        public string? Modified { get; set; }
+        public FileHandlerDTO? Image { get; set; }
 
         #region Mapping
         public static explicit operator CategoryDTO(Category category)
@@ -29,12 +26,9 @@ namespace entity.business_entities
                 Id = category.Id,
                 Name = category.Name,
                 Description = category.Description,
-                Image = category.Image,
-                Modified = $"I am {category.Id} and {category.Name}"
+                Image = new FileHandlerDTO {  Url = category.Image },
             };
         }
-
-
 
         public static explicit operator Category(CategoryDTO dto)
         {
@@ -43,7 +37,7 @@ namespace entity.business_entities
                 Id = dto.Id,
                 Name = dto.Name,
                 Description = dto.Description,
-                Image = dto.Image,
+                Image = dto.Image.Url,
             };
         }
         #endregion

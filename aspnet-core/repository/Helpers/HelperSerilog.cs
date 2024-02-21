@@ -10,7 +10,9 @@ namespace repository.Helpers
         {
             verbose = new LoggerConfiguration()
                                             .MinimumLevel.Verbose()
-                                            .WriteTo.File(Path.Combine(Directory.GetCurrentDirectory(), "bin", "Logs", "Verbose", "Verbose.log"), rollingInterval: RollingInterval.Day)
+                                            .WriteTo.File(
+                                                    path: Path.Combine(Directory.GetCurrentDirectory(), "bin", "Logs", "Exceptions", "E-.log"),
+                                                    rollingInterval: RollingInterval.Day)
                                             .CreateLogger();
         }
 
@@ -18,7 +20,5 @@ namespace repository.Helpers
         {
             verbose?.Error(ex, "An exception occured");
         }
-
-
     }
 }
