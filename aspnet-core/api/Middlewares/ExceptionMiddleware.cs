@@ -33,7 +33,7 @@ namespace api.Middlewares
                 }
                 else
                 {
-                    if(ex.Message == ExceptionMessages.ImageUploadMessage)
+                    if(ex.Message == StaticProperties.ImageUploadMessage)
                     {
                         response = new { message = ex.Message };
                     }

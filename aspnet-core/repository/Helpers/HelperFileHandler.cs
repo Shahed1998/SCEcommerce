@@ -1,6 +1,9 @@
 ﻿using entity.Business_Entities;
 using Microsoft.AspNetCore.Hosting;
 using repository.Interfaces.Helper;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using SixLabors.ImageSharp.Processing;
 
 namespace repository.Helpers
 {
@@ -15,31 +18,40 @@ namespace repository.Helpers
             _webRootPath = _webHostEnvironment.WebRootPath;
         }
 
-        public async Task<string> UploadImage(FileHandlerDTO? image, string folder="User")
+        public async Task<string> UploadImage(FileHandlerDTO? image, string? folder = null, int height=180, int width=286, int quality=80)
         {
             string path = String.Empty;
 
             // Saving image is not mandatory
-            if (image?.File?.FileName != null)
+            if (image?.File?.FileName != null && folder != null)
             {
                 path = Path.Combine(_webRootPath, "Images", folder);
 
-                if (!File.Exists(path))
-                {
-                    Directory.CreateDirectory(path);
-                }
+                if (!File.Exists(path)) Directory.CreateDirectory(path);
 
-                path = Path.Combine(path, image.File.FileName);
+                string date = DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss-f");
 
-                if (File.Exists(path))
-                {
-                    File.Delete(path);
-                }
+                path = Path.Combine(path, String.Format("{0}-{1}", date, image.File.FileName));
 
-                using (Stream stream = File.Create(path))
+                if (File.Exists(path)) File.Delete(path);
+                
+                using var imageStream = Image.Load(image.File.OpenReadStream());
+
+                // JPG better for web
+                var encoder = new JpegEncoder
                 {
-                    await image.File.CopyToAsync(stream);
-                }
+                    Quality = quality,
+                };
+
+                imageStream.Mutate(x => x.Resize(width, height));
+
+                await Task.Run(() => imageStream.Save(path, encoder));
+
+
+                //using (Stream stream = File.Create(path))
+                //{
+                //    await image.File.CopyToAsync(stream);
+                //}
             }
 
             return path;
