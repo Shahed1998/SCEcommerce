@@ -19,27 +19,22 @@ namespace entity.business_entities
         public FileHandlerDTO? Image { get; set; }
 
         #region Mapping
-        public static explicit operator CategoryDTO(Category category)
+        public static explicit operator CategoryDTO(Category category) => new CategoryDTO
         {
-            return new CategoryDTO
-            {
-                Id = category.Id,
-                Name = category.Name,
-                Description = category.Description,
-                Image = new FileHandlerDTO {  Url = category.Image },
-            };
-        }
+            Id = category.Id,
+            Name = category.Name,
+            Description = category.Description,
+            Image = new FileHandlerDTO {  Url = category.Image },
+        };
+        
 
-        public static explicit operator Category(CategoryDTO dto)
+        public static explicit operator Category(CategoryDTO dto) => new Category
         {
-            return new Category
-            {
-                Id = dto.Id,
-                Name = dto.Name,
-                Description = dto.Description,
-                Image = dto.Image.Url,
-            };
-        }
+            Id = dto.Id,
+            Name = dto.Name,
+            Description = dto.Description,
+            Image = dto.Image?.Url,
+        };
         #endregion
     }
 }
