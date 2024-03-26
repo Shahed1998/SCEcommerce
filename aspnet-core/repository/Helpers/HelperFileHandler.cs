@@ -46,12 +46,6 @@ namespace repository.Helpers
                 imageStream.Mutate(x => x.Resize(width, height));
 
                 await Task.Run(() => imageStream.Save(path, encoder));
-
-
-                //using (Stream stream = File.Create(path))
-                //{
-                //    await image.File.CopyToAsync(stream);
-                //}
             }
 
             return path;

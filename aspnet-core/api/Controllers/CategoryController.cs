@@ -22,7 +22,7 @@ namespace api.Controllers
         [HttpPost]
         public async Task<IActionResult> Create([FromForm] CategoryDTO dto)
         {
-            dto.Image.Url = await _fileHandler.UploadImage(dto.Image);
+            dto.Image.Url = await _fileHandler.UploadImage(dto.Image, "Category");
 
             var isSaved = await _categoryManager.Insert(dto);
             

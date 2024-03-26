@@ -1,5 +1,6 @@
 ﻿using entity.DataContext.Configurations;
 using entity.general_entities;
+using entity.General_Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace entity.DataContext
@@ -29,6 +30,8 @@ namespace entity.DataContext
 
         #region DbSets
         public DbSet<Category> categories { get; set;}
+        public DbSet<Role> roles { get; set;}
+        public DbSet<User> users { get; set;}
         #endregion
 
     }

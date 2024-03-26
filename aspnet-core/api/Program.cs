@@ -10,7 +10,8 @@ using repository.Interfaces.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Creates web root directory at the start of the application, if it doesnot exist
+CreateWwwRootDirectory();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -36,7 +37,6 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); // regi
 builder.Services.AddScoped<IHelperFileHandler, HelperFileHandler>();
 #endregion
 
-
 var app = builder.Build(); // Need fix
 
 // Configure the HTTP request pipeline.
@@ -61,3 +61,20 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+
+static void CreateWwwRootDirectory()
+{
+    try
+    {
+        string wwwRootPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot");
+        if (!Directory.Exists(wwwRootPath))
+        {
+            Directory.CreateDirectory(wwwRootPath);
+        }
+    }
+    catch (Exception ex)
+    {
+        throw new Exception($"{ex}");
+    }
+}
