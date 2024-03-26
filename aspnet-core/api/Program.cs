@@ -41,6 +41,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); // regi
 builder.Services.AddScoped<IHelperFileHandler, HelperFileHandler>();
 #endregion
 
+builder.Configuration.AddEnvironmentVariables(prefix: "SCEcommerce_");
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
     opt.TokenValidationParameters = new TokenValidationParameters
