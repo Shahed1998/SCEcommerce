@@ -1,4 +1,5 @@
 ﻿using entity.DataContext;
+using entity.General_Entities;
 using Microsoft.EntityFrameworkCore;
 using repository.Interfaces;
 
@@ -43,6 +44,18 @@ namespace repository.Implementations
             {
                 _dbSet.Remove(entity);
             }
+        }
+
+        public virtual async Task<User?> Authenticate(string username, string password)
+        {
+            if(typeof(TEntity) == typeof(User))
+            {
+                return await _dbSet
+                              .Cast<User>()
+                              .FirstOrDefaultAsync(x => x.UserName == username && x.Password == password);
+            }
+
+            return null;
         }
     }
 }

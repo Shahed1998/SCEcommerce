@@ -1,5 +1,6 @@
 ﻿using entity.DataContext;
 using entity.general_entities;
+using entity.General_Entities;
 using repository.Interfaces;
 
 namespace repository.Implementations
@@ -8,13 +9,17 @@ namespace repository.Implementations
     {
         private readonly DatabaseContext _databaseContext;
         private readonly IRepository<Category> _categoryRepository;
+        private readonly IRepository<User> _userRepository;
+
         public UnitOfWork(
             DatabaseContext databaseContext,
-            IRepository<Category> categoryRepository
+            IRepository<Category> categoryRepository,
+            IRepository<User> userRepository
         ) 
         {
             _databaseContext = databaseContext;
             _categoryRepository = categoryRepository;
+            _userRepository = userRepository;
         }
 
         #region Repositories
@@ -23,6 +28,13 @@ namespace repository.Implementations
             get
             { 
                 return _categoryRepository ?? new Repository<Category>(_databaseContext);
+            }
+        }
+        IRepository<User> IUnitOfWork.UserRepository
+        {
+            get
+            {
+                return _userRepository ?? new Repository<User>(_databaseContext);
             }
         }
         #endregion

@@ -1,14 +1,13 @@
 ﻿using entity.business_entities;
-using entity.Business_Entities;
 using manager.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using repository.Interfaces.Helper;
 
 namespace api.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class CategoryController : ControllerBase
+    [Authorize]
+    public class CategoryController : BaseController
     {
         private readonly ICategoryManager _categoryManager;
         private readonly IHelperFileHandler _fileHandler;
@@ -33,6 +32,7 @@ namespace api.Controllers
             return BadRequest();
         }
 
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IActionResult> Get()
         {

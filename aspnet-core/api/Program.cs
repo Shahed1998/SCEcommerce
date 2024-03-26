@@ -2,11 +2,14 @@ using api.Middlewares;
 using entity.DataContext;
 using manager.Implementations;
 using manager.Interfaces;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using repository.Helpers;
 using repository.Implementations;
 using repository.Interfaces;
 using repository.Interfaces.Helper;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +29,7 @@ builder.Services.AddDbContext<DatabaseContext>(options =>
 
 #region Services
 builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+builder.Services.AddScoped<IAccountManager, AccountManager>();
 #endregion
 
 #region Repositories
@@ -36,6 +40,25 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>)); // regi
 #region Helpers
 builder.Services.AddScoped<IHelperFileHandler, HelperFileHandler>();
 #endregion
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+{
+    opt.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
+            builder.Configuration.GetSection("Settings:JWTSecretKey").Value!)),
+
+        // Set token expiration
+        ValidateLifetime = true,
+        RequireExpirationTime = true,
+
+        // Set the clock skew to account for any server-client time synchronization issues
+        ClockSkew = TimeSpan.Zero
+    };
+});
 
 var app = builder.Build(); // Need fix
 
@@ -55,6 +78,8 @@ else
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

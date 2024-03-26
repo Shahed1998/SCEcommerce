@@ -1,4 +1,5 @@
-﻿using System;
+﻿using entity.General_Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,5 +14,6 @@ namespace repository.Interfaces
         Task<TEntity?> GetById(int Id);
         void Update(TEntity entityToUpdate);
         Task Delete(object Id);
+        Task<User?> Authenticate(string username, string password);
     }
 }
