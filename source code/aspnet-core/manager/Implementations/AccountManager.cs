@@ -47,10 +47,14 @@ namespace manager.Implementations
 
                 var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256Signature);
 
+                int jWTExpiryMinutes = 60;
+                string? JWTExpiryMinutes = _configuration.GetSection("Settings:JWTExpiryMinutes").Value;
+                int.TryParse(JWTExpiryMinutes, out jWTExpiryMinutes);
+
                 var tokenDescriptor = new SecurityTokenDescriptor()
                 {
                     Subject = new ClaimsIdentity(claims),
-                    Expires = DateTime.UtcNow.AddMinutes(1),
+                    Expires = DateTime.UtcNow.AddMinutes(jWTExpiryMinutes),
                     SigningCredentials = signingCredentials,
                 };
 
