@@ -8,6 +8,7 @@ namespace repository.Interfaces
         #region Repositories
         IRepository<Category> CategoryRepository { get; }
         IRepository<User> UserRepository { get; }
+        IRepository<Role> RoleRepository {  get; }
         #endregion
 
         Task<bool> Save();

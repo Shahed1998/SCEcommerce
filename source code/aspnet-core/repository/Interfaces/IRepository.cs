@@ -1,9 +1,5 @@
 ﻿using entity.General_Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Linq.Expressions;
 
 namespace repository.Interfaces
 {
@@ -11,9 +7,10 @@ namespace repository.Interfaces
     {
         Task Insert(TEntity entity);
         IQueryable<TEntity> Get();
+        Task<bool> Any(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity?> GetById(int Id);
         void Update(TEntity entityToUpdate);
         Task Delete(object Id);
-        Task<User?> Authenticate(string username, string password);
+        Task<User?> Authenticate(string username);
     }
 }

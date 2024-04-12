@@ -19,7 +19,10 @@ namespace entity.General_Entities
         public string? UserName { get; set; }
 
         [Required]
-        public string? Password { get; set; }
+        public byte[]? Password { get; set; }
+
+        [Required]
+        public byte[]? PasswordKey { get; set; }
 
         [Required]
         public string? Email { get; set; }

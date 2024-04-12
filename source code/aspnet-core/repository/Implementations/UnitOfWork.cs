@@ -10,16 +10,19 @@ namespace repository.Implementations
         private readonly DatabaseContext _databaseContext;
         private readonly IRepository<Category> _categoryRepository;
         private readonly IRepository<User> _userRepository;
+        private readonly IRepository<Role> _roleRepository;
 
         public UnitOfWork(
             DatabaseContext databaseContext,
             IRepository<Category> categoryRepository,
-            IRepository<User> userRepository
+            IRepository<User> userRepository,
+            IRepository<Role> roleRepository
         ) 
         {
             _databaseContext = databaseContext;
             _categoryRepository = categoryRepository;
             _userRepository = userRepository;
+            _roleRepository = roleRepository;
         }
 
         #region Repositories
@@ -35,6 +38,13 @@ namespace repository.Implementations
             get
             {
                 return _userRepository ?? new Repository<User>(_databaseContext);
+            }
+        }
+        IRepository<Role> IUnitOfWork.RoleRepository
+        {
+            get
+            {
+                return _roleRepository ?? new Repository<Role>(_databaseContext);   
             }
         }
         #endregion

@@ -29,7 +29,10 @@ namespace api.Middlewares
 
                 if (env.IsDevelopment())
                 {
-                    response = new { message = ex.Message, stackTrace = ex.StackTrace };
+                    response = new { 
+                        message = ex.Message,
+                        innerException = ex.InnerException?.Message,
+                        stackTrace = ex.StackTrace };
                 }
                 else
                 {

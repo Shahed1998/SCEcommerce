@@ -2,6 +2,7 @@
 using entity.General_Entities;
 using Microsoft.EntityFrameworkCore;
 using repository.Interfaces;
+using System.Linq.Expressions;
 
 namespace repository.Implementations
 {
@@ -19,6 +20,11 @@ namespace repository.Implementations
         public virtual async Task Insert(TEntity entity)
         {
             await _dbSet.AddAsync(entity);
+        }
+
+        public virtual async Task<bool> Any(Expression<Func<TEntity, bool>> predicate) 
+        {
+            return await _dbSet.AnyAsync(predicate);
         }
 
         public virtual IQueryable<TEntity> Get()
@@ -46,13 +52,13 @@ namespace repository.Implementations
             }
         }
 
-        public virtual async Task<User?> Authenticate(string username, string password)
+        public virtual async Task<User?> Authenticate(string username)
         {
             if(typeof(TEntity) == typeof(User))
             {
                 return await _dbSet
                               .Cast<User>()
-                              .FirstOrDefaultAsync(x => x.UserName == username && x.Password == password);
+                              .FirstOrDefaultAsync(x => x.UserName == username);
             }
 
             return null;
