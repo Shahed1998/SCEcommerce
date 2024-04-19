@@ -1,12 +1,14 @@
 <div class="component w-50 mx-auto shadow p-5">
-    <form>
+    <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            <label for="userName" class="form-label">Username</label>
+            <input type="text" class="form-control" id="username" formControlName="username">
+            <span *ngIf="!Username.valid && Username.touched" class="err-msg">* Please provide username</span>
         </div>
         <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
+            <label for="password" class="form-label">Password</label>
+            <input type="password" class="form-control" id="password" formControlName="password">
+            <span *ngIf="!Password.valid && Password.touched" class="err-msg">* Please provide password</span>
         </div>
         <div class="mb-3 form-check">
             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -14,6 +16,5 @@
         </div>
         <button type="submit" class="btn btn-primary">Submit</button>
         <button type="reset" class="btn btn-secondary mx-2">Reset <i class="fa-solid fa-arrows-rotate"></i></button>
-    </form>
-    
+    </form>    
 </div>
