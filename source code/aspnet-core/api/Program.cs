@@ -24,7 +24,9 @@ builder.Services.AddSwaggerGen();
 #region CORS
 builder.Services.AddCors(options => options.AddPolicy("SCEcommerce", builder =>
 {
-    builder.WithOrigins("*").AllowAnyMethod().AllowAnyOrigin();
+    builder.WithOrigins("*").AllowAnyMethod()
+                            .AllowAnyOrigin()
+                            .AllowAnyHeader();
 }));
 #endregion
 

@@ -1,13 +1,13 @@
 /* The app will have only two main colors  Primary: #112B3C, Secondary: #DD5746 */
 
-*{
+* {
     font-family: "Poppins", sans-serif;
     font-weight: 500;
-    color: #112B3C;
+    /* color: #112b3c; */
 }
 
-.err-msg{
-    color: #DD5746;
+.err-msg {
+    color: #dd5746;
     font-size: smaller;
 }
 
@@ -16,5 +16,6 @@
 .redirection-link:hover,
 .redirection-link:hover i {
     text-decoration: none;
-    color: #DD5746;
+    color: #dd5746;
 }
+

@@ -1,4 +1,7 @@
 <div class="component w-50 mx-auto shadow p-5">
+    <alert *ngIf="errorMessageShow" type="danger">
+        <strong>Oh snap!</strong> Change a few things up and try submitting again.
+    </alert>
     <form [formGroup]="loginForm" (ngSubmit)="submitForm()">
         <div class="mb-3">
             <label for="userName" class="form-label">Username</label>
