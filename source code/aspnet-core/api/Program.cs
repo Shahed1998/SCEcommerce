@@ -21,6 +21,13 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+#region CORS
+builder.Services.AddCors(options => options.AddPolicy("SCEcommerce", builder =>
+{
+    builder.WithOrigins("*").AllowAnyMethod().AllowAnyOrigin();
+}));
+#endregion
+
 #region DatabaseContext Register
 // Register DatabaseContext
 builder.Services.AddDbContext<DatabaseContext>(options =>
@@ -63,6 +70,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
 });
 
 var app = builder.Build(); // Need fix
+
+app.UseCors("SCEcommerce");
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
