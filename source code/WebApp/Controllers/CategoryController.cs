@@ -12,8 +12,8 @@ namespace WebApp.Controllers
         }
         public IActionResult Index()
         {
-            var categoryList = _context.categories.ToList();
-            return View();
+            var model = _context.categories.ToList();
+            return View(model);
         }
     }
 }
