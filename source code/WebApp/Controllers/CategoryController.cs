@@ -15,5 +15,10 @@ namespace WebApp.Controllers
             var model = _context.categories.ToList();
             return View(model);
         }
+
+        public IActionResult Create()
+        {
+            return PartialView();
+        }
     }
 }
