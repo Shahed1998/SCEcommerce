@@ -8,7 +8,7 @@
         }
     }).done(function (result) {
         $('#globalModalLabel').text(title);
-        $('#globalModal .modal-body').html(result);
+        $('#globalModal .modal-body').html(result); // content of partial view will be shown in the modal body
         $('#globalModal').modal('show');
     }).fail(function () {
         $('#globalModal').modal('hide');
