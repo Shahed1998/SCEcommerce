@@ -1,5 +1,6 @@
 ﻿using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
+using Models.Entities;
 
 namespace WebApp.Controllers
 {
@@ -18,6 +19,16 @@ namespace WebApp.Controllers
 
         public IActionResult Create()
         {
+            return PartialView(new Category());
+        }
+
+        [HttpPost]
+        public IActionResult Create(Category category)
+        {
+            if(!ModelState.IsValid)
+            {
+                return PartialView(category);
+            }
             return PartialView();
         }
     }

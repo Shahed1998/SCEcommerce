@@ -11,9 +11,11 @@ namespace Models.Entities
 
         [Required]
         [StringLength(100)]
+        [Display(Name="Name")]
         public string? Name { get; set; }
 
         [Required]
+        [Display(Name = "Display Order")]
         public int DisplayOrder { get; set; }
     }
 }

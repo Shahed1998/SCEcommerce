@@ -1,1 +1,18 @@
-﻿<h1>hello world</h1>
+﻿@model Category
+
+<form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Create">
+
+    @* See how validation summary looks *@
+
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" />
+        <span asp-validation-for="Name" class="validationError"/>
+    </div>
+    <div class="mb-3">
+        <label asp-for="DisplayOrder" class="form-label"></label>
+        <input asp-for="DisplayOrder" class="form-control" />
+        <span asp-validation-for="DisplayOrder" class="validationError" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Save</button>
+</form>
