@@ -25,6 +25,7 @@ namespace WebApp.Controllers
         [HttpPost]
         public IActionResult Create(Category category)
         {
+
             if(!ModelState.IsValid)
             {
                 return PartialView(category);

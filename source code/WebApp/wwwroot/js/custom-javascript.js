@@ -1,10 +1,10 @@
-﻿function CreateModal(e, el, title="", ) {
+﻿function CreateModal(e, el, title="") {
     e.preventDefault();
 
     $.ajax({
         url: $(el).attr('href'),
         beforeSend: function () {
-            // Need to add spiner
+            spinner('show');
         }
     }).done(function (result) {
         $('#globalModalLabel').text(title);
@@ -14,6 +14,23 @@
     }).fail(function () {
         $('#globalModal').modal('hide');
         bootbox.alert("An error occured");
+    }).always(function () {
+        spinner('hide');
     });
 
+}
+
+function spinner(event)
+{
+    debugger;
+    if (event === "show") {
+        if ($('.loader-container').hasClass('d-none')) {
+            $('.loader-container').removeClass('d-none');
+        }
+    }
+    else {
+        if (!$('.loader-container').hasClass('d-none')) {
+            $('.loader-container').addClass('d-none');
+        }
+    }
 }
