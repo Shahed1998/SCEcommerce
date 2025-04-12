@@ -16,6 +16,6 @@ namespace Models.Entities
 
         [Required]
         [Display(Name = "Display Order")]
-        public int DisplayOrder { get; set; }
+        public int? DisplayOrder { get; set; }
     }
 }

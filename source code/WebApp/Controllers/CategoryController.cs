@@ -30,7 +30,11 @@ namespace WebApp.Controllers
             {
                 return PartialView(category);
             }
-            return PartialView();
+
+            _context.categories.Add(category);
+            _context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
     }
 }
