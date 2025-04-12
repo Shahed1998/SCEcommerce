@@ -34,7 +34,7 @@ namespace WebApp.Controllers
             _context.categories.Add(category);
             _context.SaveChanges();
 
-            return RedirectToAction("Index");
+            return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
         }
     }
 }
