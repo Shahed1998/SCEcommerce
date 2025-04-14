@@ -13,7 +13,7 @@ namespace WebApp.Controllers
         }
         public IActionResult Index()
         {
-            var model = _context.categories.ToList();
+            var model = _context.categories.OrderByDescending(x => x.Id).ToList();
             return View(model);
         }
 
