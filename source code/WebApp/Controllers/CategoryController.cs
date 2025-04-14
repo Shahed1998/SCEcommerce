@@ -36,5 +36,14 @@ namespace WebApp.Controllers
 
             return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
         }
+
+        public IActionResult Edit(int Id)
+        {
+            var category = _context.categories.FirstOrDefault(x => x.Id == Id);
+
+            if (category == null) return NotFound($"Category not found");
+
+            return PartialView(category);
+        }
     }
 }

@@ -26,6 +26,7 @@
                         <th scope="col">SL#</th>
                         <th scope="col">Name</th>
                         <th scope="col">Display Order</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -35,6 +36,12 @@
                             <td>@count</td>
                             <td>@category.Name</td>
                             <td>@category.DisplayOrder</td>
+                            <td>
+                                <div class="btn-group w-100" role="group" aria-label="Basic example">
+                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Category" asp-route-id="@category.Id" onclick="CreateModal(event, this, 'Edit Category')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    <a class="btn btn-danger mx-2"><i class="fa-solid fa-trash"></i> Delete</a>
+                                </div>
+                            </td>
                         </tr>
 
                         count++;

@@ -11,13 +11,20 @@
         $('#globalModal .modal-body').html(result);
         $('#globalModal').modal('show');
         $.validator.unobtrusive.parse('.modalForm');
-    }).fail(function () {
+    }).fail(function (xhr, status, msg) {
+        debugger;
         $('#globalModal').modal('hide');
-        bootbox.alert("An error occured");
+
+        var message = xhr.responseText;
+
+        bootbox.alert({
+            title: "Error",
+            message: message
+        });
+
     }).always(function () {
         spinner('hide');
     });
-
 }
 
 function spinner(event) {
