@@ -1,8 +1,9 @@
 ﻿@model Category
 
-<form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Create" onsubmit="return save(this)">
+<form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Edit" onsubmit="return save(this)">
 
     @Html.AntiForgeryToken()
+    @Html.HiddenFor(x => x.Id)
 
     <div class="mb-3">
         <label asp-for="Name" class="form-label"></label>
