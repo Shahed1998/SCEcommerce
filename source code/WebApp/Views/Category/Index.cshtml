@@ -39,7 +39,7 @@
                             <td>
                                 <div class="btn-group w-100" role="group" aria-label="Basic example">
                                     <a class="btn btn-primary" asp-action="Edit" asp-controller="Category" asp-route-id="@category.Id" onclick="CreateModal(event, this, 'Edit Category')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
-                                    <a class="btn btn-danger mx-2"><i class="fa-solid fa-trash"></i> Delete</a>
+                                    <a class="btn btn-danger mx-2" asp-action="Delete" asp-controller="Category" onclick="Delete(event, this, '@category.Id', '@category.Name')"><i class="fa-solid fa-trash"></i> Delete</a>
                                 </div>
                             </td>
                         </tr>
@@ -56,3 +56,11 @@
 
     </div>
 </div>
+
+<script>
+    debugger;
+    if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true')
+    {
+        toastr.success('Show');
+    }
+</script>

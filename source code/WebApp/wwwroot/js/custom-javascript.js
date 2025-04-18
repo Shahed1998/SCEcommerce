@@ -27,6 +27,34 @@
     });
 }
 
+function Delete(e, el, id, msg) {
+    e.preventDefault();
+    bootbox.confirm({
+        title: "Confirm",
+        message: "Do you want to delete " + msg.trim() + "?",
+        callback: function (result) {
+            if (!result) return;
+
+            $.ajax({
+                method: 'DELETE',
+                url: $(el).attr('href'),
+                data: { id: id },
+                beforeSend: function () {
+                    spinner('show');
+                },
+                success: function (result) {
+                    window.location.href = result.redirectToAction;
+                },
+                error: function (xhr) {
+                    window.location.href = xhr.responseJSON.redirectToAction;
+                }
+            }).always(function () {
+                spinner('hide');
+            })
+        }
+    });
+}
+
 function spinner(event) {
     debugger;
     if (event === "show") {
@@ -83,7 +111,6 @@ function save(formElement, type = "save") {
                     },
                     error: function (xhr, status, error) {
                         bootbox.alert("An internal server error occurred.");
-                        console.log(error);
                     }
                 });
             }

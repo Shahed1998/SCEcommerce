@@ -35,7 +35,6 @@ nupkg/
 [Rr]eleases/
 x64/
 x86/
-build/
 bld/
 [Bb]in/
 [Oo]bj/
@@ -45,3 +44,5 @@ bld/
 msbuild.log
 msbuild.err
 msbuild.wrn
+build/
+

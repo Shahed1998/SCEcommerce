@@ -10,9 +10,10 @@
     <link rel="icon" type="image/png" sizes="16x16" href="~/images/favicon-16x16.png" />
 
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebApp.styles.css" asp-append-version="true" />
-    <link href="~/fontawesome-free-6.7.2-web/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/fontawesome-free-6.7.2-web/css/all.min.css" rel="stylesheet" />
+    <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
 
@@ -76,8 +77,9 @@
         <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
         <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/fontawesome-free-6.7.2-web/js/all.min.js"></script>
+        <script src="~/lib/fontawesome-free-6.7.2-web/js/all.min.js"></script>
         <script src="~/js/bootbox.all.min.js"></script>
+        <script src="~/lib/toastr/toastr.min.js"></script>
         <script src="~/js/custom-javascript.js"></script>
         @await RenderSectionAsync("Scripts", required: false)
     </div>
