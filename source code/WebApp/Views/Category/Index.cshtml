@@ -57,10 +57,17 @@
     </div>
 </div>
 
-<script>
-    debugger;
-    if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true')
-    {
-        toastr.success('Show');
-    }
-</script>
+@section Scripts {
+    <script>
+        debugger;
+        if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true' && '@ViewBag.Success'.toLowerCase() == 'true')
+        {
+            toastr.success('Successfully delete');
+        }
+        else if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true' && '@ViewBag.Success'.toLowerCase() == 'false')
+        {
+            toastr.error('Failed to delete');
+        }
+    </script>
+}
+

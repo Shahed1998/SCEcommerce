@@ -43,7 +43,9 @@ function Delete(e, el, id, msg) {
                     spinner('show');
                 },
                 success: function (result) {
+                    debugger;
                     window.location.href = result.redirectToAction;
+                    toastr.success('Show');
                 },
                 error: function (xhr) {
                     window.location.href = xhr.responseJSON.redirectToAction;

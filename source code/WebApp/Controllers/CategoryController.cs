@@ -11,9 +11,10 @@ namespace WebApp.Controllers
         {
             _context = context;
         }
-        public IActionResult Index(bool showtoastMessage = false)
+        public IActionResult Index(bool showtoastMessage = false, bool success = false)
         {
             ViewBag.ShowToastMsg = showtoastMessage;
+            ViewBag.Success = success;
 
             var model = _context.categories.OrderByDescending(x => x.Id).ToList();
             return View(model);
@@ -85,10 +86,10 @@ namespace WebApp.Controllers
 
             if(_context.SaveChanges() > 0)
             {
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true }) });
+                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true, success = true }) });
             }
 
-            return StatusCode(500, new { success = true, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true }) });
+            return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true, success = false }) });
         }
     }
 }
