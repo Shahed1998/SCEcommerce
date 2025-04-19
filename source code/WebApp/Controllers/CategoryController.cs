@@ -1,20 +1,48 @@
-﻿using DataAccess.Data;
+﻿ using DataAccess.Data;
 using Microsoft.AspNetCore.Mvc;
+using Models.BusinessEntities;
 using Models.Entities;
+using System.Text.Json;
+using System.Text.Json.Nodes;
+using Utility.Helpers;
 
 namespace WebApp.Controllers
 {
     public class CategoryController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public CategoryController(ApplicationDbContext context)
+        private readonly HelperEncryption _encryption;
+        public CategoryController(ApplicationDbContext context, HelperEncryption encryption)
         {
             _context = context;
+            _encryption = encryption;
         }
-        public IActionResult Index(bool showtoastMessage = false, bool success = false)
+        public IActionResult Index(CategoryResponse category)
         {
-            ViewBag.ShowToastMsg = showtoastMessage;
-            ViewBag.Success = success;
+
+            if(!string.IsNullOrWhiteSpace(category.p))
+            {
+                var decryptedValue = _encryption.Decrypt(category.p);
+                CategoryResponse? response;
+
+                if(string.IsNullOrWhiteSpace(decryptedValue))
+                {
+                    response = new CategoryResponse();
+                }
+                else
+                {
+                    response = JsonSerializer.Deserialize<CategoryResponse>(decryptedValue);
+                }
+
+                if (response != null) 
+                {
+                    category.success = response.success;
+                    category.showtoastMessage = response.showtoastMessage;
+                }
+            }
+
+            ViewBag.ShowToastMsg = category.showtoastMessage;
+            ViewBag.Success = category.success;
 
             var model = _context.categories.OrderByDescending(x => x.Id).ToList();
             return View(model);
@@ -76,6 +104,7 @@ namespace WebApp.Controllers
         {
 
             var category = _context.categories.FirstOrDefault(x => x.Id.Equals(id));
+            string? serializedParams, encryptedParams;
 
             if (category == null)
             {
@@ -86,10 +115,16 @@ namespace WebApp.Controllers
 
             if(_context.SaveChanges() > 0)
             {
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true, success = true }) });
+                serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = true });
+                encryptedParams = _encryption.Encrypt(serializedParams);
+
+                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category", new { p = encryptedParams }) });
             }
 
-            return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Category", new { showtoastMessage = true, success = false }) });
+            serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = false });
+            encryptedParams = _encryption.Encrypt(serializedParams);
+
+            return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Category", new { p = encryptedParams }) });
         }
     }
 }
