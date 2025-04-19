@@ -17,32 +17,35 @@ namespace WebApp.Controllers
             _context = context;
             _encryption = encryption;
         }
-        public IActionResult Index(CategoryResponse category)
+        public IActionResult Index(NotificationViewModel category)
         {
 
             if(!string.IsNullOrWhiteSpace(category.p))
             {
                 var decryptedValue = _encryption.Decrypt(category.p);
-                CategoryResponse? response;
+                NotificationViewModel? response;
 
                 if(string.IsNullOrWhiteSpace(decryptedValue))
                 {
-                    response = new CategoryResponse();
+                    response = new NotificationViewModel();
                 }
                 else
                 {
-                    response = JsonSerializer.Deserialize<CategoryResponse>(decryptedValue);
+                    response = JsonSerializer.Deserialize<NotificationViewModel>(decryptedValue);
                 }
 
                 if (response != null) 
                 {
+                    // use automapper for this mapping in the future
+                    category.IsEdited = response.IsEdited;
+                    category.IsCreated = response.IsCreated;
+                    category.IsDeleted = response.IsDeleted;
                     category.success = response.success;
                     category.showtoastMessage = response.showtoastMessage;
                 }
             }
 
-            ViewBag.ShowToastMsg = category.showtoastMessage;
-            ViewBag.Success = category.success;
+            ViewBag.ToastrNotification = category;
 
             var model = _context.categories.OrderByDescending(x => x.Id).ToList();
             return View(model);
@@ -115,13 +118,13 @@ namespace WebApp.Controllers
 
             if(_context.SaveChanges() > 0)
             {
-                serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = true });
+                serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = true, IsDeleted = true });
                 encryptedParams = _encryption.Encrypt(serializedParams);
 
                 return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category", new { p = encryptedParams }) });
             }
 
-            serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = false });
+            serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = false, IsDeleted = true });
             encryptedParams = _encryption.Encrypt(serializedParams);
 
             return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Category", new { p = encryptedParams }) });

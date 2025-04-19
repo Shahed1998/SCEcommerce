@@ -1,0 +1,15 @@
+﻿@model NotificationViewModel
+
+@if (Model != null && Model.showtoastMessage == true)
+{
+
+    <script>
+        if ('@Model.IsDeleted'.toLowerCase() == 'true' && '@Model.success'.toLowerCase() == 'true') {
+            ToastrNotification('success', 'Successfully deleted');
+        }
+        else if ('@ViewBag.IsDeleted'.toLowerCase() == 'true' && '@Model.success'.toLowerCase() == 'false') {
+            ToastrNotification('error', 'Failed to delete');
+        }
+    </script>
+
+}

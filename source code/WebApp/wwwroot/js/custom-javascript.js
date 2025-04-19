@@ -45,7 +45,6 @@ function Delete(e, el, id, msg) {
                 success: function (result) {
                     debugger;
                     window.location.href = result.redirectToAction;
-                    toastr.success('Show');
                 },
                 error: function (xhr) {
                     window.location.href = xhr.responseJSON.redirectToAction;
@@ -120,4 +119,36 @@ function save(formElement, type = "save") {
     });
 
     return false; // prevent normal form submission
+}
+
+function ToastrNotification(type, msg = "") {
+    toastr.options = {
+        "closeButton": false,
+        "debug": false,
+        "newestOnTop": false,
+        "progressBar": false,
+        "positionClass": "toast-top-center",
+        "preventDuplicates": false,
+        "onclick": null,
+        "showDuration": "300",
+        "hideDuration": "1000",
+        "timeOut": "5000",
+        "extendedTimeOut": "1000",
+        "showEasing": "swing",
+        "hideEasing": "linear",
+        "showMethod": "fadeIn",
+        "hideMethod": "fadeOut"
+    }
+
+    switch (type) {
+        case "success":
+            toastr.success(msg);
+            break;
+        case "error":
+            toastr.error(msg);
+            break;
+        default:
+            toastr.error('An internal server error occured');
+            break;
+    }
 }

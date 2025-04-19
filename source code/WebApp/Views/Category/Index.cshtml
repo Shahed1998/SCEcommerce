@@ -18,7 +18,7 @@
         </div>
     </div>
     <div>
-        @if (Model.Any())
+        @if (Model != null && Model.Any())
         {
             <table class="table table-hover">
                 <thead>
@@ -56,18 +56,4 @@
 
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        debugger;
-        if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true' && '@ViewBag.Success'.toLowerCase() == 'true')
-        {
-            toastr.success('Successfully delete');
-        }
-        else if('@ViewBag.ShowToastMsg'.toLowerCase() == 'true' && '@ViewBag.Success'.toLowerCase() == 'false')
-        {
-            toastr.error('Failed to delete');
-        }
-    </script>
-}
 

@@ -16,7 +16,6 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-
     @* z-index: 1100 because of bootstrap stack order *@
     <div class="loader-container d-none position-fixed top-0 start-0 w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(43, 52, 103, 0.5); z-index: 1100;"> 
         <div class="loader" style="background-color: #BC7C7C"></div>
@@ -81,6 +80,7 @@
         <script src="~/js/bootbox.all.min.js"></script>
         <script src="~/lib/toastr/toastr.min.js"></script>
         <script src="~/js/custom-javascript.js"></script>
+        @(await Html.PartialAsync("_ToastrNotification", ViewBag.ToastrNotification as NotificationViewModel))
         @await RenderSectionAsync("Scripts", required: false)
     </div>
 
