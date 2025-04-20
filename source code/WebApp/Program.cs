@@ -1,4 +1,8 @@
 using DataAccess.Data;
+using DataAccess.Repository.Implementations;
+using DataAccess.Repository.Interfaces;
+using Manager.Implementations;
+using Manager.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Utility.Helpers;
 
@@ -11,6 +15,19 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddSingleton<HelperEncryption>();
+
+
+#region Services
+
+builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+
+#endregion
+
+#region Repository 
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+#endregion
 
 var app = builder.Build();
 
