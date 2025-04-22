@@ -4,11 +4,11 @@ namespace Manager.Interfaces
 {
     public interface ICategoryManager
     {
-        IEnumerable<Category> GetAll();
-        Category Get(int Id);
-        bool Add(Category entity);
-        bool Remove(Category entity);
-        bool RemoveRange(IEnumerable<Category> entities);
-        bool Update(Category category);
+        Task<IEnumerable<Category>> GetAll();
+        Task<Category> Get(int Id);
+        Task<bool> Add(Category entity);
+        Task<bool> Remove(Category entity);
+        Task<bool> RemoveRange(IEnumerable<Category> entities);
+        Task<bool> Update(Category category);
     }
 }

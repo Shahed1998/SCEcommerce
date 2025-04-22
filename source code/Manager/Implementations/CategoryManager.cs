@@ -7,45 +7,45 @@ namespace Manager.Implementations
     public class CategoryManager : ICategoryManager
     {
 
-        private readonly ICategoryRepository _categoryRepo;
+        private readonly IUnitOfWork _uow;
 
-        public CategoryManager(ICategoryRepository categoryRepo)
+        public CategoryManager(IUnitOfWork uow)
         {
-            _categoryRepo = categoryRepo;
+            _uow = uow;
         }
 
-        public bool Add(Category entity)
+        public async Task<bool> Add(Category entity)
         {
-            _categoryRepo.Add(entity);
-            return _categoryRepo.Save() > 0;
+            await _uow.CategoryRepository.Add(entity);
+            return await _uow.Save();
         }
 
-        public Category Get(int Id)
+        public async Task<Category> Get(int Id)
         {
-            return _categoryRepo.Get(x => x.Id == Id) ?? new Category();
+            return (await _uow.CategoryRepository.Get(x => x.Id == Id)) ?? new Category();
         }
 
-        public IEnumerable<Category> GetAll()
+        public async Task<IEnumerable<Category>> GetAll()
         {
-            return _categoryRepo.GetAll();
+            return await _uow.CategoryRepository.GetAll();
         }
 
-        public bool Remove(Category entity)
+        public async Task<bool> Remove(Category entity)
         {
-            _categoryRepo.Remove(entity);
-            return _categoryRepo.Save() > 0;
+            _uow.CategoryRepository.Remove(entity);
+            return await _uow.Save();
         }
 
-        public bool RemoveRange(IEnumerable<Category> entities)
+        public async Task<bool> RemoveRange(IEnumerable<Category> entities)
         {
-            _categoryRepo.RemoveRange(entities);
-            return _categoryRepo.Save() > 0;
+            _uow.CategoryRepository.RemoveRange(entities);
+            return await _uow.Save();
         }
 
-        public bool Update(Category category)
+        public async Task<bool> Update(Category category)
         {
-            _categoryRepo.Update(category);
-            return _categoryRepo.Save() > 0;
+            _uow.CategoryRepository.Update(category);
+            return await _uow.Save();
         }
     }
 }

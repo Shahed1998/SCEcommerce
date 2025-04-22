@@ -16,19 +16,19 @@ namespace DataAccess.Repository.Implementations
             this._dbSet = _db.Set<T>();
         }
 
-        public void Add(T entity)
+        public async Task Add(T entity)
         {
-            _dbSet.Add(entity);
+            await _dbSet.AddAsync(entity);
         }
 
-        public T? Get(Expression<Func<T, bool>> predicate)
+        public async Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
-            return _dbSet.Where(predicate).FirstOrDefault();
+            return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
-        public IEnumerable<T> GetAll()
+        public async Task<IEnumerable<T>> GetAll()
         {
-            return _dbSet.ToList();
+            return await _dbSet.ToListAsync();
         }
 
         public void Remove(T entity)

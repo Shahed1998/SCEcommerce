@@ -14,11 +14,6 @@ namespace DataAccess.Repository.Implementations
             _db = db;
         }
 
-        public int Save()
-        {
-            return _db.SaveChanges();
-        }
-
         public void Update(Category category)
         {
             _db.categories.Update(category);

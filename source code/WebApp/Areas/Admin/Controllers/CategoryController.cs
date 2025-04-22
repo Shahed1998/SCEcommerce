@@ -5,8 +5,9 @@ using Models.Entities;
 using System.Text.Json;
 using Utility.Helpers;
 
-namespace WebApp.Controllers
+namespace WebApp.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
         private readonly ICategoryManager _categoryManager;
@@ -16,7 +17,7 @@ namespace WebApp.Controllers
             _categoryManager = categoryManager;
             _encryption = encryption;
         }
-        public IActionResult Index(NotificationViewModel category)
+        public async Task<IActionResult> Index(NotificationViewModel category)
         {
 
             if(!string.IsNullOrWhiteSpace(category.p))
@@ -46,7 +47,7 @@ namespace WebApp.Controllers
 
             ViewBag.ToastrNotification = category;
 
-            var model = _categoryManager.GetAll();
+            var model = await _categoryManager.GetAll();
             return View(model);
         }
 
@@ -56,7 +57,7 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
 
             if (!ModelState.IsValid)
@@ -64,7 +65,7 @@ namespace WebApp.Controllers
                 return PartialView(category);
             }
 
-            if(_categoryManager.Add(category))
+            if(await _categoryManager.Add(category))
             {
                 return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
             }
@@ -74,9 +75,9 @@ namespace WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult Edit(int Id)
+        public async Task<IActionResult> Edit(int Id)
         {
-            var category = _categoryManager.Get(Id);
+            var category = await _categoryManager.Get(Id);
 
             if (category == null) return NotFound($"Category not found");
 
@@ -84,9 +85,9 @@ namespace WebApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(Category model)
+        public async Task<IActionResult> Edit(Category model)
         {
-            var category = _categoryManager.Get(model.Id);
+            var category = await _categoryManager.Get(model.Id);
 
             if (category == null) return NotFound($"Category not found");
 
@@ -94,7 +95,7 @@ namespace WebApp.Controllers
             category.Name = model.Name;
             category.DisplayOrder = model.DisplayOrder;
 
-            if (_categoryManager.Update(category))
+            if (await _categoryManager.Update(category))
             {
                 return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
             }
@@ -103,10 +104,10 @@ namespace WebApp.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
 
-            var category = _categoryManager.Get(id);
+            var category = await _categoryManager.Get(id);
             string? serializedParams, encryptedParams;
 
             if (category == null)
@@ -114,7 +115,7 @@ namespace WebApp.Controllers
                 return NotFound(new { success = false, redirectToAction = Url.Action("Index", "Category") });
             }
 
-            if(_categoryManager.Remove(category))
+            if(await _categoryManager.Remove(category))
             {
                 serializedParams = JsonSerializer.Serialize(new { showtoastMessage = true, success = true, IsDeleted = true });
                 encryptedParams = _encryption.Encrypt(serializedParams);
