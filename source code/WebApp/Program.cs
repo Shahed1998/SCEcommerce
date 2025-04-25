@@ -19,7 +19,8 @@ builder.Services.AddSingleton<HelperEncryption>();
 
 #region Services
 
-builder.Services.AddScoped<ICategoryManager, CategoryManager>();
+builder.Services.AddScoped<ICategoryManager, CategoryManager>(); 
+builder.Services.AddScoped<IProductManager, ProductManager>(); 
 
 #endregion
 

@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities
 {
+    [Table("Product")]
     public class Product
     {
         [Key]
@@ -22,6 +23,7 @@ namespace Models.Entities
         [Display(Name = "Discount")]
         public int? DiscountPercentage { get; set; }
 
+        [Required]
         public int? CategoryId { get; set; }
 
         [ForeignKey("CategoryId")]
