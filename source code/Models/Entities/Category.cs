@@ -17,5 +17,7 @@ namespace Models.Entities
         [Required]
         [Display(Name = "Display Order")]
         public int? DisplayOrder { get; set; }
+
+        public ICollection<Product> Products { get; set; } = new List<Product>();
     }
 }
