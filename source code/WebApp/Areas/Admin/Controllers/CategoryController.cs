@@ -17,8 +17,10 @@ namespace WebApp.Areas.Admin.Controllers
             _categoryManager = categoryManager;
             _encryption = encryption;
         }
-        public async Task<IActionResult> Index(NotificationViewModel category)
+        public async Task<IActionResult> Index(NotificationViewModel category, int page=1)
         {
+
+            ViewBag.Page = page;
 
             if(!string.IsNullOrWhiteSpace(category.p))
             {

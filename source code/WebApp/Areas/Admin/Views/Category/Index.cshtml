@@ -5,22 +5,23 @@
     ViewData["Title"] = "Category";
 }
 
-<div class="container shadow-lg">
-    <div class="row p-3 mt-2 text-white bg-dark">
-        <h3 class="text-center">Category List</h3>
-    </div>
-    <div class="row py-3">
-        <div class="col-12 text-end my-auto">
-            <a asp-controller="Category" asp-action="Create" class="btn btn-primary" onclick="CreateModal(event, this, 'Create New Category')">
-                <i class="fa-solid fa-circle-plus"></i>
-                Create New Category
-            </a>
+<div class="card shadow mt-5">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">Category List</div>
+            <div class="col-6 d-flex justify-content-end">
+                <a asp-controller="Category" asp-action="Create" class="btn btn-primary" onclick="CreateModal(event, this, 'Create New Category')">
+                    <i class="fa-solid fa-circle-plus"></i>
+                    Create New Category
+                </a>
+            </div>
         </div>
+
     </div>
-    <div>
+    <div class="card-body">
         @if (Model != null && Model.Any())
         {
-            <table class="table table-hover">
+            <table class="table table-hover table-responsive">
                 <thead>
                     <tr>
                         <th scope="col">SL#</th>
@@ -53,7 +54,12 @@
         {
             <div>No records found</div>
         }
+    </div>
+    <div class="card-footer">
+        <helper-pagination-for page-url="@Url.Action("Index", "Category", new { Area="Admin" })"
+                               current-page=@ViewBag.Page
+                               total-pages=1000>
+        </helper-pagination-for>
 
     </div>
 </div>
-
