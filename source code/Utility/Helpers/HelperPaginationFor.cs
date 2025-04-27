@@ -1,21 +1,17 @@
 ﻿//using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.Extensions.Primitives;
-
 
 namespace Utility.Helpers
 {
     public class HelperPaginationFor : TagHelper
     {
-        public int CurrentPage { get; set; }
-        public int TotalPages { get; set; }
+        public PagedList<object> Model { get; set; }
         public string? PageUrl { get; set; }
-        public string? SearchQuery { get; set; } 
 
         public HelperPaginationFor()
         {
-            
+            this.Model = new PagedList<object>(new List<object>(), 1, 30, 0);
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -28,37 +24,60 @@ namespace Utility.Helpers
 
 
             // << First
-            ul.InnerHtml.AppendHtml(CreatePageLink("<<", 1, isActive: false, disabled: CurrentPage == 1));
+            ul.InnerHtml.AppendHtml(CreatePageLink("<<", 1, isActive: false, disabled: Model.PageNumber == 1));
 
             // < Previous
-            ul.InnerHtml.AppendHtml(CreatePageLink("<", CurrentPage - 1, isActive: false, disabled: CurrentPage == 1));
+            ul.InnerHtml.AppendHtml(CreatePageLink("<", Model.PageNumber - 1, isActive: false, disabled: Model.PageNumber == 1));
 
-            // Pages 1 2 3 4
-            for (int i = CurrentPage; i <= CurrentPage + 4 && i <= TotalPages; i++)
+            // Smart Pagination Logic
+            if (Model.TotalPages <= 7)
             {
-                ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: CurrentPage == i));
-            }
-
-            // Dots ...
-            if (TotalPages > 6)
-            {
-                ul.InnerHtml.AppendHtml(CreateDots());
-            }
-
-            // Last two pages 999 1000
-            if (TotalPages > 4)
-            {
-                for (int i = TotalPages - 1; i <= TotalPages; i++)
+                // Show all pages if total pages are small
+                for (int i = 1; i <= Model.TotalPages; i++)
                 {
-                    ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: CurrentPage == i));
+                    ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: Model.PageNumber == i));
                 }
             }
-
+            else
+            {
+                if (Model.PageNumber <= 4)
+                {
+                    // Near the start
+                    for (int i = 1; i <= 5; i++)
+                    {
+                        ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: Model.PageNumber == i));
+                    }
+                    ul.InnerHtml.AppendHtml(CreateDots());
+                    ul.InnerHtml.AppendHtml(CreatePageLink(Model.TotalPages.ToString(), Model.TotalPages, isActive: false));
+                }
+                else if (Model.PageNumber >= Model.TotalPages - 3)
+                {
+                    // Near the end
+                    ul.InnerHtml.AppendHtml(CreatePageLink("1", 1, isActive: false));
+                    ul.InnerHtml.AppendHtml(CreateDots());
+                    for (int i = Model.TotalPages - 4; i <= Model.TotalPages; i++)
+                    {
+                        ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: Model.PageNumber == i));
+                    }
+                }
+                else
+                {
+                    // Somewhere in the middle
+                    ul.InnerHtml.AppendHtml(CreatePageLink("1", 1, isActive: false));
+                    ul.InnerHtml.AppendHtml(CreateDots());
+                    for (int i = Model.PageNumber - 1; i <= Model.PageNumber + 1; i++)
+                    {
+                        ul.InnerHtml.AppendHtml(CreatePageLink(i.ToString(), i, isActive: Model.PageNumber == i));
+                    }
+                    ul.InnerHtml.AppendHtml(CreateDots());
+                    ul.InnerHtml.AppendHtml(CreatePageLink(Model.TotalPages.ToString(), Model.TotalPages, isActive: false));
+                }
+            }
             // > Next
-            ul.InnerHtml.AppendHtml(CreatePageLink(">", CurrentPage + 1, isActive: false, disabled: CurrentPage == TotalPages));
+            ul.InnerHtml.AppendHtml(CreatePageLink(">", Model.PageNumber + 1, isActive: false, disabled: Model.PageNumber == Model.TotalPages));
 
             // >> Last
-            ul.InnerHtml.AppendHtml(CreatePageLink(">>", TotalPages, isActive: false, disabled: CurrentPage == TotalPages));
+            ul.InnerHtml.AppendHtml(CreatePageLink(">>", Model.TotalPages, isActive: false, disabled: Model.PageNumber == Model.TotalPages));
 
             output.Content.AppendHtml(ul);
         }

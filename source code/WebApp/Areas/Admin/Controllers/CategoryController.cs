@@ -50,7 +50,10 @@ namespace WebApp.Areas.Admin.Controllers
             ViewBag.ToastrNotification = category;
 
             var model = await _categoryManager.GetAll();
-            return View(model);
+
+            var pagedList = new PagedList<Category>(model, 1, 30, model.Count());
+
+            return View(pagedList);
         }
 
         public IActionResult Create()
