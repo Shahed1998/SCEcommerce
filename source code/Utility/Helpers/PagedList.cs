@@ -1,6 +1,8 @@
-﻿namespace Utility.Helpers
+﻿using Models.Entities;
+
+namespace Utility.Helpers
 {
-    public class PagedList<T> : List<T> where T : class
+    public class PagedList
     {
         public int PageNumber { get; private set; }
 
@@ -10,13 +12,18 @@
 
         public long TotalCount { get; private set; }
 
-        public PagedList(IEnumerable<T> source, int page, int pageSize, int total) 
+        public PagedList(int page, int pageSize, int total) 
         {
             PageNumber = page;
             PageSize = pageSize;
             TotalCount = total;
             TotalPages = (int)Math.Ceiling((double) total / pageSize);
-            this.AddRange(source);
         }
+
+        #region List
+
+        public IEnumerable<Category>? categories { get; set; }
+
+        #endregion
     }
 }

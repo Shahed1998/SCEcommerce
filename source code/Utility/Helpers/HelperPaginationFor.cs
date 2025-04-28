@@ -1,17 +1,16 @@
-﻿//using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Utility.Helpers
 {
-    public class HelperPaginationFor : TagHelper
+    public class HelperPaginationFor : TagHelper 
     {
-        public PagedList<object> Model { get; set; }
+        public PagedList Model { get; set; }
         public string? PageUrl { get; set; }
 
         public HelperPaginationFor()
         {
-            this.Model = new PagedList<object>(new List<object>(), 1, 30, 0);
+            this.Model = new PagedList(1, 30, 0);
         }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -102,7 +101,7 @@ namespace Utility.Helpers
 
             if (!disabled)
             {
-                a.Attributes["href"] = $"{PageUrl}?page={pageNumber}{queryString}";
+                a.Attributes["href"] = $"{PageUrl}";
             }
             else
             {

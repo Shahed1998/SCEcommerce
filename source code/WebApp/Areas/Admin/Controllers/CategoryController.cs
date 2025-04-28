@@ -17,10 +17,11 @@ namespace WebApp.Areas.Admin.Controllers
             _categoryManager = categoryManager;
             _encryption = encryption;
         }
-        public async Task<IActionResult> Index(NotificationViewModel category, int page=1)
+        public async Task<IActionResult> Index(NotificationViewModel category, int page=1, int pageSize=30)
         {
 
             ViewBag.Page = page;
+            ViewBag.PageSize = pageSize;
 
             if(!string.IsNullOrWhiteSpace(category.p))
             {
@@ -51,7 +52,9 @@ namespace WebApp.Areas.Admin.Controllers
 
             var model = await _categoryManager.GetAll();
 
-            var pagedList = new PagedList<Category>(model, 1, 30, model.Count());
+            var pagedList = new PagedList(page, 30, model.Count());
+
+            pagedList.categories = model;
 
             return View(pagedList);
         }

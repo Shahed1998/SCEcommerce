@@ -1,7 +1,9 @@
-﻿@model List<Category>
+﻿@using Utility.Helpers
+@model PagedList
 
 @{
     var count = 1;
+    var test = Model;
     ViewData["Title"] = "Category";
 }
 
@@ -19,7 +21,7 @@
 
     </div>
     <div class="card-body">
-        @if (Model != null && Model.Any())
+        @if (Model.categories != null && Model.categories.Any())
         {
             <table class="table table-hover table-responsive">
                 <thead>
@@ -31,7 +33,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var category in Model)
+                    @foreach (var category in Model.categories)
                     {
                         <tr>
                             <td>@count</td>
@@ -56,9 +58,9 @@
         }
     </div>
     <div class="card-footer">
-        <helper-pagination-for page-url="@Url.Action("Index", "Category", new { Area="Admin" })"
-                               current-page=@ViewBag.Page
-                               total-pages=1000>
+        <helper-pagination-for 
+            page-url="@Url.Action("Index", "Category", new { Area="Admin", page = ViewBag.Page, pageSize = ViewBag.PageSize })"
+            Model="@Model">
         </helper-pagination-for>
 
     </div>
