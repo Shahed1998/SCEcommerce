@@ -12,12 +12,15 @@ namespace Utility.Helpers
 
         public long TotalCount { get; private set; }
 
+        public int FirstItemOnPage { get; private set; }
+
         public PagedList(int page, int pageSize, int total) 
         {
             PageNumber = page;
             PageSize = pageSize;
             TotalCount = total;
             TotalPages = (int)Math.Ceiling((double) total / pageSize);
+            FirstItemOnPage = pageSize * (page - 1) + 1;
         }
 
         #region List

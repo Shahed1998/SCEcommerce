@@ -1,6 +1,8 @@
 ﻿using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
+using Microsoft.Data.SqlClient;
 using Models.Entities;
+using Utility.Helpers;
 
 namespace Manager.Implementations
 {
@@ -25,9 +27,30 @@ namespace Manager.Implementations
             return (await _uow.CategoryRepository.Get(x => x.Id == Id)) ?? new Category();
         }
 
-        public async Task<IEnumerable<Category>> GetAll()
+        public async Task<PagedList> GetAll(int page, int pageSize)
         {
-            return await _uow.CategoryRepository.GetAll();
+
+            var sqlParams = new SqlParameter[]
+            {
+                new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page }, 
+                new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize }, 
+            };
+
+            string sql1 = "SELECT * FROM CATEGORY ORDER BY ID OFFSET @PAGESIZE*(@PAGENUMBER-1) ROWS" +
+                " FETCH NEXT @PAGESIZE ROWS ONLY";
+
+            var categories = _uow.CategoryRepository.ExecuteQuery(sql1, sqlParams);
+
+            string sql2 = "SELECT COUNT(1) FROM CATEGORY";
+
+            var totalCount = await _uow.CategoryRepository.ExecuteScalar<int>(sql2, sqlParams);
+
+            var result = new PagedList(page, pageSize, totalCount);
+
+            result.categories = categories;
+
+            return result;
+
         }
 
         public async Task<bool> Remove(Category entity)

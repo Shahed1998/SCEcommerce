@@ -2,7 +2,7 @@
 @model PagedList
 
 @{
-    var count = 1;
+    var count = Model.FirstItemOnPage;
     var test = Model;
     ViewData["Title"] = "Category";
 }
@@ -59,7 +59,7 @@
     </div>
     <div class="card-footer">
         <helper-pagination-for 
-            page-url="@Url.Action("Index", "Category", new { Area="Admin", page = ViewBag.Page, pageSize = ViewBag.PageSize })"
+            page-url="@Url.Action("Index", "Category", new { Area="Admin" })"
             Model="@Model">
         </helper-pagination-for>
 

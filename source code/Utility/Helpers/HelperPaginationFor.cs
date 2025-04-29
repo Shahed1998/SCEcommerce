@@ -6,7 +6,7 @@ namespace Utility.Helpers
     public class HelperPaginationFor : TagHelper 
     {
         public PagedList Model { get; set; }
-        public string? PageUrl { get; set; }
+        public string PageUrl { get; set; } = string.Empty;
 
         public HelperPaginationFor()
         {
@@ -99,9 +99,20 @@ namespace Utility.Helpers
             var a = new TagBuilder("a");
             a.AddCssClass("page-link");
 
+            string seperator = "";
+
+            if(PageUrl!.Contains("?"))
+            {
+                seperator = "&";
+            }
+            else
+            {
+                seperator = "?";
+            }
+
             if (!disabled)
             {
-                a.Attributes["href"] = $"{PageUrl}";
+                a.Attributes["href"] = $"{PageUrl}{seperator}page=" + pageNumber + "&pageSize=" + Model.PageSize;
             }
             else
             {
