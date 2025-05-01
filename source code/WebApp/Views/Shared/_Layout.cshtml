@@ -70,11 +70,11 @@
         </header>
 
         @* Main Body *@
-        <div class="main-body d-flex flex-grow-1" style="min-height: 0;">
+        <div class="main-body d-flex flex-grow-1 w-100" style="min-height: 0;">
 
             @* sidebar start *@
             <aside id="sidebar" class="sidebar-toggle">
-                <a href="#" class="sidebar-logo">SCEcommerce</a>
+                <a href="#" class="sidebar-logo d-block">SCEcommerce</a>
                 @* sidebar navigation start *@
                 <ul class="sidebar-nav p-0">
                     <li class="sidebar-header">
@@ -142,24 +142,27 @@
             @* sidebar end  *@
 
             @* Main content start *@
-            <div class="main flex-grow-1 overflow-auto">
-                <nav class="navbar navbar-expand border-bottom navbar-second">
+            <div class="d-flex flex-column flex-grow-1 overflow-hidden">
+                <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
+                     style="z-index: 1000;" data-bs-theme="dark">
                     <button class="toggler-btn" type="button" onclick="sidebarToggle()">
                         <i class="fa-solid fa-align-left"></i>
-                        <span>Bootstrap Sidebar</span>
+                        <span class="ms-2">Bootstrap Sidebar</span>
                     </button>
                 </nav>
-                <main role="main" class="p-3">
-                    @RenderBody()
-                </main>
-                <!-- Footer -->
-                @* <footer class="border-top footer text-muted text-center" style="background-color: red;">
-                    <div class="container">
-                        Designed and Developed by Shahed Chowdhury Omi
+                <main role="main" class="flex-grow-1 overflow-auto p-2" >
+                    <div class="container mt-2 mb-3">
+                        @RenderBody()
                     </div>
-                </footer> *@
+                    
+                </main>
+
+                <div class="test-footer text-center text-muted p-3">
+                    Designed and Developed by Shahed Chowdhury Omi
+                </div>
+
             </div>
-            @* Main content start *@
+            @* Main content end *@
 
         </div>
     </div>
