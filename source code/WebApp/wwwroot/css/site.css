@@ -1,5 +1,10 @@
-*{
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* {
     box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 
@@ -7,11 +12,7 @@ html {
     font-size: 14px;
 }
 
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
+
 
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
@@ -21,6 +22,7 @@ body, html {
     height: 100%;
     margin: 0;
     /*overflow-x: hidden;*/
+    font-size: 95%;
 }
 
 .main-container {
@@ -160,9 +162,9 @@ a {
 
 #sidebar {
     position: sticky;
-    top: 80px;
+    top: 60px;
     width: 264px;
-    height: calc(100vh - 80px);
+    height: calc(100vh - 60px);
     overflow-y: auto;
     background-color: #2c3e50;
     color: white;
@@ -178,7 +180,9 @@ a {
 
     /* Use a custom class name that doesn't conflict with Bootstrap */
     #sidebar.sidebar-hidden {
-        transform: translateX(-100%);
+        /*transform: translateX(-100%);*/
+        width: 0 !important;
+        overflow: hidden;
     }
 
 
@@ -271,13 +275,23 @@ a.sidebar-link:hover {
     width: 100%;
 }
 
+.main-body {
+    transition: margin-left 10s ease;
+}
+
+
 /* Screen size less than 768px */
 @media (max-width:768px) {
+
+    html, body {
+        font-size: 100%;
+    }
+
     .sidebar-toggle {
-        margin-left: -264px;
+        transform: translateX(-100%);
     }
 
     #sidebar.collapsed {
-        margin-left: 0;
+        transform: translateX(0);
     }
 }

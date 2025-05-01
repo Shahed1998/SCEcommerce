@@ -41,28 +41,18 @@
 
         @* Header *@
         <header class="sticky-top">
-            <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light" style="height:80px;">
+            <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light" style="height:60px;">
                 <div class="container-fluid">
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" data-bs-toggle="tooltip" data-bs-title="SCEcommerce">
                         <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40">
+                        <span class="">SCEcommerce</span>
                     </a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
                     <div class="collapse navbar-collapse" id="navbarColor03">
                         <ul class="navbar-nav ms-auto">
-                            <li class="nav-item">
-                                <a class="nav-link active" asp-area="Customer" asp-controller="Home" asp-action="Index">Home</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Category" asp-action="Index">Category</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Admin" asp-controller="Product" asp-action="Index">Product</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="Customer" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                            </li>
+                            
                         </ul>
                     </div>
                 </div>
@@ -74,29 +64,25 @@
 
             @* sidebar start *@
             <aside id="sidebar" class="sidebar-toggle">
-                <a href="#" class="sidebar-logo d-block">SCEcommerce</a>
                 @* sidebar navigation start *@
-                <ul class="sidebar-nav p-0">
-                    <li class="sidebar-header">
-                        Tools & Components
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                <ul class="sidebar-nav p-0" style="margin-top: 50px">
+                    <li class="sidebar-item mt-2">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="sidebar-link">
                             <i class="fa-solid fa-link"></i> <span>Home</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
                             <i class="fa-solid fa-link"></i> <span>Category</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
                             <i class="fa-solid fa-link"></i> <span>Product</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Privacy" class="sidebar-link">
                             <i class="fa-solid fa-link"></i> <span>Privacy</span>
                         </a>
                     </li>
@@ -144,13 +130,13 @@
             @* Main content start *@
             <div class="d-flex flex-column flex-grow-1 overflow-hidden">
                 <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
-                     style="z-index: 1000;" data-bs-theme="dark">
+                     style="z-index: 1000; height:50px;" data-bs-theme="dark">
                     <button class="toggler-btn" type="button" onclick="sidebarToggle()">
                         <i class="fa-solid fa-align-left"></i>
-                        <span class="ms-2">Bootstrap Sidebar</span>
+                        <span class="ms-2">@ViewData["Title"]</span>
                     </button>
                 </nav>
-                <main role="main" class="flex-grow-1 overflow-auto p-2" >
+                <main role="main" class="flex-grow-1 overflow-auto p-5" >
                     <div class="container mt-2 mb-3">
                         @RenderBody()
                     </div>
