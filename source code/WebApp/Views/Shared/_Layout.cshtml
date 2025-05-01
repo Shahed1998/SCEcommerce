@@ -17,14 +17,31 @@
 </head>
 <body>
     @* z-index: 1100 because of bootstrap stack order *@
-    <div class="loader-container d-none position-fixed top-0 start-0 w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(43, 52, 103, 0.5); z-index: 1100;"> 
+    <div class="loader-container d-none position-fixed top-0 start-0 w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(43, 52, 103, 0.5); z-index: 1100;">
         <div class="loader" style="background-color: #BC7C7C"></div>
     </div>
 
-    <div class="main-container" style="z-index: 1">
-        <header class="sticky-top">
+    @* Global Modal *@
+    <div class="container-fluid">
+        <!-- Modal -->
+        <div class="modal fade" id="globalModal" tabindex="-1" aria-labelledby="globalModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="globalModalLabel">Modal title</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-            <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light">
+    <div class="main-container w-100 d-flex flex-column" style="height: 100vh; position: relative; z-index: 1;">
+
+        @* Header *@
+        <header class="sticky-top">
+            <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light" style="height:80px;">
                 <div class="container-fluid">
                     <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" data-bs-toggle="tooltip" data-bs-title="SCEcommerce">
                         <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40">
@@ -51,42 +68,113 @@
                 </div>
             </nav>
         </header>
-        <div class="container">
-            <!-- Modal -->
-            <div class="modal fade" id="globalModal" tabindex="-1" aria-labelledby="globalModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="globalModalLabel">Modal title</h1>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body"></div>
-                    </div>
+
+        @* Main Body *@
+        <div class="main-body d-flex flex-grow-1" style="min-height: 0;">
+
+            @* sidebar start *@
+            <aside id="sidebar" class="sidebar-toggle">
+                <a href="#" class="sidebar-logo">SCEcommerce</a>
+                @* sidebar navigation start *@
+                <ul class="sidebar-nav p-0">
+                    <li class="sidebar-header">
+                        Tools & Components
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-link"></i> <span>Home</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-link"></i> <span>Category</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-link"></i> <span>Product</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-link"></i> <span>Privacy</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-header">
+                        Pages
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+                           data-bs-target="#auth" aria-expanded="true" aria-controls="auth">
+                            <i class="fa-solid fa-shield-halved"></i> <span>Auth</span>
+                        </a>
+                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">
+                                    Login
+                                </a>
+                            </li>
+                            <li class="sidebar-item">
+                                <a href="#" class="sidebar-link">
+                                    Register
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-bell"></i> <span>Notification</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="#" class="sidebar-link">
+                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+                @* sidebar navigation ends *@
+                @* sidebar footer starts *@
+                <div class="sidebar-footer">
+                    <a href="#"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
                 </div>
-            </div>
+                @* sidebar footer ends *@
+            </aside>
+            @* sidebar end  *@
 
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
+            @* Main content start *@
+            <div class="main flex-grow-1 overflow-auto">
+                <nav class="navbar navbar-expand border-bottom navbar-second">
+                    <button class="toggler-btn" type="button" onclick="sidebarToggle()">
+                        <i class="fa-solid fa-align-left"></i>
+                        <span>Bootstrap Sidebar</span>
+                    </button>
+                </nav>
+                <main role="main" class="p-3">
+                    @RenderBody()
+                </main>
+                <!-- Footer -->
+                @* <footer class="border-top footer text-muted text-center" style="background-color: red;">
+                    <div class="container">
+                        Designed and Developed by Shahed Chowdhury Omi
+                    </div>
+                </footer> *@
+            </div>
+            @* Main content start *@
+
         </div>
-
-        <footer class="border-top footer text-muted text-center">
-            <div class="container">
-                Designed and Developed by Shahed Chowdhury Omi
-            </div>
-        </footer>
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
-        <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/lib/fontawesome-free-6.7.2-web/js/all.min.js"></script>
-        <script src="~/js/bootbox.all.min.js"></script>
-        <script src="~/lib/toastr/toastr.min.js"></script>
-        <script src="~/js/custom-javascript.js"></script>
-        @(await Html.PartialAsync("_ToastrNotification", ViewBag.ToastrNotification as NotificationViewModel))
-        @await RenderSectionAsync("Scripts", required: false)
     </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/fontawesome-free-6.7.2-web/js/all.min.js"></script>
+    <script src="~/js/bootbox.all.min.js"></script>
+    <script src="~/lib/toastr/toastr.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/custom-javascript.js" asp-append-version="true"></script>
+    @(await Html.PartialAsync("_ToastrNotification", ViewBag.ToastrNotification as NotificationViewModel))
+    @await RenderSectionAsync("Scripts", required: false)
 
 </body>
 </html>

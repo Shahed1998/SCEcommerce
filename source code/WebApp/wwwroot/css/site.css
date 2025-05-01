@@ -21,6 +21,18 @@ body {
     margin-bottom: 60px;
 }
 
+.main-container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.main-body {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
@@ -127,5 +139,120 @@ input[type=number] {
 
     100% {
         transform: translate(0, 0) rotateX(0) rotateY(360deg);
+    }
+}
+
+li {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+.main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+#sidebar {
+    position: sticky;
+    top: 80px; /* match navbar height */
+    width: 264px;
+    height: calc(100vh - 80px);
+    overflow-y: auto;
+    background-color: #343a40; /* example */
+    color: white;
+    flex-shrink: 0;
+}
+
+    #sidebar.collapsed {
+        transform: translateX(-100%);
+    }
+
+/* Sidebar footer sticks to bottom */
+.sidebar-footer {
+    padding: 1rem;
+    border-top: 1px solid #333;
+}
+
+.toggler-btn {
+    background-color: transparent !important;
+    cursor: pointer;
+    border: 0;
+}
+
+    .toggler-btn.i {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: #000;
+    }
+
+.navbar-second{
+    padding: 1.15rem 1.5rem;
+}
+
+.sidebar-nav{
+    flex: 1 1 auto;
+}
+
+.sidebar-logo {
+    padding: 1.15rem 1.5rem;
+    text-align: center;
+}
+
+.sidebar-logo{
+    color: white !important;
+    font-weight: 800;
+    font-size: 1.25rem;
+}
+
+.sidebar-header{
+    color: white;
+    font-size: 0.75rem;
+    padding: 1.5rem 1.5rem 0.375rem;
+}
+
+a.sidebar-link{
+    padding: 0.625rem 1.625rem;
+    color: white;
+    position: relative;
+    transition: all 0.35s;
+    display: block;
+}
+
+a.sidebar-link:hover {
+    background-color: #f9f6f630;
+}
+
+.sidebar-link[data-bs-toggle="collapse"]::after {
+    border: solid;
+    border-width: 0 .075rem .075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all .2s ease-out;
+}
+
+.sidebar-link[data-bs-toggle="collapse"].collapsed::after {
+    transform: rotate(45deg);
+    transition: all .2s ease-out;
+}
+
+/* Screen size less than 768px */
+
+@media (max-width:768px) {
+
+    .sidebar-toggle {
+        margin-left: -264px;
+    }
+
+    #sidebar.collapsed {
+        margin-left: 0;
     }
 }
