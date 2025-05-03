@@ -1,0 +1,65 @@
+﻿@* sidebar start *@
+<aside id="sidebar" class="sidebar-toggle d-flex flex-column">
+    @* sidebar navigation start *@
+    <ul class="sidebar-nav p-0" style="margin-top: 50px">
+
+        <li class="sidebar-item mt-2">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="sidebar-link">
+                <i class="fa-solid fa-link"></i> <span>Home</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
+                <i class="fa-solid fa-link"></i> <span>Category</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
+                <i class="fa-solid fa-link"></i> <span>Product</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a asp-area="Customer" asp-controller="Home" asp-action="Privacy" class="sidebar-link">
+                <i class="fa-solid fa-link"></i> <span>Privacy</span>
+            </a>
+        </li>
+        <li class="sidebar-header">
+            Pages
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
+               data-bs-target="#auth" aria-expanded="true" aria-controls="auth">
+                <i class="fa-solid fa-shield-halved"></i> <span>Auth</span>
+            </a>
+            <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        Login
+                    </a>
+                </li>
+                <li class="sidebar-item">
+                    <a href="#" class="sidebar-link">
+                        Register
+                    </a>
+                </li>
+            </ul>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-bell"></i> <span>Notification</span>
+            </a>
+        </li>
+        <li class="sidebar-item">
+            <a href="#" class="sidebar-link">
+                <i class="fa-solid fa-gear"></i> <span>Settings</span>
+            </a>
+        </li>
+    </ul>
+    @* sidebar navigation ends *@
+    @* sidebar footer starts *@
+    <div class="sidebar-footer">
+        <a href="#"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+    </div>
+    @* sidebar footer ends *@
+</aside>
+@* sidebar end  *@

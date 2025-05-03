@@ -16,137 +16,36 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    @* z-index: 1100 because of bootstrap stack order *@
-    <div class="loader-container d-none position-fixed top-0 start-0 w-100 min-vh-100 d-flex align-items-center justify-content-center" style="background-color: rgba(43, 52, 103, 0.5); z-index: 1100;">
-        <div class="loader" style="background-color: #BC7C7C"></div>
-    </div>
 
-    @* Global Modal *@
-    <div class="container-fluid">
-        <!-- Modal -->
-        <div class="modal fade" id="globalModal" tabindex="-1" aria-labelledby="globalModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="globalModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body"></div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <partial name="_LoadingScreen" />
+    <partial name="_GlobalModal"/>
 
-    <div class="main-container w-100 d-flex flex-column" style="height: 100vh; position: relative; z-index: 1;">
+    <div class="main-container d-flex flex-column position-relative">
 
-        @* Header *@
-        <header class="sticky-top">
-            <nav class="navbar navbar-expand-lg bg-light" data-bs-theme="light" style="height:60px;">
-                <div class="container-fluid">
-                    <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand" data-bs-toggle="tooltip" data-bs-title="SCEcommerce">
-                        <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40">
-                        <span class="">SCEcommerce</span>
-                    </a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse" id="navbarColor03">
-                        <ul class="navbar-nav ms-auto">
-                            
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-        </header>
+        <partial name="_TopNavbar"/>
 
         @* Main Body *@
-        <div class="main-body d-flex flex-grow-1 w-100" style="min-height: 0;">
+        <div class="main-body d-flex flex-grow-1 w-100 mh-100 h-100 overflow-hidden">
 
-            @* sidebar start *@
-            <aside id="sidebar" class="sidebar-toggle">
-                @* sidebar navigation start *@
-                <ul class="sidebar-nav p-0" style="margin-top: 50px">
-                    <li class="sidebar-item mt-2">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Home</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Category</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Product</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Privacy" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Privacy</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-header">
-                        Pages
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-                           data-bs-target="#auth" aria-expanded="true" aria-controls="auth">
-                            <i class="fa-solid fa-shield-halved"></i> <span>Auth</span>
-                        </a>
-                        <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">
-                                    Login
-                                </a>
-                            </li>
-                            <li class="sidebar-item">
-                                <a href="#" class="sidebar-link">
-                                    Register
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="fa-solid fa-bell"></i> <span>Notification</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-item">
-                        <a href="#" class="sidebar-link">
-                            <i class="fa-solid fa-gear"></i> <span>Settings</span>
-                        </a>
-                    </li>
-                </ul>
-                @* sidebar navigation ends *@
-                @* sidebar footer starts *@
-                <div class="sidebar-footer">
-                    <a href="#"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-                </div>
-                @* sidebar footer ends *@
-            </aside>
-            @* sidebar end  *@
-
+            <partial name="_Sidebar"/>
+            
             @* Main content start *@
-            <div class="d-flex flex-column flex-grow-1 overflow-hidden">
-                <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
-                     style="z-index: 1000; height:50px;" data-bs-theme="dark">
-                    <button class="toggler-btn" type="button" onclick="sidebarToggle()">
-                        <i class="fa-solid fa-align-left"></i>
-                        <span class="ms-2">@ViewData["Title"]</span>
-                    </button>
-                </nav>
-                <main role="main" class="flex-grow-1 overflow-auto p-5" >
-                    <div class="container mt-2 mb-3">
-                        @RenderBody()
-                    </div>
-                    
-                </main>
+            <div class="d-flex flex-column flex-grow-1 overflow-hidden" id="main-body-content">
+                <div class="content-wrapper">
+                    <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
+                         style="z-index: 1000; height:50px;" data-bs-theme="dark">
+                        <button class="toggler-btn" type="button" onclick="sidebarToggle()">
+                            <i class="fa-solid fa-align-left"></i>
+                            <span class="ms-2">@ViewData["Title"]</span>
+                        </button>
+                    </nav>
+                    <main role="main" class="flex-grow-1 overflow-auto p-5">
+                        <div class="container mt-2 mb-3">
+                            @RenderBody()
+                        </div>
 
-                <div class="test-footer text-center text-muted p-3">
-                    Designed and Developed by Shahed Chowdhury Omi
+                    </main>
                 </div>
-
             </div>
             @* Main content end *@
 
