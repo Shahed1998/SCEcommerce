@@ -260,14 +260,6 @@ a.sidebar-link {
 
 /* Optional */
 
-/*----------------------------------------------------------------------------------*/
-/* Sidebar */
-/*----------------------------------------------------------------------------------*/
-
-.navbar-second {
-    padding: 1.15rem 1.5rem;
-}
-
 .toggler-btn {
     background-color: transparent !important;
     cursor: pointer;
@@ -280,6 +272,14 @@ a.sidebar-link {
         color: #000;
     }
 
+/*----------------------------------------------------------------------------------*/
+/* Sidebar */
+/*----------------------------------------------------------------------------------*/
+
+.navbar-second {
+    padding: 1.15rem 1.5rem;
+}
+
 
 .main, .footer {
     flex: 1;
@@ -288,6 +288,8 @@ a.sidebar-link {
     max-width: 100%; /* instead of 100px */
     width: 100%;
 }
+
+/* Next target fix the sizing of contents in mobile devices */
 
 /* Screen size less than 768px */
 @media (max-width:768px) {
