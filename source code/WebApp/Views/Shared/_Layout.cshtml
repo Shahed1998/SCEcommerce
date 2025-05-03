@@ -18,34 +18,31 @@
 <body>
 
     <partial name="_LoadingScreen" />
-    <partial name="_GlobalModal"/>
+    <partial name="_GlobalModal" />
 
     <div class="main-container d-flex flex-column position-relative">
 
-        <partial name="_TopNavbar"/>
+        <partial name="_TopNavbar" />
 
         @* Main Body *@
         <div class="main-body d-flex flex-grow-1 w-100 mh-100 h-100 overflow-hidden">
 
-            <partial name="_Sidebar"/>
-            
+            <partial name="_Sidebar" />
+
             @* Main content start *@
             <div class="d-flex flex-column flex-grow-1 overflow-hidden" id="main-body-content">
-                <div class="content-wrapper">
-                    <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
-                         style="z-index: 1000; height:50px;" data-bs-theme="dark">
-                        <button class="toggler-btn" type="button" onclick="sidebarToggle()">
-                            <i class="fa-solid fa-align-left"></i>
-                            <span class="ms-2">@ViewData["Title"]</span>
-                        </button>
-                    </nav>
-                    <main role="main" class="flex-grow-1 overflow-auto p-5">
-                        <div class="container mt-2 mb-3">
-                            @RenderBody()
-                        </div>
-
-                    </main>
-                </div>
+                <nav class="navbar sticky-top navbar-expand border-bottom navbar-second bg-primary"
+                     style="z-index: 1000; height:50px;" data-bs-theme="dark">
+                    <button class="toggler-btn" type="button" onclick="sidebarToggle()">
+                        <i class="fa-solid fa-align-left"></i>
+                        <span class="ms-2">@ViewData["Title"]</span>
+                    </button>
+                </nav>
+                <main role="main" class="flex-grow-1 overflow-auto p-5">
+                    <div class="container mt-2 mb-3">
+                        @RenderBody()
+                    </div>
+                </main>
             </div>
             @* Main content end *@
 
