@@ -153,6 +153,10 @@ a {
 /* Loading screen */
 /*----------------------------------------------------------------------------------*/
 
+.top_navbar .navbar-toggler, .top_navbar #navbarColor03 {
+    display: none;
+}
+
 /*----------------------------------------------------------------------------------*/
 /* Sidebar */
 /*----------------------------------------------------------------------------------*/
@@ -280,14 +284,17 @@ a.sidebar-link {
     padding: 1.15rem 1.5rem;
 }
 
+    .navbar-second .whichPage {
+        color: #fff;
+    }
 
-.main, .footer {
-    flex: 1;
-    overflow-y: auto;
-    padding: 1rem;
-    max-width: 100%; /* instead of 100px */
-    width: 100%;
-}
+    .main, .footer {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1rem;
+        max-width: 100%; /* instead of 100px */
+        width: 100%;
+    }
 
 /* Next target fix the sizing of contents in mobile devices */
 
@@ -295,14 +302,31 @@ a.sidebar-link {
 @media (max-width:768px) {
 
     html, body {
-        font-size: 100%;
+        font-size: 10px;
     }
 
-    .sidebar-toggle {
-        transform: translateX(-100%);
+   /* .top_navbar .navbar-toggler, .top_navbar #navbarColor03 {
+        display: inline-block;
+    }*/
+
+
+    #sidebar {
+        width: 0px;
     }
 
-    #sidebar.collapsed {
-        transform: translateX(0);
+    #main-body-content{
+        margin-left: 0px;
+    }
+
+        #main-body-content .navbar {
+            
+        }
+
+        #main-body-content .toggler-btn {
+            display: none;
+        }
+
+    #main {
+        padding: 3px !important;
     }
 }
