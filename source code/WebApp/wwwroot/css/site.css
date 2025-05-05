@@ -157,10 +157,13 @@ a {
     display: none;
 }
 
+.top_navbar #offcanvasDarkNavbar {
+    display: none;
+}
+
 /*----------------------------------------------------------------------------------*/
 /* Sidebar */
 /*----------------------------------------------------------------------------------*/
-
 #sidebar {
     position: fixed;
     top: 60px;
@@ -305,9 +308,18 @@ a.sidebar-link {
         font-size: 10px;
     }
 
-   /* .top_navbar .navbar-toggler, .top_navbar #navbarColor03 {
+    .top_navbar .navbar-toggler, .top_navbar #navbarColor03 {
         display: inline-block;
-    }*/
+    }
+
+    .top_navbar #offcanvasDarkNavbar {
+        display: inline-block;
+    }
+    
+
+    #navbarNavAltMarkup .navbar-nav {
+        display: inline-block;
+    }
 
 
     #sidebar {
