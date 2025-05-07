@@ -3,7 +3,6 @@
 
 @{
     var count = Model.FirstItemOnPage;
-    var test = Model;
     ViewData["Title"] = "Category";
 }
 
@@ -23,16 +22,16 @@
     <div class="card-body">
         @if (Model.categories != null && Model.categories.Any())
         {
-            <table class="table table-hover table-responsive">
+            <table class="table table-responsive table-striped text-center">
                 <thead>
                     <tr>
-                        <th scope="col">SL#</th>
+                        <th scope="col">SL.</th>
                         <th scope="col">Name</th>
                         <th scope="col">Display Order</th>
                         <th></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="">
                     @foreach (var category in Model.categories)
                     {
                         <tr>
@@ -51,17 +50,17 @@
                     }
                 </tbody>
             </table>
+
+            <div class="card-footer">
+                <helper-pagination-for page-url="@Url.Action("Index", "Category", new { Area="Admin" })"
+                                       Model="@Model">
+                </helper-pagination-for>
+            </div>
         }
         else
         {
             <div>No records found</div>
         }
     </div>
-    <div class="card-footer">
-        <helper-pagination-for 
-            page-url="@Url.Action("Index", "Category", new { Area="Admin" })"
-            Model="@Model">
-        </helper-pagination-for>
-
-    </div>
+    
 </div>

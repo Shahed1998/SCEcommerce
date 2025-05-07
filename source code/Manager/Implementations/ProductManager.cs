@@ -1,6 +1,8 @@
 ﻿using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
+using Microsoft.Data.SqlClient;
 using Models.Entities;
+using Utility.Helpers;
 
 namespace Manager.Implementations
 {
@@ -14,37 +16,55 @@ namespace Manager.Implementations
             _uow = uow;
         }
 
-        public async Task<bool> Add(Category entity)
+        public async Task<bool> Add(Product product)
         {
-            await _uow.CategoryRepository.Add(entity);
+            await _uow.ProductRepository.Add(product);
             return await _uow.Save();
         }
 
-        public async Task<Category> Get(int Id)
+        public async Task<Product> Get(int Id)
         {
-            return (await _uow.CategoryRepository.Get(x => x.Id == Id)) ?? new Category();
+            return (await _uow.ProductRepository.Get(x => x.Id == Id)) ?? new Product();
         }
 
-        public async Task<IEnumerable<Category>> GetAll()
+        public async Task<PagedList> GetAll(int page, int pageSize)
         {
-            return await _uow.CategoryRepository.GetAll();
+            var sqlParams = new SqlParameter[]
+            {
+                new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
+                new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
+            };
+
+            string sql1 = "SELECT * FROM Product ORDER BY ID OFFSET @PAGESIZE*(@PAGENUMBER-1) ROWS" +
+                " FETCH NEXT @PAGESIZE ROWS ONLY";
+
+            var products = _uow.ProductRepository.ExecuteQuery(sql1, sqlParams);
+
+            string sql2 = "SELECT COUNT(1) FROM Product";
+
+            var totalCount = await _uow.ProductRepository.ExecuteScalar<int>(sql2, sqlParams);
+
+            var result = new PagedList(page, pageSize, totalCount);
+
+            result.products = products;
+
+            return result;
         }
 
-        public async Task<bool> Remove(Category entity)
+        public async Task<bool> Remove(Product product)
         {
-            _uow.CategoryRepository.Remove(entity);
+            _uow.ProductRepository.Remove(product);
             return await _uow.Save();
         }
 
-        public async Task<bool> RemoveRange(IEnumerable<Category> entities)
+        public async Task<bool> RemoveRange(IEnumerable<Product> products)
         {
-            _uow.CategoryRepository.RemoveRange(entities);
+            _uow.ProductRepository.RemoveRange(products);
             return await _uow.Save();
         }
-
-        public async Task<bool> Update(Category category)
+        public async Task<bool> Update(Product product)
         {
-            _uow.CategoryRepository.Update(category);
+            _uow.ProductRepository.Update(product);
             return await _uow.Save();
         }
     }

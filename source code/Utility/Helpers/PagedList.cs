@@ -25,7 +25,8 @@ namespace Utility.Helpers
 
         #region List
 
-        public IEnumerable<Category>? categories { get; set; }
+        public IEnumerable<Category>? categories { get; set; } 
+        public IEnumerable<Product>? products { get; set; } 
 
         #endregion
     }
