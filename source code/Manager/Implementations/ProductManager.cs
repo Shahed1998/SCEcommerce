@@ -38,7 +38,7 @@ namespace Manager.Implementations
             string sql1 = "SELECT * FROM Product ORDER BY ID OFFSET @PAGESIZE*(@PAGENUMBER-1) ROWS" +
                 " FETCH NEXT @PAGESIZE ROWS ONLY";
 
-            var products = _uow.ProductRepository.ExecuteQuery(sql1, sqlParams);
+            var products = await _uow.ProductRepository.ExecuteQuery(sql1, sqlParams);
 
             string sql2 = "SELECT COUNT(1) FROM Product";
 

@@ -10,7 +10,7 @@ namespace DataAccess.Repository.Interfaces
         Task Add(T entity);
         void Remove(T entity);
         void RemoveRange(IEnumerable<T> entities);
-        IEnumerable<T> ExecuteQuery(string sql, SqlParameter[] parameters);
+        Task<IEnumerable<T>> ExecuteQuery(string sql, SqlParameter[] parameters);
         Task<TResult> ExecuteScalar<TResult>(string sql, SqlParameter[] parameters);
     }
 }

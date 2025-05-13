@@ -43,9 +43,9 @@ namespace DataAccess.Repository.Implementations
             _dbSet.RemoveRange(entities);
         }
 
-        public IEnumerable<T> ExecuteQuery(string sql, SqlParameter[] parameters) 
+        public async Task<IEnumerable<T>> ExecuteQuery(string sql, SqlParameter[] parameters) 
         {
-            return _dbSet.FromSqlRaw(sql, parameters).ToList();
+            return await _dbSet.FromSqlRaw(sql, parameters).ToListAsync();
         }
 
         public async Task<TResult> ExecuteScalar<TResult>(string sql, SqlParameter[] parameters)

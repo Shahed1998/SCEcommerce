@@ -30,26 +30,34 @@ namespace Manager.Implementations
         public async Task<PagedList> GetAll(int page, int pageSize)
         {
 
-            var sqlParams = new SqlParameter[]
+            try
             {
-                new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page }, 
-                new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize }, 
-            };
+                var sqlParams = new List<SqlParameter>
+                {
+                    new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
+                    new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
+                };
 
-            string sql1 = "SELECT * FROM CATEGORY ORDER BY ID OFFSET @PAGESIZE*(@PAGENUMBER-1) ROWS" +
-                " FETCH NEXT @PAGESIZE ROWS ONLY";
+                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE";
 
-            var categories = _uow.CategoryRepository.ExecuteQuery(sql1, sqlParams);
+                var categories = await _uow.CategoryRepository.ExecuteQuery(sql, sqlParams.ToArray());
 
-            string sql2 = "SELECT COUNT(1) FROM CATEGORY";
+                sql += " , @TOTALCOUNT=@TOTALCOUNT";
 
-            var totalCount = await _uow.CategoryRepository.ExecuteScalar<int>(sql2, sqlParams);
+                sqlParams.Add(new SqlParameter("@TOTALCOUNT", System.Data.SqlDbType.Bit) { Value = true });
 
-            var result = new PagedList(page, pageSize, totalCount);
+                var totalCount = await _uow.CategoryRepository.ExecuteScalar<int>(sql, sqlParams.ToArray());
 
-            result.categories = categories;
+                var result = new PagedList(page, pageSize, totalCount);
 
-            return result;
+                result.categories = categories;
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new PagedList(page, pageSize, 0);
+            }
 
         }
 
