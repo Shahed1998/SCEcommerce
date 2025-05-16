@@ -1,6 +1,8 @@
-﻿using DataAccess.Repository.Interfaces;
+﻿using AutoMapper;
+using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
 using Microsoft.Data.SqlClient;
+using Models.BusinessEntities;
 using Models.Entities;
 using Utility.Helpers;
 
@@ -10,10 +12,12 @@ namespace Manager.Implementations
     {
 
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public CategoryManager(IUnitOfWork uow)
+        public CategoryManager(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<bool> Add(Category entity)
@@ -50,7 +54,7 @@ namespace Manager.Implementations
 
                 var result = new PagedList(page, pageSize, totalCount);
 
-                result.categories = categories;
+                result.categories = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
 
                 return result;
             }

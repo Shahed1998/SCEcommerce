@@ -1,4 +1,4 @@
-﻿using Models.Entities;
+﻿using Models.BusinessEntities;
 
 namespace Utility.Helpers
 {
@@ -25,8 +25,8 @@ namespace Utility.Helpers
 
         #region List
 
-        public IEnumerable<Category>? categories { get; set; } 
-        public IEnumerable<Product>? products { get; set; } 
+        public IEnumerable<CategoryDTO>? categories { get; set; } 
+        public IEnumerable<ProductDTO>? products { get; set; } 
 
         #endregion
     }

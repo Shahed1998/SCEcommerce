@@ -5,6 +5,7 @@ using Manager.Implementations;
 using Manager.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Utility.Helpers;
+using Utility.Mappings;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +16,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddHttpContextAccessor();
+
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddSingleton<HelperEncryption>();
 

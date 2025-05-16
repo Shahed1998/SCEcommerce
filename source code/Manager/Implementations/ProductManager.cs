@@ -1,6 +1,8 @@
-﻿using DataAccess.Repository.Interfaces;
+﻿using AutoMapper;
+using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
 using Microsoft.Data.SqlClient;
+using Models.BusinessEntities;
 using Models.Entities;
 using Utility.Helpers;
 
@@ -10,10 +12,12 @@ namespace Manager.Implementations
     {
 
         private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public ProductManager(IUnitOfWork uow)
+        public ProductManager(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
         public async Task<bool> Add(Product product)
@@ -29,26 +33,34 @@ namespace Manager.Implementations
 
         public async Task<PagedList> GetAll(int page, int pageSize)
         {
-            var sqlParams = new SqlParameter[]
+            try
             {
-                new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
-                new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
-            };
+                var sqlParams = new List<SqlParameter>
+                {
+                   new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
+                   new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
+                };
 
-            string sql1 = "SELECT * FROM Product ORDER BY ID OFFSET @PAGESIZE*(@PAGENUMBER-1) ROWS" +
-                " FETCH NEXT @PAGESIZE ROWS ONLY";
+                var sql = "EXEC usp_GetAllProducts @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE";
 
-            var products = await _uow.ProductRepository.ExecuteQuery(sql1, sqlParams);
+                var products = await _uow.ProductRepository.ExecuteQuery(sql, sqlParams.ToArray());
 
-            string sql2 = "SELECT COUNT(1) FROM Product";
+                sql += " , @TOTALCOUNT=@TOTALCOUNT";
 
-            var totalCount = await _uow.ProductRepository.ExecuteScalar<int>(sql2, sqlParams);
+                sqlParams.Add(new SqlParameter("@TOTALCOUNT", System.Data.SqlDbType.Bit) { Value = true });
 
-            var result = new PagedList(page, pageSize, totalCount);
+                var totalCount = await _uow.ProductRepository.ExecuteScalar<int>(sql, sqlParams.ToArray());
 
-            result.products = products;
+                var result = new PagedList(page, pageSize, totalCount);
 
-            return result;
+                result.products = _mapper.Map<IEnumerable<ProductDTO>>(products);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return new PagedList(page, pageSize, 0);
+            }
         }
 
         public async Task<bool> Remove(Product product)

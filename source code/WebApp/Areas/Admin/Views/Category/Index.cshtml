@@ -26,8 +26,8 @@
                 <thead>
                     <tr>
                         <th scope="col">SL.</th>
-                        <th scope="col">Name</th>
-                        <th scope="col">Display Order</th>
+                        <th scope="col">@Html.DisplayNameFor(x => x.categories!.FirstOrDefault()!.Name)</th>
+                        <th scope="col">@Html.DisplayNameFor(x => x.categories!.FirstOrDefault()!.DisplayOrder)</th>
                         <th></th>
                     </tr>
                 </thead>
