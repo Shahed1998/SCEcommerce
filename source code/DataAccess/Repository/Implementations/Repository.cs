@@ -50,25 +50,33 @@ namespace DataAccess.Repository.Implementations
 
         public async Task<TResult> ExecuteScalar<TResult>(string sql, SqlParameter[] parameters)
         {
-            using var command = _db.Database.GetDbConnection().CreateCommand();
-            command.CommandText = sql;
-            command.CommandType = CommandType.Text;
+            try
+            {
+                using var command = _db.Database.GetDbConnection().CreateCommand();
+                command.CommandText = sql;
+                command.CommandType = CommandType.Text;
 
-            if (parameters != null && parameters.Length > 0)
-                command.Parameters.AddRange(parameters);
+                if (parameters != null && parameters.Length > 0)
+                    command.Parameters.AddRange(parameters);
 
-            var wasClosed = command.Connection!.State == ConnectionState.Closed;
-            if (wasClosed)
-                command.Connection.Open();
+                var wasClosed = command.Connection!.State == ConnectionState.Closed;
+                if (wasClosed)
+                    command.Connection.Open();
 
-            var result = await command.ExecuteScalarAsync();
+                var result = await command.ExecuteScalarAsync();
 
-            if (wasClosed)
-                command.Connection.Close();
+                if (wasClosed)
+                    command.Connection.Close();
 
-            return result == DBNull.Value || result == null
-                ? default!
-                : (TResult)Convert.ChangeType(result, typeof(TResult));
+                return result == DBNull.Value || result == null
+                    ? default!
+                    : (TResult)Convert.ChangeType(result, typeof(TResult));
+            }
+            catch(Exception)
+            {
+                return default;
+
+            }
         }
 
     }

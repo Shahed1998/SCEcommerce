@@ -31,7 +31,7 @@ namespace Manager.Implementations
             return (await _uow.CategoryRepository.Get(x => x.Id == Id)) ?? new Category();
         }
 
-        public async Task<PagedList> GetAll(int page, int pageSize)
+        public async Task<PagedList> GetAll(int page, int pageSize, bool getAll = false)
         {
 
             try
@@ -40,9 +40,10 @@ namespace Manager.Implementations
                 {
                     new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
                     new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
+                    new SqlParameter("@GETALL", System.Data.SqlDbType.Bit) { Value = getAll },
                 };
 
-                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE";
+                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE, @GETALL=@GETALL";
 
                 var categories = await _uow.CategoryRepository.ExecuteQuery(sql, sqlParams.ToArray());
 

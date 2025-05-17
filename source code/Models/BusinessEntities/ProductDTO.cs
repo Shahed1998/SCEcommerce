@@ -1,4 +1,6 @@
-﻿namespace Models.BusinessEntities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Models.BusinessEntities
 {
     public class ProductDTO
     {
@@ -10,6 +12,7 @@
 
         public long? Price { get; set; }
 
+        [Display(Name = "Percentage Discount")]
         public int? DiscountPercentage { get; set; }
 
         public string? ImageUrl { get; set; }

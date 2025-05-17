@@ -1,0 +1,30 @@
+﻿@model ProductDTO
+
+
+<form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Create" onsubmit="return save(this)">
+
+    @Html.AntiForgeryToken()
+
+    <div class="mb-3">
+        <label asp-for="Title" class="form-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="validationError" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="validationError" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="validationError" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="DiscountPercentage" class="form-label"></label>
+        <input asp-for="DiscountPercentage" class="form-control" />
+        <span asp-validation-for="DiscountPercentage" class="validationError" />
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Save</button>
+</form>
+

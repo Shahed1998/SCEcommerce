@@ -1,6 +1,8 @@
 ﻿using Manager.Implementations;
 using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Models.BusinessEntities;
+using Models.Entities;
 using Utility.Helpers;
 
 namespace WebApp.Areas.Admin.Controllers
@@ -9,12 +11,14 @@ namespace WebApp.Areas.Admin.Controllers
     public class ProductController : Controller
     {
         private readonly IProductManager _producManager;
+        private readonly ICategoryManager _categoryManager;
         private readonly HelperEncryption _encryption;
 
-        public ProductController(IProductManager categoryManager, HelperEncryption encryption)
+        public ProductController(IProductManager productManager, HelperEncryption encryption, ICategoryManager categoryManager)
         {
-            _producManager = categoryManager;
+            _producManager = productManager;
             _encryption = encryption;
+            _categoryManager = categoryManager;
         }
 
 
@@ -26,6 +30,12 @@ namespace WebApp.Areas.Admin.Controllers
             var model = await _producManager.GetAll(page, pageSize);
 
             return View(model);
+        }
+
+        public IActionResult Create()
+        {
+            var categoryList = _categoryManager.GetAll(0, 0, getAll: true); 
+            return PartialView(new ProductDTO());
         }
     }
 }
