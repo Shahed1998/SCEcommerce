@@ -23,14 +23,15 @@ namespace DataAccess.Repository.Implementations
             await _dbSet.AddAsync(entity);
         }
 
+
         public async Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
             return await _dbSet.FirstOrDefaultAsync(predicate);
         }
 
-        public async Task<IEnumerable<T>> GetAll()
+        public IQueryable<T> GetAll()
         {
-            return await _dbSet.ToListAsync();
+            return _dbSet.AsNoTracking();
         }
 
         public void Remove(T entity)
@@ -43,9 +44,16 @@ namespace DataAccess.Repository.Implementations
             _dbSet.RemoveRange(entities);
         }
 
-        public async Task<IEnumerable<T>> ExecuteQuery(string sql, SqlParameter[] parameters) 
+        public async Task<IEnumerable<T>?> ExecuteQuery(string sql, SqlParameter[] parameters) 
         {
-            return await _dbSet.FromSqlRaw(sql, parameters).ToListAsync();
+            try
+            {
+                return await _dbSet.FromSqlRaw(sql, parameters).ToListAsync();
+            }
+            catch(Exception ex)
+            {
+                return null;
+            }
         }
 
         public async Task<TResult> ExecuteScalar<TResult>(string sql, SqlParameter[] parameters)
@@ -72,7 +80,7 @@ namespace DataAccess.Repository.Implementations
                     ? default!
                     : (TResult)Convert.ChangeType(result, typeof(TResult));
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return default;
 

@@ -1,10 +1,12 @@
-﻿using Models.Entities;
+﻿using Models.BusinessEntities;
+using Models.Entities;
 using Utility.Helpers;
 
 namespace Manager.Interfaces
 {
     public interface ICategoryManager
     {
+        Task<List<CategoryDTO>> All();
         Task<PagedList> GetAll(int page, int pageSize, bool getAll = false);
         Task<Category> Get(int Id);
         Task<bool> Add(Category entity);

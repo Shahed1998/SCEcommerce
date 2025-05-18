@@ -17,6 +17,7 @@ namespace Models.BusinessEntities
 
         public string? ImageUrl { get; set; }
 
+        [Display(Name = "Category")]
         public int? CategoryId { get; set; }
 
         public CategoryDTO? Category { get; set; }

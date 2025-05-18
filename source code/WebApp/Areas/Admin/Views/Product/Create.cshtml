@@ -11,9 +11,9 @@
         <span asp-validation-for="Title" class="validationError" />
     </div>
     <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <input asp-for="Description" class="form-control" />
-        <span asp-validation-for="Description" class="validationError" />
+        <label asp-for="CategoryId" class="form-label"></label>
+        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select categorySelectDropdown"></select>
+        <span asp-validation-for="CategoryId" class="validationError" />
     </div>
     <div class="mb-3">
         <label asp-for="Price" class="form-label"></label>
@@ -25,6 +25,16 @@
         <input asp-for="DiscountPercentage" class="form-control" />
         <span asp-validation-for="DiscountPercentage" class="validationError" />
     </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label"></label>
+        <textarea asp-for="Description" class="form-control" rows="3"></textarea>
+        <span asp-validation-for="Description" class="validationError" />
+    </div>
     <button type="submit" class="btn btn-primary w-100">Save</button>
 </form>
 
+<script>
+    $(document).ready(function() {
+    $('.categorySelectDropdown').select2();
+    });
+</script>

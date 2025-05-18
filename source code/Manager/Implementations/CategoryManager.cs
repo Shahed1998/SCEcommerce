@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Models.BusinessEntities;
 using Models.Entities;
 using Utility.Helpers;
@@ -18,6 +20,12 @@ namespace Manager.Implementations
         {
             _uow = uow;
             _mapper = mapper;
+        }
+
+        public async Task<List<CategoryDTO>> All()
+        {
+            var categoryList = await _uow.CategoryRepository.GetAll().ToListAsync();
+            return _mapper.Map<List<CategoryDTO>>(categoryList);
         }
 
         public async Task<bool> Add(Category entity)
@@ -40,10 +48,10 @@ namespace Manager.Implementations
                 {
                     new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
                     new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
-                    new SqlParameter("@GETALL", System.Data.SqlDbType.Bit) { Value = getAll },
+                    //new SqlParameter("@GETALL", System.Data.SqlDbType.Bit) { Value = getAll },
                 };
 
-                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE, @GETALL=@GETALL";
+                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE";
 
                 var categories = await _uow.CategoryRepository.ExecuteQuery(sql, sqlParams.ToArray());
 

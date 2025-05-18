@@ -1,6 +1,7 @@
 ﻿using Manager.Implementations;
 using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.BusinessEntities;
 using Models.Entities;
 using Utility.Helpers;
@@ -32,9 +33,18 @@ namespace WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            var categoryList = _categoryManager.GetAll(0, 0, getAll: true); 
+            var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+
+            categoryList.Insert(0, new SelectListItem() { Value = "", Text = "-- Select Category --", Selected = true, });
+
+            ViewBag.CategoryList = categoryList;
+
             return PartialView(new ProductDTO());
         }
     }
