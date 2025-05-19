@@ -12,7 +12,9 @@
     </div>
     <div class="mb-3">
         <label asp-for="CategoryId" class="form-label"></label>
-        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select categorySelectDropdown"></select>
+        <select asp-for="CategoryId" asp-items="ViewBag.CategoryList" class="form-select select2Dropdown">
+            <option value=""></option>
+        </select>
         <span asp-validation-for="CategoryId" class="validationError" />
     </div>
     <div class="mb-3">
@@ -32,9 +34,3 @@
     </div>
     <button type="submit" class="btn btn-primary w-100">Save</button>
 </form>
-
-<script>
-    $(document).ready(function() {
-    $('.categorySelectDropdown').select2();
-    });
-</script>

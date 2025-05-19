@@ -41,8 +41,6 @@ namespace WebApp.Areas.Admin.Controllers
                 Text = x.Name
             }).ToList();
 
-            categoryList.Insert(0, new SelectListItem() { Value = "", Text = "-- Select Category --", Selected = true, });
-
             ViewBag.CategoryList = categoryList;
 
             return PartialView(new ProductDTO());

@@ -7,10 +7,20 @@
             spinner('show');
         }
     }).done(function (result) {
+
         $('#globalModalLabel').text(title);
         $('#globalModal .modal-body').html(result);
         $('#globalModal').modal('show');
         $.validator.unobtrusive.parse('.modalForm');
+
+        $('.select2Dropdown').select2({
+            dropdownParent: $('#globalModal'), 
+            width: '100%',
+            theme: 'bootstrap-5',
+            placeholder: '', // Both placeholder and empty option required for allowClear
+            allowClear: true
+        });
+
     }).fail(function (xhr, status, msg) {
         debugger;
         $('#globalModal').modal('hide');
