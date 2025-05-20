@@ -20,10 +20,18 @@ namespace Manager.Implementations
             _mapper = mapper;
         }
 
-        public async Task<bool> Add(Product product)
+        public async Task<bool> Add(ProductDTO product)
         {
-            await _uow.ProductRepository.Add(product);
-            return await _uow.Save();
+            try
+            {
+                await _uow.ProductRepository.Add(_mapper.Map<Product>(product));
+                return await _uow.Save();
+            }
+            catch(Exception ex)
+            {
+                return false;
+            }
+            
         }
 
         public async Task<Product> Get(int Id)

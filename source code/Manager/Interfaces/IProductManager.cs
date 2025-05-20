@@ -1,4 +1,5 @@
-﻿using Models.Entities;
+﻿using Models.BusinessEntities;
+using Models.Entities;
 using Utility.Helpers;
 
 namespace Manager.Interfaces
@@ -7,7 +8,7 @@ namespace Manager.Interfaces
     {
         Task<PagedList> GetAll(int page, int pageSize);
         Task<Product> Get(int Id);
-        Task<bool> Add(Product product);
+        Task<bool> Add(ProductDTO product);
         Task<bool> Remove(Product product);
         Task<bool> RemoveRange(IEnumerable<Product> products);
         Task<bool> Update(Product product);

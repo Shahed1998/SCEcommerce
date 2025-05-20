@@ -6,19 +6,38 @@ namespace Models.BusinessEntities
     {
         public int Id { get; set; }
 
+        [Required]
         public string? Title { get; set; }
 
         public string? Description { get; set; }
 
+        [Required]
         public long? Price { get; set; }
 
-        [Display(Name = "Percentage Discount")]
-        public int? DiscountPercentage { get; set; }
+        private int? _discountPercentage;
+
+        [Display(Name = "Discount %")]
+        public int? DiscountPercentage
+        {
+            get
+            {
+                return _discountPercentage;
+            }
+            
+            set
+            {
+                _discountPercentage = value ?? 0;
+            }
+        } 
 
         public string? ImageUrl { get; set; }
 
+        [Required]
         [Display(Name = "Category")]
         public int? CategoryId { get; set; }
+
+        [Display(Name = "Category")]
+        public string? CategoryName { get; set; }
 
         public CategoryDTO? Category { get; set; }
 

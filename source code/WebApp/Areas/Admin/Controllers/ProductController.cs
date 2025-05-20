@@ -45,5 +45,30 @@ namespace WebApp.Areas.Admin.Controllers
 
             return PartialView(new ProductDTO());
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(ProductDTO model)
+        {
+
+            if(!ModelState.IsValid)
+            {
+                var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                }).ToList();
+
+                ViewBag.CategoryList = categoryList;
+
+                return PartialView(new ProductDTO());
+            }
+
+            if (await _producManager.Add(model))
+            {
+                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product") });
+            }
+
+            return StatusCode(500, new { success = true, redirectToAction = Url.Action("Index", "Product") });
+        }
     }
 }

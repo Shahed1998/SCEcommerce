@@ -26,6 +26,8 @@ namespace Models.Entities
         [Required]
         public int? CategoryId { get; set; }
 
+        public string? CategoryName { get; set; }
+
         [ForeignKey("CategoryId")]
         public Category? Category { get; set; }
 
