@@ -4,7 +4,6 @@
 @{
     var count = Model.FirstItemOnPage;
     ViewData["Title"] = "Product";
-    var p = Model.products;
 }
 
 <div class="card shadow">
@@ -30,7 +29,7 @@
                         <th scope="col">@Html.DisplayNameFor(m => m.products!.FirstOrDefault()!.Title)</th>
                         <th scope="col">@Html.DisplayNameFor(m => m.products!.FirstOrDefault()!.Price)</th> 
                         <th scope="col">@Html.DisplayNameFor(m => m.products!.FirstOrDefault()!.DiscountPercentage)</th>  
-                        <th scope="col">@Html.DisplayNameFor(m => m.products!.FirstOrDefault()!.CategoryName)</th>  
+                        <th scope="col">@Html.DisplayNameFor(m => m.products!.FirstOrDefault()!.Category!.Name)</th>  
                         <th></th>
                     </tr>
                 </thead>
@@ -42,7 +41,7 @@
                             <td>@product.Title</td>
                             <td>@product.Price</td>
                             <td>@product.DiscountPercentage</td>
-                            <td>@product.CategoryName</td>
+                            <td>@product.Category!.Name</td>
                             <td>
                                 <div class="btn-group w-100 btn-group-sm" role="group" aria-label="Basic example">
                                     <a class="btn btn-primary" asp-action="Edit" asp-controller="Product" asp-route-id="@product.Id" onclick="CreateModal(event, this, 'Edit Product')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>

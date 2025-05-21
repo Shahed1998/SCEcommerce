@@ -36,9 +36,6 @@ namespace Models.BusinessEntities
         [Display(Name = "Category")]
         public int? CategoryId { get; set; }
 
-        [Display(Name = "Category")]
-        public string? CategoryName { get; set; }
-
         public CategoryDTO? Category { get; set; }
 
     }

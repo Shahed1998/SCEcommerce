@@ -44,22 +44,11 @@ namespace Manager.Implementations
 
             try
             {
-                var sqlParams = new List<SqlParameter>
-                {
-                    new SqlParameter("@PAGENUMBER", System.Data.SqlDbType.Int) { Value = page },
-                    new SqlParameter("@PAGESIZE", System.Data.SqlDbType.Int) { Value = pageSize },
-                    //new SqlParameter("@GETALL", System.Data.SqlDbType.Bit) { Value = getAll },
-                };
 
-                var sql = "EXEC usp_GetAllCategories @PAGENUMBER=@PAGENUMBER, @PAGESIZE=@PAGESIZE";
+                var categories = await _uow.CategoryRepository.GetAll().OrderByDescending(x => x.Id)
+                                                              .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
-                var categories = await _uow.CategoryRepository.ExecuteQuery(sql, sqlParams.ToArray());
-
-                sql += " , @TOTALCOUNT=@TOTALCOUNT";
-
-                sqlParams.Add(new SqlParameter("@TOTALCOUNT", System.Data.SqlDbType.Bit) { Value = true });
-
-                var totalCount = await _uow.CategoryRepository.ExecuteScalar<int>(sql, sqlParams.ToArray());
+                var totalCount = await _uow.CategoryRepository.GetAll().CountAsync();
 
                 var result = new PagedList(page, pageSize, totalCount);
 

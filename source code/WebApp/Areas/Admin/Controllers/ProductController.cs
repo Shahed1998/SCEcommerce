@@ -33,6 +33,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        [HttpGet]
         public async Task<IActionResult> Create()
         {
             var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
@@ -69,6 +70,22 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             return StatusCode(500, new { success = true, redirectToAction = Url.Action("Index", "Product") });
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(int Id)
+        {
+            var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).ToList();
+
+            var product = await _producManager.Get(Id);
+
+            if (product is null) return NotFound($"Product not found");
+
+            return PartialView(product);
         }
     }
 }
