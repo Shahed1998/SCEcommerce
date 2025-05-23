@@ -8,6 +8,7 @@ namespace Manager.Interfaces
     {
         Task<PagedList> GetAll(int page, int pageSize);
         Task<ProductDTO> Get(int Id);
+        Task<ProductDTO> GetWithCategory(int Id);
         Task<bool> Add(ProductDTO product);
         Task<bool> Remove(Product product);
         Task<bool> RemoveRange(IEnumerable<Product> products);

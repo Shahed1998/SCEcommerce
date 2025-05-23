@@ -38,7 +38,7 @@
                     {
                         <tr>
                             <td>@count</td>
-                            <td>@product.Title</td>
+                            <td><a class="" asp-action="View" asp-controller="Product" asp-route-productId="@product.Id" onclick="CreateModal(event, this, 'Details of @product.Title')">@product.Title</a></td>
                             <td>@product.Price</td>
                             <td>@product.DiscountPercentage</td>
                             <td>@product.Category!.Name</td>

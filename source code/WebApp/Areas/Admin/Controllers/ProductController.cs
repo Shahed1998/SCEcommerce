@@ -33,6 +33,13 @@ namespace WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> View(int productId)
+        {
+            var model = await _producManager.GetWithCategory(productId);
+
+            return PartialView(model);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -81,7 +88,9 @@ namespace WebApp.Areas.Admin.Controllers
                 Text = x.Name
             }).ToList();
 
-            var product = await _producManager.Get(Id);
+            ViewBag.CategoryList = categoryList;
+
+            var product = await _producManager.GetWithCategory(Id);
 
             if (product is null) return NotFound($"Product not found");
 

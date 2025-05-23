@@ -41,6 +41,15 @@ namespace Manager.Implementations
             return _mapper.Map<ProductDTO>(product);
         }
 
+        public async Task<ProductDTO> GetWithCategory(int Id)
+        {
+            var product = (await _uow.ProductRepository.GetAll()
+                                                       .Where(x => x.Id == Id)
+                                                       .Include(p => p.Category)
+                                                       .FirstOrDefaultAsync()) ?? new Product();
+            return _mapper.Map<ProductDTO>(product);
+        }
+
         public async Task<PagedList> GetAll(int page, int pageSize)
         {
             try
