@@ -23,12 +23,14 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int page = 1, int pageSize = 30)
+        public async Task<IActionResult> Index(NotificationViewModel nvm, int page = 1, int pageSize = 30)
         {
+           
+            var model = await _producManager.GetAll(page, pageSize);
+
+            ViewBag.ToastrNotification = nvm;
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
-
-            var model = await _producManager.GetAll(page, pageSize);
 
             return View(model);
         }
@@ -95,6 +97,42 @@ namespace WebApp.Areas.Admin.Controllers
             if (product is null) return NotFound($"Product not found");
 
             return PartialView(product);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(ProductDTO model)
+        {
+
+            if(!ModelState.IsValid)
+            {
+                var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                {
+                    Value = x.Id.ToString(),
+                    Text = x.Name
+                }).ToList();
+
+                ViewBag.CategoryList = categoryList;
+
+                return PartialView(model);
+            }
+
+            if (await _producManager.Update(model))
+            {
+                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product") });
+            }
+
+            return PartialView();
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int id)
+        {
+            if(await _producManager.Remove(id))
+            {
+                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product", new { IsDeleted=true }) });
+            }
+
+            return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Product", new { IsDeleted = false }) });
         }
     }
 }

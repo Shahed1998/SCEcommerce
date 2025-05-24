@@ -26,7 +26,7 @@ namespace DataAccess.Repository.Implementations
 
         public async Task<T?> Get(Expression<Func<T, bool>> predicate)
         {
-            return await _dbSet.FirstOrDefaultAsync(predicate);
+            return await _dbSet.AsNoTracking().FirstOrDefaultAsync(predicate);
         }
 
         public IQueryable<T> GetAll()
@@ -36,7 +36,14 @@ namespace DataAccess.Repository.Implementations
 
         public void Remove(T entity)
         {
-            _dbSet.Remove(entity);
+            try
+            {
+                _dbSet.Remove(entity);
+            }
+            catch(Exception ex)
+            {
+
+            }
         }
 
         public void RemoveRange(IEnumerable<T> entities)

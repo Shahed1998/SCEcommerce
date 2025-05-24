@@ -3,6 +3,7 @@
 @if (Model != null && Model.showtoastMessage == true)
 {
     <script>
+        debugger;
         if ('@Model.IsDeleted'.toLowerCase() == 'true' && '@Model.success'.toLowerCase() == 'true') {
             ToastrNotification('success', 'Successfully deleted');
         }

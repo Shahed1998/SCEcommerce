@@ -10,8 +10,8 @@ namespace Manager.Interfaces
         Task<ProductDTO> Get(int Id);
         Task<ProductDTO> GetWithCategory(int Id);
         Task<bool> Add(ProductDTO product);
-        Task<bool> Remove(Product product);
+        Task<bool> Remove(int Id);
         Task<bool> RemoveRange(IEnumerable<Product> products);
-        Task<bool> Update(Product product);
+        Task<bool> Update(ProductDTO product);
     }
 }

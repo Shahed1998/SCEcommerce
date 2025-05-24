@@ -71,9 +71,10 @@ namespace Manager.Implementations
             }
         }
 
-        public async Task<bool> Remove(Product product)
+        public async Task<bool> Remove(int Id)
         {
-            _uow.ProductRepository.Remove(product);
+            var productDto = await Get(Id);
+            _uow.ProductRepository.Remove(_mapper.Map<Product>(productDto));
             return await _uow.Save();
         }
 
@@ -82,9 +83,9 @@ namespace Manager.Implementations
             _uow.ProductRepository.RemoveRange(products);
             return await _uow.Save();
         }
-        public async Task<bool> Update(Product product)
+        public async Task<bool> Update(ProductDTO product)
         {
-            _uow.ProductRepository.Update(product);
+            _uow.ProductRepository.Update(_mapper.Map<Product>(product));
             return await _uow.Save();
         }
     }
