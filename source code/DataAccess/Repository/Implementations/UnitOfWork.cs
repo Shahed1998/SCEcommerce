@@ -16,6 +16,7 @@ namespace DataAccess.Repository.Implementations
         }
 
         // Lazy loading repos.... 
+        // ??= is called null coalescing assignment operator
         public ICategoryRepository CategoryRepository => _categoryRepository ??= new CategoryRepository(_db); 
         public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_db); 
 
