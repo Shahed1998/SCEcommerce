@@ -7,15 +7,16 @@ namespace DataAccess.Repository.Implementations
     {
 
         private readonly ApplicationDbContext _db;
-        public ICategoryRepository CategoryRepository { get; private set; } 
-        public IProductRepository ProductRepository { get; private set; } 
+        private ICategoryRepository _categoryRepository;
+        private IProductRepository _productRepository;
 
         public UnitOfWork(ApplicationDbContext db)
         {
             _db = db;
-            CategoryRepository = new CategoryRepository(_db);
-            ProductRepository = new ProductRepository(_db); 
         }
+
+        public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_db); 
+        public IProductRepository ProductRepository => _productRepository ?? new ProductRepository(_db); 
 
         public async Task<bool> Save()
         {
