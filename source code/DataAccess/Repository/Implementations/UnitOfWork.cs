@@ -15,8 +15,9 @@ namespace DataAccess.Repository.Implementations
             _db = db;
         }
 
-        public ICategoryRepository CategoryRepository => _categoryRepository ?? new CategoryRepository(_db); 
-        public IProductRepository ProductRepository => _productRepository ?? new ProductRepository(_db); 
+        // Lazy loading repos.... 
+        public ICategoryRepository CategoryRepository => _categoryRepository ??= new CategoryRepository(_db); 
+        public IProductRepository ProductRepository => _productRepository ??= new ProductRepository(_db); 
 
         public async Task<bool> Save()
         {
