@@ -151,7 +151,7 @@ function ToastrNotification(type, msg = "") {
         "hideMethod": "fadeOut"
     }
 
-    switch (type) {
+    switch (type.toLowerCase()) {
         case "success":
             toastr.success(msg);
             break;

@@ -1,9 +1,8 @@
-﻿using Manager.Implementations;
-using Manager.Interfaces;
+﻿using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.BusinessEntities;
-using Models.Entities;
+using System.Text.Json;
 using Utility.Helpers;
 
 namespace WebApp.Areas.Admin.Controllers
@@ -22,15 +21,18 @@ namespace WebApp.Areas.Admin.Controllers
             _categoryManager = categoryManager;
         }
 
-
-        public async Task<IActionResult> Index(NotificationViewModel nvm, int page = 1, int pageSize = 30)
+        public async Task<IActionResult> Index(int page = 1, int pageSize = 30)
         {
-           
-            var model = await _producManager.GetAll(page, pageSize);
 
-            ViewBag.ToastrNotification = nvm;
+            if (TempData["Notification"] is string json)
+            {
+                ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
+            }
+
             ViewBag.Page = page;
             ViewBag.PageSize = pageSize;
+
+            var model = await _producManager.GetAll(page, pageSize);
 
             return View(model);
         }
@@ -60,7 +62,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Create(ProductDTO model)
         {
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                 {
@@ -75,10 +77,32 @@ namespace WebApp.Areas.Admin.Controllers
 
             if (await _producManager.Add(model))
             {
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product") });
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Success.ToString(),
+                    NotificationMessage = $"Product {model.Title} successfully added.",
+                    showtoastMessage = true,
+                });
+
+                return Ok(new
+                {
+                    success = true,
+                    redirectToAction = Url.Action("Index", "Product")
+                });
             }
 
-            return StatusCode(500, new { success = true, redirectToAction = Url.Action("Index", "Product") });
+            TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+            {
+                NotificationStatus = NotficationStatus.Error.ToString(),
+                NotificationMessage = $"Failed to add product {model.Title}.",
+                showtoastMessage = true,
+            });
+
+            return StatusCode(500, new
+            {
+                success = false,
+                redirectToAction = Url.Action("Index", "Product")
+            });
         }
 
         [HttpGet]
@@ -103,7 +127,7 @@ namespace WebApp.Areas.Admin.Controllers
         public async Task<IActionResult> Edit(ProductDTO model)
         {
 
-            if(!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                 {
@@ -118,21 +142,66 @@ namespace WebApp.Areas.Admin.Controllers
 
             if (await _producManager.Update(model))
             {
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product") });
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Success.ToString(),
+                    NotificationMessage = $"Product {model.Title} successfully updated.",
+                    showtoastMessage = true,
+                });
+
+                return Ok(new 
+                {
+                    success = true,
+                    redirectToAction = Url.Action("Index", "Product")
+                });
             }
 
-            return PartialView();
+            TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+            {
+                NotificationStatus = NotficationStatus.Error.ToString(),
+                NotificationMessage = $"Failed to update product {model.Title}.",
+                showtoastMessage = true,
+                
+            });
+
+            return StatusCode(500, new 
+            {
+                success = false,
+                redirectToAction = Url.Action("Index", "Product")
+            });
         }
 
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
-            if(await _producManager.Remove(id))
+            if (await _producManager.Remove(id))
             {
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Product", new { IsDeleted=true }) });
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Success.ToString(),
+                    NotificationMessage = $"Product successfully deleted.",
+                    showtoastMessage = true,
+                });
+
+                return Ok(new
+                {
+                    success = true,
+                    redirectToAction = Url.Action("Index", "Product")
+                });
             }
 
-            return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Product", new { IsDeleted = false }) });
+            TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+            {
+                NotificationStatus = NotficationStatus.Error.ToString(),
+                NotificationMessage = "Failed to delete product.",
+                showtoastMessage = true,
+            });
+
+            return StatusCode(500, new
+            {
+                success = false,
+                redirectToAction = Url.Action("Index", "Product")
+            });
         }
     }
 }
