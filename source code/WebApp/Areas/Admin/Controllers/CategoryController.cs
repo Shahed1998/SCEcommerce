@@ -33,6 +33,12 @@ namespace WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        public async Task<IActionResult> View(int Id)
+        {
+            var category = await _categoryManager.Get(Id);
+            return PartialView(category);
+        }
+
         public IActionResult Create()
         {
             return PartialView(new Category());

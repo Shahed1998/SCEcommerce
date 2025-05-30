@@ -34,9 +34,22 @@ namespace Manager.Implementations
             return await _uow.Save();
         }
 
-        public async Task<Category> Get(int Id)
+        public async Task<CategoryDTO> Get(int Id)
         {
-            return (await _uow.CategoryRepository.Get(x => x.Id == Id)) ?? new Category();
+            try
+            {
+                var category = await _uow.CategoryRepository.Get(x => x.Id == Id);
+
+                if (category != null)
+                {
+                    return _mapper.Map<CategoryDTO>(category);
+                }
+            }
+            catch (Exception ex) 
+            {
+            }
+
+            return new CategoryDTO();
         }
 
         public async Task<PagedList> GetAll(int page, int pageSize, bool getAll = false)
@@ -63,9 +76,9 @@ namespace Manager.Implementations
 
         }
 
-        public async Task<bool> Remove(Category entity)
+        public async Task<bool> Remove(CategoryDTO entity)
         {
-            _uow.CategoryRepository.Remove(entity);
+            _uow.CategoryRepository.Remove(_mapper.Map<Category>(entity));
             return await _uow.Save();
         }
 
@@ -75,9 +88,9 @@ namespace Manager.Implementations
             return await _uow.Save();
         }
 
-        public async Task<bool> Update(Category category)
+        public async Task<bool> Update(CategoryDTO category)
         {
-            _uow.CategoryRepository.Update(category);
+            _uow.CategoryRepository.Update(_mapper.Map<Category>(category));
             return await _uow.Save();
         }
     }

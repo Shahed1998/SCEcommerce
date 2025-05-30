@@ -1,0 +1,15 @@
+﻿@model CategoryDTO
+
+<div class="modalForm">
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label"></label>
+        <input asp-for="Name" class="form-control" readonly />
+        <span asp-validation-for="Name" class="validationError" />
+    </div>
+    <div class="mb-3">
+        <label asp-for="DisplayOrder" class="form-label"></label>
+        <input asp-for="DisplayOrder" class="form-control" readonly />
+        <span asp-validation-for="DisplayOrder" class="validationError" />
+    </div>
+</div>
+

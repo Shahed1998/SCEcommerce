@@ -36,7 +36,15 @@
                     {
                         <tr>
                             <td>@count</td>
-                            <td>@category.Name</td>
+                            <td>
+                                <a 
+                                    asp-area="Admin"
+                                    asp-controller="Category"
+                                    asp-action="View"
+                                    asp-route-Id="@category.Id"
+                                    onclick="CreateModal(event, this, 'Details of @category.Name')"
+                                    class="">@category.Name</a>
+                            </td>
                             <td>@category.DisplayOrder</td>
                             <td>
                                 <div class="btn-group w-100 btn-group-sm" role="group" aria-label="Basic example">
