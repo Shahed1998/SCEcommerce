@@ -72,6 +72,7 @@ namespace Utility.Helpers
             }
             catch (Exception ex)
             {
+                HelperSerilog.LogError(ex.Message, ex);
                 return string.Empty;
             }
         }
