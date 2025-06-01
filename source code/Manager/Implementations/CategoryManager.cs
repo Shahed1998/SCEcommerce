@@ -22,10 +22,10 @@ namespace Manager.Implementations
             _mapper = mapper;
         }
 
-        public async Task<List<CategoryDTO>> All()
+        public async Task<List<CategoryVM>> All()
         {
             var categoryList = await _uow.CategoryRepository.GetAll().ToListAsync();
-            return _mapper.Map<List<CategoryDTO>>(categoryList);
+            return _mapper.Map<List<CategoryVM>>(categoryList);
         }
 
         public async Task<bool> Add(Category entity)
@@ -34,7 +34,7 @@ namespace Manager.Implementations
             return await _uow.Save();
         }
 
-        public async Task<CategoryDTO> Get(int Id)
+        public async Task<CategoryVM> Get(int Id)
         {
             try
             {
@@ -42,7 +42,7 @@ namespace Manager.Implementations
 
                 if (category != null)
                 {
-                    return _mapper.Map<CategoryDTO>(category);
+                    return _mapper.Map<CategoryVM>(category);
                 }
             }
             catch (Exception ex) 
@@ -50,7 +50,7 @@ namespace Manager.Implementations
                 HelperSerilog.LogError(ex.Message, ex);
             }
 
-            return new CategoryDTO();
+            return new CategoryVM();
         }
 
         public async Task<PagedList> GetAll(int page, int pageSize, bool getAll = false)
@@ -66,7 +66,7 @@ namespace Manager.Implementations
 
                 var result = new PagedList(page, pageSize, totalCount);
 
-                result.categories = _mapper.Map<IEnumerable<CategoryDTO>>(categories);
+                result.categories = _mapper.Map<IEnumerable<CategoryVM>>(categories);
 
                 return result;
             }
@@ -77,7 +77,7 @@ namespace Manager.Implementations
 
         }
 
-        public async Task<bool> Remove(CategoryDTO entity)
+        public async Task<bool> Remove(CategoryVM entity)
         {
             _uow.CategoryRepository.Remove(_mapper.Map<Category>(entity));
             return await _uow.Save();
@@ -89,7 +89,7 @@ namespace Manager.Implementations
             return await _uow.Save();
         }
 
-        public async Task<bool> Update(CategoryDTO category)
+        public async Task<bool> Update(CategoryVM category)
         {
             _uow.CategoryRepository.Update(_mapper.Map<Category>(category));
             return await _uow.Save();

@@ -21,7 +21,7 @@ namespace Manager.Implementations
             _mapper = mapper;
         }
 
-        public async Task<bool> Add(ProductDTO product)
+        public async Task<bool> Add(ProductVM product)
         {
             try
             {
@@ -35,19 +35,19 @@ namespace Manager.Implementations
             
         }
 
-        public async Task<ProductDTO> Get(int Id)
+        public async Task<ProductVM> Get(int Id)
         {
             var product = (await _uow.ProductRepository.Get(x => x.Id == Id)) ?? new Product();
-            return _mapper.Map<ProductDTO>(product);
+            return _mapper.Map<ProductVM>(product);
         }
 
-        public async Task<ProductDTO> GetWithCategory(int Id)
+        public async Task<ProductVM> GetWithCategory(int Id)
         {
             var product = (await _uow.ProductRepository.GetAll()
                                                        .Where(x => x.Id == Id)
                                                        .Include(p => p.Category)
                                                        .FirstOrDefaultAsync()) ?? new Product();
-            return _mapper.Map<ProductDTO>(product);
+            return _mapper.Map<ProductVM>(product);
         }
 
         public async Task<PagedList> GetAll(int page, int pageSize)
@@ -61,7 +61,7 @@ namespace Manager.Implementations
 
                 var result = new PagedList(page, pageSize, totalCount);
 
-                result.products = _mapper.Map<IEnumerable<ProductDTO>>(products);
+                result.products = _mapper.Map<IEnumerable<ProductVM>>(products);
 
                 return result;
             }
@@ -83,7 +83,7 @@ namespace Manager.Implementations
             _uow.ProductRepository.RemoveRange(products);
             return await _uow.Save();
         }
-        public async Task<bool> Update(ProductDTO product)
+        public async Task<bool> Update(ProductVM product)
         {
             _uow.ProductRepository.Update(_mapper.Map<Product>(product));
             return await _uow.Save();

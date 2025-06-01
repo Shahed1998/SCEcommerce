@@ -29,9 +29,6 @@ namespace WebApp.Areas.Admin.Controllers
                 ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
             }
 
-            ViewBag.Page = page;
-            ViewBag.PageSize = pageSize;
-
             var model = await _producManager.GetAll(page, pageSize);
 
             return View(model);
@@ -47,32 +44,32 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Create()
         {
-            var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+            ProductVM vm = new ProductVM();
+
+            vm.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
 
-            ViewBag.CategoryList = categoryList;
-
-            return PartialView(new ProductDTO());
+            return PartialView(vm);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductDTO model)
+        public async Task<IActionResult> Create(ProductVM model, IFormFile? formFile)
         {
 
             if (!ModelState.IsValid)
             {
-                var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                ProductVM vm = new ProductVM();
+
+                vm.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                 {
                     Value = x.Id.ToString(),
                     Text = x.Name
                 }).ToList();
 
-                ViewBag.CategoryList = categoryList;
-
-                return PartialView(new ProductDTO());
+                return PartialView(vm);
             }
 
             if (await _producManager.Add(model))
@@ -108,34 +105,32 @@ namespace WebApp.Areas.Admin.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int Id)
         {
-            var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+            var product = await _producManager.GetWithCategory(Id);
+
+            if (product is null)
+            {
+                return NotFound($"Product not found");
+            }
+
+            product.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
             }).ToList();
 
-            ViewBag.CategoryList = categoryList;
-
-            var product = await _producManager.GetWithCategory(Id);
-
-            if (product is null) return NotFound($"Product not found");
-
             return PartialView(product);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(ProductDTO model)
+        public async Task<IActionResult> Edit(ProductVM model)
         {
-
             if (!ModelState.IsValid)
             {
-                var categoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                model.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                 {
                     Value = x.Id.ToString(),
                     Text = x.Name
                 }).ToList();
-
-                ViewBag.CategoryList = categoryList;
 
                 return PartialView(model);
             }
@@ -149,7 +144,7 @@ namespace WebApp.Areas.Admin.Controllers
                     showtoastMessage = true,
                 });
 
-                return Ok(new 
+                return Ok(new
                 {
                     success = true,
                     redirectToAction = Url.Action("Index", "Product")
@@ -161,10 +156,10 @@ namespace WebApp.Areas.Admin.Controllers
                 NotificationStatus = NotficationStatus.Error.ToString(),
                 NotificationMessage = $"Failed to update product {model.Title}.",
                 showtoastMessage = true,
-                
+
             });
 
-            return StatusCode(500, new 
+            return StatusCode(500, new
             {
                 success = false,
                 redirectToAction = Url.Action("Index", "Product")

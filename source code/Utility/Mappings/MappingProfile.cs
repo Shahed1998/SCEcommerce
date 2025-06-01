@@ -16,8 +16,8 @@ namespace Utility.Mappings
     {
         public CategoryProfile()
         {
-            CreateMap<Category, CategoryDTO>();
-            CreateMap<CategoryDTO, Category>();
+            CreateMap<Category, CategoryVM>();
+            CreateMap<CategoryVM, Category>();
         }
     }
 
@@ -25,8 +25,8 @@ namespace Utility.Mappings
     {
         public ProductProfile()
         {
-            CreateMap<Product, ProductDTO>();
-            CreateMap<ProductDTO, Product>();
+            CreateMap<Product, ProductVM>();
+            CreateMap<ProductVM, Product>();
         }
     }
 }

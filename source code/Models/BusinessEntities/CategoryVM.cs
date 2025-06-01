@@ -3,7 +3,7 @@
 namespace Models.BusinessEntities
 {
   
-    public class CategoryDTO
+    public class CategoryVM
     {
         public int Id { get; set; }
 
@@ -15,6 +15,6 @@ namespace Models.BusinessEntities
 
         public int Total { get; set; }
 
-        public ICollection<ProductDTO> Products { get; set; } = new List<ProductDTO>();
+        public ICollection<ProductVM> Products { get; set; } = new List<ProductVM>();
     }
 }

@@ -25,8 +25,8 @@ namespace Utility.Helpers
 
         #region List
 
-        public IEnumerable<CategoryDTO>? categories { get; set; } 
-        public IEnumerable<ProductDTO>? products { get; set; } 
+        public IEnumerable<CategoryVM>? categories { get; set; } 
+        public IEnumerable<ProductVM>? products { get; set; } 
 
         #endregion
     }

@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace Models.BusinessEntities
 {
-    public class ProductDTO
+    public class ProductVM
     {
         public int Id { get; set; }
 
@@ -36,7 +37,9 @@ namespace Models.BusinessEntities
         [Display(Name = "Category")]
         public int? CategoryId { get; set; }
 
-        public CategoryDTO? Category { get; set; }
+        public CategoryVM? Category { get; set; }
+
+        public List<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
 
     }
 }

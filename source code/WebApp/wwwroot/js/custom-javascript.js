@@ -1,4 +1,22 @@
-﻿function CreateModal(e, el, title = "") {
+﻿function InitializeTinyMCE() {
+
+    // Destroy existing instances
+    tinymce.remove();
+
+    // Initializing new instance
+    tinymce.init({
+        selector: 'textarea'
+    });
+}
+
+function InitializeQuillRTE() {
+    const quill = new Quill('#editor', {
+        theme: 'snow'
+    });
+}
+
+
+function CreateModal(e, el, title = "") {
     e.preventDefault();
 
     $.ajax({
@@ -12,16 +30,6 @@
         $('#globalModal .modal-body').html(result);
         $('#globalModal').modal('show');
 
-        $('.select2Dropdown').select2({
-            dropdownParent: $('#globalModal'), 
-            width: '100%',
-            theme: 'bootstrap-5',
-            placeholder: '', // Both placeholder and empty option required for allowClear
-            allowClear: true
-        });
-
-        $.validator.unobtrusive.parse('.modalForm');
-
     }).fail(function (xhr, status, msg) {
         debugger;
         $('#globalModal').modal('hide');
@@ -34,7 +42,21 @@
         });
 
     }).always(function () {
+
+        /*InitializeQuillRTE();*/
+
+        $('.select2Dropdown').select2({
+            dropdownParent: $('#globalModal'),
+            width: '100%',
+            theme: 'bootstrap-5',
+            placeholder: '', // Both placeholder and empty option required for allowClear
+            allowClear: true
+        });
+
+        $.validator.unobtrusive.parse('.modalForm');
+
         spinner('hide');
+
     });
 }
 
@@ -118,12 +140,24 @@ function save(formElement, type = "save") {
                         } else {
                             $('#globalModal .modal-body').html(result);
                             $('#globalModal').modal('show');
-                            $.validator.unobtrusive.parse('.modalForm');
                         }
                     },
                     error: function (xhr, status, error) {
                         bootbox.alert("An internal server error occurred.");
                     }
+                }).always(function () {
+
+                    //InitializeQuillRTE();
+
+                    $('.select2Dropdown').select2({
+                        dropdownParent: $('#globalModal'),
+                        width: '100%',
+                        theme: 'bootstrap-5',
+                        placeholder: '', // Both placeholder and empty option required for allowClear
+                        allowClear: true
+                    });
+
+                    $.validator.unobtrusive.parse('.modalForm');
                 });
             }
         });

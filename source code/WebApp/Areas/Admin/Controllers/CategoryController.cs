@@ -25,9 +25,6 @@ namespace WebApp.Areas.Admin.Controllers
                 ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
             }
 
-            ViewBag.Page = page;
-            ViewBag.PageSize = pageSize;
-
             var model = await _categoryManager.GetAll(page, pageSize);
 
             return View(model);
