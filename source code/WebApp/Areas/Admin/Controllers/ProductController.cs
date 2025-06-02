@@ -1,4 +1,5 @@
-﻿using Manager.Interfaces;
+﻿using Ganss.Xss;
+using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.BusinessEntities;
@@ -72,6 +73,8 @@ namespace WebApp.Areas.Admin.Controllers
                 return PartialView(vm);
             }
 
+            HelperHtmlSanitizer.Sanitize(model);
+
             if (await _producManager.Add(model))
             {
                 TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
@@ -134,6 +137,8 @@ namespace WebApp.Areas.Admin.Controllers
 
                 return PartialView(model);
             }
+
+            HelperHtmlSanitizer.Sanitize(model);
 
             if (await _producManager.Update(model))
             {

@@ -1,6 +1,7 @@
 ﻿@model ProductVM
 
 
+
 <form enctype="multipart/form-data" id="ProductCreateForm" class="modalForm" method="post"
       asp-controller="Product" asp-action="Create" onsubmit="return save(this)">
 
@@ -36,10 +37,10 @@
     <div class="mb-3">
         <label asp-for="Description" class="form-label"></label>
 
-        <!-- Change textarea to div -->
+        @* Quill Editor *@
         <div id="editor" style="height: 150px;"></div>
 
-        <!-- Hidden field to bind to your model -->
+         @* Hidden field to bind to your model  *@
         <input type="hidden" asp-for="Description" id="Description" />
 
         <span asp-validation-for="Description" class="validationError"></span>
@@ -49,14 +50,19 @@
 
 <script>
 
-     const quill = new Quill('#editor', {
-         theme: 'snow'
-     });
+    $(document).ready(function() {
 
-    $('#ProductCreateForm').on('submit', function () {
-        const html = quill.root.innerHTML;
-        $('#Description').val(html);
+        let quill = new Quill('#editor', {
+            theme: 'snow'
+        });
+
+        $('#ProductCreateForm').on('submit', function () {
+            let html = quill.root.innerHTML;
+            $('#Description').val(html);
+        });
+
     });
+
 </script>
 
 
