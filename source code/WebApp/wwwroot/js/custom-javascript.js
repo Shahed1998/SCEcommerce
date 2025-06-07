@@ -1,22 +1,4 @@
-﻿function InitializeTinyMCE() {
-
-    // Destroy existing instances
-    tinymce.remove();
-
-    // Initializing new instance
-    tinymce.init({
-        selector: 'textarea'
-    });
-}
-
-function InitializeQuillRTE() {
-    const quill = new Quill('#editor', {
-        theme: 'snow'
-    });
-}
-
-
-function CreateModal(e, el, title = "") {
+﻿function CreateModal(e, el, title = "") {
     e.preventDefault();
 
     $.ajax({
@@ -43,7 +25,17 @@ function CreateModal(e, el, title = "") {
 
     }).always(function () {
 
-        /*InitializeQuillRTE();*/
+        if ($('#summernote').next('.note-editor').length) {
+            $('#summernote').summernote('destroy');
+        }
+
+        $('#summernote').summernote({
+            height: 150,
+            toolbar: [
+                ['style', ['bold', 'italic', 'underline', 'clear']],
+                ['color', ['color']],
+            ]
+        });
 
         $('.select2Dropdown').select2({
             dropdownParent: $('#globalModal'),
@@ -59,6 +51,12 @@ function CreateModal(e, el, title = "") {
 
     });
 }
+
+$('#globalModal').on('hidden.bs.modal', function () {
+    // Optional cleanup
+    $('#summernote').summernote('destroy');
+    $('#globalModal .modal-body').html(''); // Clear content if needed
+});
 
 function Delete(e, el, id, msg) {
     e.preventDefault();

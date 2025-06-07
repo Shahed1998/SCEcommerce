@@ -36,34 +36,11 @@
     </div>
     <div class="mb-3">
         <label asp-for="Description" class="form-label"></label>
-
-        @* Quill Editor *@
-        <div id="editor" style="height: 150px;"></div>
-
-         @* Hidden field to bind to your model  *@
-        <input type="hidden" asp-for="Description" id="Description" />
-
+        <textarea asp-for="Description" id="summernote" class="form-control"></textarea>
         <span asp-validation-for="Description" class="validationError"></span>
     </div>
     <button type="submit" class="btn btn-primary w-100">Save</button>
 </form>
-
-<script>
-
-    $(document).ready(function() {
-
-        let quill = new Quill('#editor', {
-            theme: 'snow'
-        });
-
-        $('#ProductCreateForm').on('submit', function () {
-            let html = quill.root.innerHTML;
-            $('#Description').val(html);
-        });
-
-    });
-
-</script>
 
 
 

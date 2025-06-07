@@ -14,7 +14,7 @@
     <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
-    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <link href="~/lib/summernote-0.9.0-dist/summernote-bs5.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
@@ -59,8 +59,7 @@
     <script src="~/js/bootbox.all.min.js"></script>
     <script src="~/lib/toastr/toastr.min.js"></script>
     <script src="~/lib/select2/js/select2.min.js"></script>
-    @* <script src="https://cdn.tiny.cloud/1/gf96jbxd5gh7a5b9bgtky0osocjxw01qjyviccshmh1ttkzn/tinymce/7/tinymce.min.js" referrerpolicy="origin"></script> *@
-    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+    <script src="~/lib/summernote-0.9.0-dist/summernote-bs5.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/js/custom-javascript.js" asp-append-version="true"></script>
     @(await Html.PartialAsync("_ToastrNotification", ViewBag.ToastrNotification as NotificationViewModel))
