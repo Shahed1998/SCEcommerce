@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Models.Attributes;
 using System.ComponentModel.DataAnnotations;
 
 namespace Models.BusinessEntities
@@ -40,6 +42,10 @@ namespace Models.BusinessEntities
         public CategoryVM? Category { get; set; }
 
         public List<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
+
+        [Display(Name = "Image")]
+        [AllowedFileExtensionsAttribute(new[] { ".jpg", ".jpeg", ".png", ".gif" }, 5)]
+        public IFormFile? formFile { get; set; }
 
     }
 }

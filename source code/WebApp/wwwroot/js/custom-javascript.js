@@ -102,6 +102,9 @@ function spinner(event) {
 }
 
 function save(formElement, type = "save") {
+
+    debugger;
+
     var form = $(formElement);
 
     // First check if the form is valid
@@ -130,17 +133,21 @@ function save(formElement, type = "save") {
 
                 $.ajax({
                     type: "POST",
+                    processData: false,
+                    contentType: false,
                     url: form.attr("action"),
-                    data: form.serialize(),
+                    data: new FormData(formElement),
                     success: function (result) {
                         if (result.hasOwnProperty('success') && result.success) {
                             window.location.href = result.redirectToAction;
                         } else {
                             $('#globalModal .modal-body').html(result);
+                            $.validator.unobtrusive.parse('.modalForm');
                             $('#globalModal').modal('show');
                         }
                     },
                     error: function (xhr, status, error) {
+                        $.validator.unobtrusive.parse('.modalForm');
                         bootbox.alert("An internal server error occurred.");
                     }
                 }).always(function () {
@@ -155,7 +162,7 @@ function save(formElement, type = "save") {
                         allowClear: true
                     });
 
-                    $.validator.unobtrusive.parse('.modalForm');
+                    
                 });
             }
         });

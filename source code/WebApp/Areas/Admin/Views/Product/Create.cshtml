@@ -1,7 +1,5 @@
 ﻿@model ProductVM
 
-
-
 <form enctype="multipart/form-data" id="ProductCreateForm" class="modalForm" method="post"
       asp-controller="Product" asp-action="Create" onsubmit="return save(this)">
 
@@ -30,9 +28,9 @@
         <span asp-validation-for="DiscountPercentage" class="validationError" />
     </div>
     <div class="mb-3">
-        <label asp-for="ImageUrl" class="form-label"></label>
-        <input type="file" class="form-control" />
-        <span asp-validation-for="ImageUrl" class="validationError" />
+        <label asp-for="formFile" class="form-label"></label>
+        <input asp-for="formFile" type="file" class="form-control" />
+        <span asp-validation-for="formFile" class="validationError" />
     </div>
     <div class="mb-3">
         <label asp-for="Description" class="form-label"></label>

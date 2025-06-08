@@ -1,5 +1,4 @@
-﻿using Ganss.Xss;
-using Manager.Interfaces;
+﻿using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.BusinessEntities;
@@ -14,12 +13,15 @@ namespace WebApp.Areas.Admin.Controllers
         private readonly IProductManager _producManager;
         private readonly ICategoryManager _categoryManager;
         private readonly HelperEncryption _encryption;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductController(IProductManager productManager, HelperEncryption encryption, ICategoryManager categoryManager)
+        public ProductController(IProductManager productManager, HelperEncryption encryption,
+            ICategoryManager categoryManager, IWebHostEnvironment webHostEnvironment)
         {
             _producManager = productManager;
             _encryption = encryption;
             _categoryManager = categoryManager;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 30)
@@ -57,52 +59,79 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ProductVM model, IFormFile? formFile)
+        public async Task<IActionResult> Create(ProductVM model)
         {
-
-            if (!ModelState.IsValid)
+            try
             {
-                ProductVM vm = new ProductVM();
-
-                vm.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                if (!ModelState.IsValid)
                 {
-                    Value = x.Id.ToString(),
-                    Text = x.Name
-                }).ToList();
+                    model.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
+                    {
+                        Value = x.Id.ToString(),
+                        Text = x.Name
+                    }).ToList();
 
-                return PartialView(vm);
-            }
+                    return PartialView(model);
+                }
 
-            HelperHtmlSanitizer.Sanitize(model);
+                if (model.formFile != null)
+                {
+                    string wwwRootPath = _webHostEnvironment.WebRootPath;
 
-            if (await _producManager.Add(model))
-            {
+                    string fileName = Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMdd-hhmmss")
+                        + Path.GetExtension(model.formFile.FileName);
+
+                    string productPath = Path.Combine(wwwRootPath, "uploads", "product");
+
+                    if(!Directory.Exists(productPath))
+                    {
+                        Directory.CreateDirectory(productPath);
+                    }
+
+                    using (var filestream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                    {
+                        model.formFile.CopyTo(filestream);
+                    }
+
+                    model.ImageUrl = Path.Combine("uploads", "product", fileName);
+                }
+
+                HelperHtmlSanitizer.Sanitize(model);
+
+                if (await _producManager.Add(model))
+                {
+                    TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                    {
+                        NotificationStatus = NotficationStatus.Success.ToString(),
+                        NotificationMessage = $"Product {model.Title} successfully added.",
+                        showtoastMessage = true,
+                    });
+
+                    return Ok(new
+                    {
+                        success = true,
+                        redirectToAction = Url.Action("Index", "Product")
+                    });
+                }
+
                 TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
                 {
-                    NotificationStatus = NotficationStatus.Success.ToString(),
-                    NotificationMessage = $"Product {model.Title} successfully added.",
+                    NotificationStatus = NotficationStatus.Error.ToString(),
+                    NotificationMessage = $"Failed to add product {model.Title}.",
                     showtoastMessage = true,
                 });
 
-                return Ok(new
+                return StatusCode(500, new
                 {
-                    success = true,
+                    success = false,
                     redirectToAction = Url.Action("Index", "Product")
                 });
             }
-
-            TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+            catch(Exception ex)
             {
-                NotificationStatus = NotficationStatus.Error.ToString(),
-                NotificationMessage = $"Failed to add product {model.Title}.",
-                showtoastMessage = true,
-            });
-
-            return StatusCode(500, new
-            {
-                success = false,
-                redirectToAction = Url.Action("Index", "Product")
-            });
+                HelperSerilog.LogError(ex.Message, ex);
+                return StatusCode(500);
+            }
         }
 
         [HttpGet]

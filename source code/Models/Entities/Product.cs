@@ -23,6 +23,8 @@ namespace Models.Entities
         [Display(Name = "Discount")]
         public int? DiscountPercentage { get; set; }
 
+        public string? ImageUrl { get; set; }
+
         [Required]
         public int? CategoryId { get; set; }
 
