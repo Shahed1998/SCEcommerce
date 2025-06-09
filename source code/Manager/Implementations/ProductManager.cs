@@ -25,6 +25,7 @@ namespace Manager.Implementations
         {
             try
             {
+                product.UniqueProductId = "p-" + Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyyMMdd-HHmmss");
                 await _uow.ProductRepository.Add(_mapper.Map<Product>(product));
                 return await _uow.Save();
             }

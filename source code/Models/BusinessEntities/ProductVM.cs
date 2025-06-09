@@ -9,6 +9,8 @@ namespace Models.BusinessEntities
     {
         public int Id { get; set; }
 
+        public string? UniqueProductId { get; set; }
+
         [Required]
         public string? Title { get; set; }
 
