@@ -1,28 +1,48 @@
 ﻿@model ProductVM
 
-<div>
-    <div class="mb-3">
-        <label asp-for="Title" class="form-label"></label>
-        <input asp-for="Title" class="form-control" readonly />
+<div class="card shadow">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">Details of @Model.Title</div>
+            <div class="col-6 d-flex justify-content-end">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-danger">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="CategoryId" class="form-label"></label>
-        <input asp-for="Category.Name" class="form-control" readonly />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Price" class="form-label"></label>
-        <input asp-for="Price" class="form-control" readonly />
-    </div>
-    <div class="mb-3">
-        <label asp-for="DiscountPercentage" class="form-label"></label>
-        <input asp-for="DiscountPercentage" class="form-control" readonly />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Description" class="form-label"></label>
-        <div id="editor" class="form-control" style="min-height: 150px;">
-            @Html.Raw(Model.Description)
+    <div class="card-body">
+        <div>
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label"></label>
+                <input asp-for="Title" class="form-control" readonly />
+            </div>
+            <div class="mb-3">
+                <label asp-for="CategoryId" class="form-label"></label>
+                <input asp-for="Category.Name" class="form-control" readonly />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label"></label>
+                <input asp-for="Price" class="form-control" readonly />
+            </div>
+            <div class="mb-3">
+                <label asp-for="DiscountPercentage" class="form-label"></label>
+                <input asp-for="DiscountPercentage" class="form-control" readonly />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Description" class="form-label"></label>
+                <div id="editor" class="form-control" style="min-height: 150px;">
+                    @Html.Raw(Model.Description)
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+
+
+
+
+
 
 

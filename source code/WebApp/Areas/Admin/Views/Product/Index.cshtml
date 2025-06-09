@@ -38,13 +38,13 @@
                     {
                         <tr>
                             <td>@count</td>
-                            <td><a class="" asp-action="View" asp-controller="Product" asp-route-productId="@product.Id" onclick="CreateModal(event, this, 'Details of @product.Title')">@product.Title</a></td>
+                            <td><a class="" asp-action="View" asp-controller="Product" asp-route-productId="@product.Id">@product.Title</a></td>
                             <td>@product.Price</td>
                             <td>@product.DiscountPercentage</td>
                             <td>@product.Category!.Name</td>
                             <td>
                                 <div class="btn-group w-100 btn-group-sm" role="group" aria-label="Basic example">
-                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Product" asp-route-id="@product.Id" onclick="CreateModal(event, this, 'Edit Product')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Product" asp-route-id="@product.Id"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                                     <a class="btn btn-danger mx-2" asp-action="Delete" asp-controller="Product" onclick="Delete(event, this, '@product.Id', '@product.Title')"><i class="fa-solid fa-trash"></i> Delete</a>
                                 </div>
                             </td>

@@ -1,5 +1,9 @@
 ﻿@model ProductVM
 
+@{
+    ViewData["Title"] = "Create Product";
+}
+
 <div class="card shadow">
     <div class="card-header">
         <div class="row">
@@ -13,41 +17,41 @@
     </div>
     <div class="card-body">
         <form enctype="multipart/form-data" id="ProductCreateForm" class="modalForm" method="post"
-              asp-controller="Product" asp-action="Create">
+              asp-controller="Product" asp-action="Create" onsubmit="return saveForm('Save', this)">
 
             @Html.AntiForgeryToken()
 
             <div class="mb-3">
                 <label asp-for="Title" class="form-label"></label>
                 <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+                <span asp-validation-for="Title" class="validationError"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="CategoryId" class="form-label"></label>
                 <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select select2Dropdown">
                     <option value=""></option>
                 </select>
-                <span asp-validation-for="CategoryId" class="text-danger"></span>
+                <span asp-validation-for="CategoryId" class="validationError"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Price" class="form-label"></label>
                 <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="text-danger"></span>
+                <span asp-validation-for="Price" class="validationError"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="DiscountPercentage" class="form-label"></label>
                 <input asp-for="DiscountPercentage" class="form-control" />
-                <span asp-validation-for="DiscountPercentage" class="text-danger"></span>
+                <span asp-validation-for="DiscountPercentage" class="validationError"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="FormFile" class="form-label"></label>
                 <input asp-for="FormFile" type="file" class="form-control" />
-                <span asp-validation-for="FormFile" class="text-danger"></span>
+                <span asp-validation-for="FormFile" class="validationError"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" id="summernote" class="form-control"></textarea>
-                <span asp-validation-for="Description" class=""></span>
+                <textarea asp-for="Description" class="form-control summernote"></textarea>
+                <span asp-validation-for="Description" class="validationError"></span>
             </div>
             <button type="submit" class="btn btn-primary w-100">Save</button>
         </form>

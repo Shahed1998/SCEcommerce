@@ -41,7 +41,7 @@ namespace WebApp.Areas.Admin.Controllers
         {
             var model = await _producManager.GetWithCategory(productId);
 
-            return PartialView(model);
+            return View(model);
         }
 
         [HttpGet]
@@ -65,8 +65,6 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 if (!ModelState.IsValid)
                  {
-                    //ModelState.AddModelError("formFile", "Please upload a file.");
-
                     model.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                     {
                         Value = x.Id.ToString(),
@@ -76,6 +74,7 @@ namespace WebApp.Areas.Admin.Controllers
                     return View(model);
                 }
 
+                #region Product Image Upload
                 if (model.FormFile != null)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
@@ -97,6 +96,7 @@ namespace WebApp.Areas.Admin.Controllers
 
                     model.ImageUrl = Path.Combine("uploads", "product", fileName);
                 }
+                #endregion
 
                 HelperHtmlSanitizer.Sanitize(model);
 
@@ -125,6 +125,14 @@ namespace WebApp.Areas.Admin.Controllers
             catch(Exception ex)
             {
                 HelperSerilog.LogError(ex.Message, ex);
+
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Error.ToString(),
+                    NotificationMessage = $"An internal server error occured.",
+                    showtoastMessage = true,
+                });
+
                 return RedirectToAction("Index");
             }
         }
@@ -136,7 +144,14 @@ namespace WebApp.Areas.Admin.Controllers
 
             if (product is null)
             {
-                return NotFound($"Product not found");
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Success.ToString(),
+                    NotificationMessage = $"Product not found!",
+                    showtoastMessage = true,
+                });
+
+                return RedirectToAction("Index");
             }
 
             product.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
@@ -145,7 +160,7 @@ namespace WebApp.Areas.Admin.Controllers
                 Text = x.Name
             }).ToList();
 
-            return PartialView(product);
+            return View(product);
         }
 
         [HttpPost]
@@ -159,7 +174,7 @@ namespace WebApp.Areas.Admin.Controllers
                     Text = x.Name
                 }).ToList();
 
-                return PartialView(model);
+                return View(model);
             }
 
             HelperHtmlSanitizer.Sanitize(model);
@@ -173,11 +188,8 @@ namespace WebApp.Areas.Admin.Controllers
                     showtoastMessage = true,
                 });
 
-                return Ok(new
-                {
-                    success = true,
-                    redirectToAction = Url.Action("Index", "Product")
-                });
+                return RedirectToAction("Index");
+
             }
 
             TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
@@ -188,11 +200,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             });
 
-            return StatusCode(500, new
-            {
-                success = false,
-                redirectToAction = Url.Action("Index", "Product")
-            });
+            return RedirectToAction("Index");
         }
 
         [HttpDelete]

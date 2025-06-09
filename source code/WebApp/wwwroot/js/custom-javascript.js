@@ -171,6 +171,28 @@ function save(formElement, type = "save") {
     return false; // prevent normal form submission
 }
 
+function saveForm(type, formElement) {
+
+    var form = $(formElement);
+
+    // First check if the form is valid
+    if (!form.valid()) {
+        return false;
+    }
+
+    bootbox.confirm({
+        title: "Confirm",
+        message: `Do you want to ${type} the form?`,
+        callback: function (result) {
+            if (result) {
+                formElement.submit()
+            }
+        }
+    });
+
+    return false;
+}
+
 function ToastrNotification(type, msg = "") {
     toastr.options = {
         "closeButton": false,
@@ -202,3 +224,5 @@ function ToastrNotification(type, msg = "") {
             break;
     }
 }
+
+
