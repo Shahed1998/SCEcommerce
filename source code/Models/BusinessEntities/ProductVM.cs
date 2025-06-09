@@ -39,13 +39,15 @@ namespace Models.BusinessEntities
         [Display(Name = "Category")]
         public int? CategoryId { get; set; }
 
+        [Display(Name = "Image")]
+        [AllowedFileExtensionsAttribute(new[] { ".jpg", ".jpeg", ".png", ".gif" }, 5)]
+        public IFormFile? FormFile { get; set; }
+
         public CategoryVM? Category { get; set; }
 
         public List<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
 
-        [Display(Name = "Image")]
-        [AllowedFileExtensionsAttribute(new[] { ".jpg", ".jpeg", ".png", ".gif" }, 5)]
-        public IFormFile? formFile { get; set; }
+        
 
     }
 }

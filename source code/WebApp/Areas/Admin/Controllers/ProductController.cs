@@ -55,7 +55,7 @@ namespace WebApp.Areas.Admin.Controllers
                 Text = x.Name
             }).ToList();
 
-            return PartialView(vm);
+            return View(vm);
         }
 
         [HttpPost]
@@ -64,22 +64,24 @@ namespace WebApp.Areas.Admin.Controllers
             try
             {
                 if (!ModelState.IsValid)
-                {
+                 {
+                    //ModelState.AddModelError("formFile", "Please upload a file.");
+
                     model.CategoryList = (await _categoryManager.All()).Select(x => new SelectListItem()
                     {
                         Value = x.Id.ToString(),
                         Text = x.Name
                     }).ToList();
 
-                    return PartialView(model);
+                    return View(model);
                 }
 
-                if (model.formFile != null)
+                if (model.FormFile != null)
                 {
                     string wwwRootPath = _webHostEnvironment.WebRootPath;
 
                     string fileName = Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMdd-hhmmss")
-                        + Path.GetExtension(model.formFile.FileName);
+                        + Path.GetExtension(model.FormFile.FileName);
 
                     string productPath = Path.Combine(wwwRootPath, "uploads", "product");
 
@@ -90,7 +92,7 @@ namespace WebApp.Areas.Admin.Controllers
 
                     using (var filestream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
                     {
-                        model.formFile.CopyTo(filestream);
+                        model.FormFile.CopyTo(filestream);
                     }
 
                     model.ImageUrl = Path.Combine("uploads", "product", fileName);
@@ -107,11 +109,7 @@ namespace WebApp.Areas.Admin.Controllers
                         showtoastMessage = true,
                     });
 
-                    return Ok(new
-                    {
-                        success = true,
-                        redirectToAction = Url.Action("Index", "Product")
-                    });
+                    return RedirectToAction("Index");
                 }
 
                 TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
@@ -121,16 +119,13 @@ namespace WebApp.Areas.Admin.Controllers
                     showtoastMessage = true,
                 });
 
-                return StatusCode(500, new
-                {
-                    success = false,
-                    redirectToAction = Url.Action("Index", "Product")
-                });
+                return RedirectToAction("Index");
+
             }
             catch(Exception ex)
             {
                 HelperSerilog.LogError(ex.Message, ex);
-                return StatusCode(500);
+                return RedirectToAction("Index");
             }
         }
 

@@ -45,7 +45,7 @@
             allowClear: true
         });
 
-        $.validator.unobtrusive.parse('.modalForm');
+        /*$.validator.unobtrusive.parse('.modalForm');*/
 
         spinner('hide');
 
