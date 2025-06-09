@@ -19,6 +19,7 @@
         <form enctype="multipart/form-data" id="ProductCreateForm" method="post" asp-controller="Product" asp-action="Edit" onsubmit="return saveForm('Edit', this)">
 
             @Html.AntiForgeryToken()
+            @Html.HiddenFor(x => x.UniqueProductId)
 
             <div class="mb-3">
                 <label asp-for="Title" class="form-label"></label>
