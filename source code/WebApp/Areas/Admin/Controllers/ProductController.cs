@@ -39,7 +39,10 @@ namespace WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> View(int productId)
         {
+
             var model = await _producManager.GetWithCategory(productId);
+
+            ViewData["Title"] = $"Product Details";
 
             return View(model);
         }
@@ -176,6 +179,40 @@ namespace WebApp.Areas.Admin.Controllers
 
                 return View(model);
             }
+
+            #region Product Image Upload
+            if (model.FormFile != null)
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                if (!string.IsNullOrEmpty(model.ImageUrl))
+                {
+                    var oldImgPath = Path.Combine(wwwRootPath, model.ImageUrl.TrimStart('\\'));
+
+                    if (System.IO.File.Exists(oldImgPath))
+                    {
+                        System.IO.File.Delete(oldImgPath);
+                    }
+                }
+
+                string fileName = Guid.NewGuid().ToString() + "-" + DateTime.Now.ToString("yyyyMMdd-hhmmss")
+                    + Path.GetExtension(model.FormFile.FileName);
+
+                string productPath = Path.Combine(wwwRootPath, "uploads", "product");
+
+                if (!Directory.Exists(productPath))
+                {
+                    Directory.CreateDirectory(productPath);
+                }
+
+                using (var filestream = new FileStream(Path.Combine(productPath, fileName), FileMode.Create))
+                {
+                    model.FormFile.CopyTo(filestream);
+                }
+
+                model.ImageUrl = Path.Combine("uploads", "product", fileName);
+            }
+            #endregion
 
             HelperHtmlSanitizer.Sanitize(model);
 

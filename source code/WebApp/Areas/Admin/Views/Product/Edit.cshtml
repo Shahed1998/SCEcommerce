@@ -1,6 +1,11 @@
 ﻿@model ProductVM
 
 @{
+    var imgUrl = Url.Content("~/" + Model.ImageUrl?.Replace("\\", "/") ?? "");
+}
+
+
+@{
     ViewData["Title"] = "Edit Product";
 }
 
@@ -16,45 +21,56 @@
         </div>
     </div>
     <div class="card-body">
-        <form enctype="multipart/form-data" id="ProductCreateForm" method="post" asp-controller="Product" asp-action="Edit" onsubmit="return saveForm('Edit', this)">
+        <div class="row g-0">
+            <!-- Left Column: Image Carousel -->
+            <div class="col-md-4 d-flex justify-content-center">
+                <div style="width: 240px; height: 240px;" class="p-3 shadow">
+                    <img src="@imgUrl" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+            </div>
+            <div class="col-md-8 p-3">
+                <form enctype="multipart/form-data" id="ProductCreateForm" method="post" asp-controller="Product" asp-action="Edit" onsubmit="return saveForm('Edit', this)">
 
-            @Html.AntiForgeryToken()
-            @Html.HiddenFor(x => x.UniqueProductId)
+                    @Html.AntiForgeryToken()
+                    @Html.HiddenFor(x => x.UniqueProductId)
+                    @Html.HiddenFor(x => x.ImageUrl)
 
-            <div class="mb-3">
-                <label asp-for="Title" class="form-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="validationError" />
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="validationError" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="CategoryId" class="form-label"></label>
+                        <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select select2Dropdown">
+                            <option value=""></option>
+                        </select>
+                        <span asp-validation-for="CategoryId" class="validationError" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Price" class="form-label"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="validationError" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="DiscountPercentage" class="form-label"></label>
+                        <input asp-for="DiscountPercentage" class="form-control" />
+                        <span asp-validation-for="DiscountPercentage" class="validationError" />
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="FormFile" class="form-label"></label>
+                        <input asp-for="FormFile" type="file" class="form-control" />
+                        <span asp-validation-for="FormFile" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label"></label>
+                        <textarea asp-for="Description" class="form-control summernote"></textarea>
+                        <span asp-validation-for="Description" class="validationError"></span>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Save</button>
+                </form>
             </div>
-            <div class="mb-3">
-                <label asp-for="CategoryId" class="form-label"></label>
-                <select asp-for="CategoryId" asp-items="@Model.CategoryList" class="form-select select2Dropdown">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="CategoryId" class="validationError" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="Price" class="form-label"></label>
-                <input asp-for="Price" class="form-control" />
-                <span asp-validation-for="Price" class="validationError" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="DiscountPercentage" class="form-label"></label>
-                <input asp-for="DiscountPercentage" class="form-control" />
-                <span asp-validation-for="DiscountPercentage" class="validationError" />
-            </div>
-            <div class="mb-3">
-                <label asp-for="FormFile" class="form-label"></label>
-                <input asp-for="FormFile" type="file" class="form-control" />
-                <span asp-validation-for="FormFile" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Description" class="form-label"></label>
-                <textarea asp-for="Description" class="form-control summernote"></textarea>
-                <span asp-validation-for="Description" class="validationError"></span>
-            </div>
-            <button type="submit" class="btn btn-primary w-100">Save</button>
-        </form>
+        </div>
     </div>
 </div>
 
