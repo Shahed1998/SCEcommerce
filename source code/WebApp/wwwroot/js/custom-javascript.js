@@ -173,22 +173,33 @@ function save(formElement, type = "save") {
 
 function saveForm(type, formElement) {
 
+    spinner('show');
+
     var form = $(formElement);
 
-    // First check if the form is valid
-    if (!form.valid()) {
-        return false;
-    }
+    // Trigger validation
+    form.validate();
 
-    bootbox.confirm({
-        title: "Confirm",
-        message: `Do you want to ${type} the form?`,
-        callback: function (result) {
-            if (result) {
-                formElement.submit()
-            }
+    // Wait a short time for any async validation (like remote) to complete
+    setTimeout(function () {
+
+        spinner('hide');
+
+        if (!form.valid()) {
+            return;
         }
-    });
+
+        bootbox.confirm({
+            title: "Confirm",
+            message: `Do you want to ${type} the form?`,
+            callback: function (result) {
+                if (result) {
+                    formElement.submit();
+                }
+            }
+        });
+
+    }, 500); // 500ms delay to allow remote validation to resolve
 
     return false;
 }

@@ -5,6 +5,10 @@
             <span class="">SCEcommerce</span>
         </a>
 
+        <div class="d-none d-lg-block">
+            <partial name="_LoginPartialLgScreen" />
+        </div>
+
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -25,18 +29,13 @@
                             <i class="fa-solid fa-link"></i> <span>Category</span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
+                    <li class="nav-item">
                         <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
                             <i class="fa-solid fa-link"></i> <span>Product</span>
                         </a>
                     </li>
-                    <li class="nav-item dropdown">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Privacy" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Privacy</span>
-                        </a>
-                    </li>
+                    <partial name="_LoginPartial" />
                 </ul>
-                
             </div>
         </div>
     </div>

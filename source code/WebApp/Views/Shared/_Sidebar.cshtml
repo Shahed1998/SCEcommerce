@@ -1,4 +1,9 @@
-﻿@* sidebar start *@
+﻿@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+@* sidebar start *@
 <aside id="sidebar" class="sidebar-toggle d-flex flex-column">
     @* sidebar navigation start *@
     <ul class="sidebar-nav p-0" style="margin-top: 50px">
@@ -22,7 +27,7 @@
         </li>
         <li class="sidebar-item">
             <a href="#" class="sidebar-link collapsed has-dropdown" data-bs-toggle="collapse"
-               data-bs-target="#auth" aria-expanded="true" aria-controls="auth">
+            data-bs-target="#auth" aria-expanded="true" aria-controls="auth">
                 <i class="fa-solid fa-shield-halved"></i> <span>Auth</span>
             </a>
             <ul id="auth" class="sidebar-dropdown list-unstyled collapse" data-bs-parent="#sidebar">
@@ -52,7 +57,22 @@
     @* sidebar navigation ends *@
     @* sidebar footer starts *@
     <div class="sidebar-footer">
-        <a href="#"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+        @if (SignInManager.IsSignedIn(User))
+        {
+
+            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "Customer" })">
+                <button id="logout" type="submit" class="nav-link btn btn-link border-0"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp; Logout</button>
+            </form>
+
+            @* <a href="#"> <i class="fa-solid fa-right-from-bracket"></i> Logout</a> *@
+        }
+        else
+        {
+            <a class="" id="login" asp-area="Identity" asp-page="/Account/Login">
+                <i class="fa-solid fa-right-to-bracket"></i> Login
+            </a>
+        }
+
     </div>
     @* sidebar footer ends *@
 </aside>
