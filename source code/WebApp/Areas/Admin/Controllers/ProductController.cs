@@ -4,11 +4,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Models.BusinessEntities;
 using System.Text.Json;
 using Utility.Helpers;
+using WebApp.Controllers;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class ProductController : Controller
+    public class ProductController : BaseController
     {
         private readonly IProductManager _producManager;
         private readonly ICategoryManager _categoryManager;
@@ -26,11 +27,12 @@ namespace WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 30)
         {
+            //if (TempData["Notification"] is string json)
+            //{
+            //    ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
+            //}
 
-            if (TempData["Notification"] is string json)
-            {
-                ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
-            }
+            Alert();
 
             var model = await _producManager.GetAll(page, pageSize);
 

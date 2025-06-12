@@ -4,11 +4,12 @@ using Models.BusinessEntities;
 using Models.Entities;
 using System.Text.Json;
 using Utility.Helpers;
+using WebApp.Controllers;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class CategoryController : Controller
+    public class CategoryController : BaseController
     {
         private readonly ICategoryManager _categoryManager;
         private readonly HelperEncryption _encryption;
@@ -19,26 +20,32 @@ namespace WebApp.Areas.Admin.Controllers
         }
         public async Task<IActionResult> Index(int page=1, int pageSize=30)
         {
-
-            if (TempData["Notification"] is string json)
-            {
-                ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
-            }
+            Alert();
 
             var model = await _categoryManager.GetAll(page, pageSize);
 
             return View(model);
         }
 
-        public async Task<IActionResult> View(int Id)
+        public async Task<IActionResult> View(int Id, int page = 1, int pageSize = 5)
         {
             var category = await _categoryManager.Get(Id);
-            return PartialView(category);
+
+            ViewData["Title"] = "View Category";
+
+            category.page = page;
+            category.pageSize = pageSize;
+
+            return View(category);
         }
 
         public IActionResult Create()
         {
-            return PartialView(new Category());
+            Alert();
+
+            ViewData["Title"] = "Create New Category";
+
+            return View(new Category());
         }
 
         [HttpPost]
@@ -47,7 +54,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             if (!ModelState.IsValid)
             {
-                return PartialView(category);
+                return View(category);
             }
 
             if(await _categoryManager.Add(category))
@@ -59,7 +66,7 @@ namespace WebApp.Areas.Admin.Controllers
                     showtoastMessage = true,
                 });
 
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
+                return RedirectToAction("Index");
             }
 
             TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
@@ -69,18 +76,32 @@ namespace WebApp.Areas.Admin.Controllers
                 showtoastMessage = true,
             });
 
-            return StatusCode(500, new { success = true, redirectToAction = Url.Action("Index", "Category") });
+            return RedirectToAction("Index");
 
         }
 
         [HttpGet]
         public async Task<IActionResult> Edit(int Id)
         {
+            Alert();
+
+            ViewData["Title"] = "Edit Category";
+
             var category = await _categoryManager.Get(Id);
 
-            if (category == null) return NotFound($"Category not found");
+            if (category == null)
+            {
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Error.ToString(),
+                    NotificationMessage = $"Category not found.",
+                    showtoastMessage = true,
+                });
 
-            return PartialView(category);
+                return RedirectToAction("Index");
+            }
+            
+            return View(category);
         }
 
         [HttpPost]
@@ -88,7 +109,17 @@ namespace WebApp.Areas.Admin.Controllers
         {
             var category = await _categoryManager.Get(model.Id);
 
-            if (category == null) return NotFound($"Category not found");
+            if (category == null)
+            {
+                TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
+                {
+                    NotificationStatus = NotficationStatus.Error.ToString(),
+                    NotificationMessage = $"Category not found.",
+                    showtoastMessage = true,
+                });
+
+                return RedirectToAction("Index");
+            }
 
             category.Id = model.Id;
             category.Name = model.Name;
@@ -103,7 +134,7 @@ namespace WebApp.Areas.Admin.Controllers
                     showtoastMessage = true,
                 });
 
-                return Ok(new { success = true, redirectToAction = Url.Action("Index", "Category") });
+                return RedirectToAction("Index");
             }
 
             TempData["Notification"] = JsonSerializer.Serialize(new NotificationViewModel
@@ -111,10 +142,9 @@ namespace WebApp.Areas.Admin.Controllers
                 NotificationStatus = NotficationStatus.Error.ToString(),
                 NotificationMessage = $"Failed to update category {category.Name}.",
                 showtoastMessage = true,
-
             });
 
-            return PartialView();
+            return View(model);
         }
 
         [HttpDelete]
@@ -155,6 +185,14 @@ namespace WebApp.Areas.Admin.Controllers
             });
 
             return StatusCode(500, new { success = false, redirectToAction = Url.Action("Index", "Category") });
+        }
+
+        [HttpPost]
+        public JsonResult DisplayOrderAlreadyExist(int DisplayOrder, int? Id)
+        {
+            var isExist = _categoryManager.DisplayOrderAlreadyExist(DisplayOrder, Id);
+
+            return Json(!isExist);
         }
     }
 }

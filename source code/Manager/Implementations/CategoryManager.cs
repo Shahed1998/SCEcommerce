@@ -59,7 +59,7 @@ namespace Manager.Implementations
             try
             {
 
-                var categories = await _uow.CategoryRepository.GetAll().OrderByDescending(x => x.Id)
+                var categories = await _uow.CategoryRepository.GetAll().OrderByDescending(x => x.DisplayOrder)
                                                               .Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
                 var totalCount = await _uow.CategoryRepository.GetAll().CountAsync();
@@ -93,6 +93,11 @@ namespace Manager.Implementations
         {
             _uow.CategoryRepository.Update(_mapper.Map<Category>(category));
             return await _uow.Save();
+        }
+
+        public bool DisplayOrderAlreadyExist(int displayOrder, int? Id)
+        {
+            return _uow.CategoryRepository.DisplayOrderAlreadyExist(displayOrder, Id);
         }
     }
 }

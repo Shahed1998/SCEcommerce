@@ -1,20 +1,35 @@
 ﻿@model Category
 
-
-<form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Create" onsubmit="return save(this)">
-
-    @Html.AntiForgeryToken()
-
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="validationError"></span>
+<div class="card shadow">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">@ViewData["Title"]</div>
+            <div class="col-6 d-flex justify-content-end">
+                <a asp-controller="Category" asp-action="Index" class="btn btn-danger">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="DisplayOrder" class="form-label"></label>
-        <input asp-for="DisplayOrder" class="form-control" />
-        <span asp-validation-for="DisplayOrder" class="validationError"></span>
+    <div class="card-body">
+        <form id="CategoryCreateForm" class="modalForm" method="post" asp-controller="Category" asp-action="Create" onsubmit="return saveForm('save', this)">
+
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label asp-for="Name" class="form-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="validationError"></span>
+            </div>
+            <div class="mb-3">
+                <label asp-for="DisplayOrder" class="form-label"></label>
+                <input asp-for="DisplayOrder" class="form-control" />
+                <span asp-validation-for="DisplayOrder" class="validationError"></span>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Save</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary w-100">Save</button>
-</form>
+</div>
+
+
 

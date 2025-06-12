@@ -1,15 +1,28 @@
 ﻿@model CategoryVM
 
-<div class="modalForm">
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" readonly />
-        <span asp-validation-for="Name" class="validationError" />
+<div class="card shadow">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-6 d-flex align-items-center">@ViewData["Title"]</div>
+            <div class="col-6 d-flex justify-content-end">
+                <a asp-controller="Category" asp-action="Index" asp-route-page="@Model.page"
+                   asp-route-pageSize="@Model.pageSize" class="btn btn-danger">
+                    <i class="fa-solid fa-xmark"></i>
+                </a>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label asp-for="DisplayOrder" class="form-label"></label>
-        <input asp-for="DisplayOrder" class="form-control" readonly />
-        <span asp-validation-for="DisplayOrder" class="validationError" />
+    <div class="card-body">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" readonly />
+        </div>
+        <div class="mb-3">
+            <label asp-for="DisplayOrder" class="form-label"></label>
+            <input asp-for="DisplayOrder" class="form-control" readonly />
+        </div>
     </div>
 </div>
+
+
 

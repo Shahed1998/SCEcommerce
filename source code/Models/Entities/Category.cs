@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Models.Entities
@@ -16,6 +17,7 @@ namespace Models.Entities
 
         [Required]
         [Display(Name = "Display Order")]
+        [Remote("DisplayOrderAlreadyExist", "Category", HttpMethod = "POST", ErrorMessage = "Display Order already exist")]
         public int? DisplayOrder { get; set; }
 
         public ICollection<Product> Products { get; set; } = new List<Product>();

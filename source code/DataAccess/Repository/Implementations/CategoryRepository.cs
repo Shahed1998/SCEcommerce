@@ -18,5 +18,20 @@ namespace DataAccess.Repository.Implementations
         {
             _db.categories.Update(category);
         }
+
+        public bool DisplayOrderAlreadyExist(int displayOrder, int? Id)
+        {
+            var category = _db.categories.FirstOrDefault(x => x.DisplayOrder == displayOrder);
+
+            if (category != null)
+            {
+                if (Id is null || Id == 0 || category.Id != Id)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

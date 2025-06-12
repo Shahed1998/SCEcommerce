@@ -11,7 +11,9 @@
         <div class="row">
             <div class="col-6 d-flex align-items-center">Category List</div>
             <div class="col-6 d-flex justify-content-end">
-                <a asp-controller="Category" asp-action="Create" class="btn btn-primary" onclick="CreateModal(event, this, 'Create New Category')">
+                <a asp-controller="Category"
+                   asp-action="Create"
+                   class="btn btn-primary">
                     <i class="fa-solid fa-circle-plus"></i>
                     Create New Category
                 </a>
@@ -37,18 +39,18 @@
                         <tr>
                             <td>@count</td>
                             <td>
-                                <a 
-                                    asp-area="Admin"
-                                    asp-controller="Category"
-                                    asp-action="View"
-                                    asp-route-Id="@category.Id"
-                                    onclick="CreateModal(event, this, 'Details of @category.Name')"
-                                    class="">@category.Name</a>
+                                <a asp-area="Admin"
+                                   asp-controller="Category"
+                                   asp-action="View"
+                                   asp-route-Id="@category.Id"
+                                   asp-route-page="@Model.PageNumber"
+                                   asp-route-pageSize="@Model.PageSize"
+                                   class="">@category.Name</a>
                             </td>
                             <td>@category.DisplayOrder</td>
                             <td>
                                 <div class="btn-group w-100 btn-group-sm" role="group" aria-label="Basic example">
-                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Category" asp-route-id="@category.Id" onclick="CreateModal(event, this, 'Edit Category')"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
+                                    <a class="btn btn-primary" asp-action="Edit" asp-controller="Category" asp-route-id="@category.Id"><i class="fa-solid fa-pen-to-square"></i> Edit</a>
                                     <a class="btn btn-danger mx-2" asp-action="Delete" asp-controller="Category" onclick="Delete(event, this, '@category.Id', '@category.Name')"><i class="fa-solid fa-trash"></i> Delete</a>
                                 </div>
                             </td>
@@ -70,5 +72,5 @@
             <div>No records found</div>
         }
     </div>
-    
+
 </div>

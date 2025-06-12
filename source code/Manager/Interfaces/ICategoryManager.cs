@@ -13,5 +13,6 @@ namespace Manager.Interfaces
         Task<bool> Remove(CategoryVM entity);
         Task<bool> RemoveRange(IEnumerable<Category> entities);
         Task<bool> Update(CategoryVM category);
+        bool DisplayOrderAlreadyExist(int displayOrder, int? Id);
     }
 }
