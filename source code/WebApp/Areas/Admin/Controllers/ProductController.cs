@@ -27,10 +27,6 @@ namespace WebApp.Areas.Admin.Controllers
 
         public async Task<IActionResult> Index(int page = 1, int pageSize = 30)
         {
-            //if (TempData["Notification"] is string json)
-            //{
-            //    ViewBag.ToastrNotification = JsonSerializer.Deserialize<NotificationViewModel>(json);
-            //}
 
             Alert();
 

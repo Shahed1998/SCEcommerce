@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.Repository.Interfaces;
 using Manager.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Models.BusinessEntities;
@@ -14,11 +15,13 @@ namespace Manager.Implementations
 
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
+        private readonly IWebHostEnvironment _webHostEnvironment;
 
-        public ProductManager(IUnitOfWork uow, IMapper mapper)
+        public ProductManager(IUnitOfWork uow, IMapper mapper, IWebHostEnvironment webHostEnvironment)
         {
             _uow = uow;
             _mapper = mapper;
+            _webHostEnvironment = webHostEnvironment;
         }
 
         public async Task<bool> Add(ProductVM product)
@@ -75,8 +78,23 @@ namespace Manager.Implementations
         public async Task<bool> Remove(int Id)
         {
             var productDto = await Get(Id);
+
+            if (!string.IsNullOrEmpty(productDto.ImageUrl))
+            {
+                string wwwRootPath = _webHostEnvironment.WebRootPath;
+
+                var imagePath = Path.Combine(wwwRootPath, productDto.ImageUrl.TrimStart('\\'));
+
+                if (File.Exists(imagePath))
+                {
+                    File.Delete(imagePath);
+                }
+            }
+
             _uow.ProductRepository.Remove(_mapper.Map<Product>(productDto));
             return await _uow.Save();
+
+            
         }
 
         public async Task<bool> RemoveRange(IEnumerable<Product> products)

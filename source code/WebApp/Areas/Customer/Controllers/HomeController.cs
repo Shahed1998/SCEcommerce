@@ -1,5 +1,5 @@
+using Manager.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-
 
 namespace WebApp.Areas.Customer.Controllers
 {
@@ -7,22 +7,22 @@ namespace WebApp.Areas.Customer.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly IProductManager _productManager;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IProductManager productManager)
         {
             _logger = logger;
+            _productManager = productManager;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index(int page=1, int pageSize=30)
         {
-            return View();
-        }
+            ViewData["Title"] = "Home Page";
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+            var model = await _productManager.GetAll(page, pageSize);
 
+            return View(model);
+        }
         
     }
 }

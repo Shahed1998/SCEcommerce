@@ -1,8 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using Utility.Helpers
+@model PagedList
+
+@{
+    var count = Model.FirstItemOnPage;
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="row">
+
+    @if (Model.products?.Count() > 0)
+    {
+        @foreach (var product in Model.products)
+        {
+            var imgUrl = Url.Content("~/" + product.ImageUrl?.Replace("\\", "/") ?? "");
+            <div class="col-md-4">
+                <div class="card" style="width: 18rem;">
+                    <img src="@imgUrl" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
+                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col-md-12">No products available.</div>
+    }
+
+
 </div>
