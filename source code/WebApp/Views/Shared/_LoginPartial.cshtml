@@ -6,24 +6,24 @@
 @if (SignInManager.IsSignedIn(User))
 {
     <li class="nav-item">
-        <a id="manage" class="sidebar-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+        <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa-solid fa-user me-2"></i> Profile</a>
     </li>
-    <li class="nav-item">
+    <li class="nav-item mt-5">
         <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button id="logout" type="submit" class="btn btn-link border-0" style="padding: 0.625rem 1.625rem;"><i class="fa-solid fa-right-from-bracket"></i>&nbsp;&nbsp;Logout</button>
+            <button id="logout" type="submit" class="btn btn-outline-secondary w-100" style="padding: 0.625rem 1.625rem;"><i class="fa-solid fa-right-from-bracket me-2"></i>Logout</button>
         </form>
     </li>
 }
 else
 {
     <li class="nav-item">
-        <a class="sidebar-link" id="register" asp-area="Identity" asp-page="/Account/Register">
-            <i class="fa-solid fa-link"></i> Register
+        <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">
+            <i class="fa-solid fa-user-plus me-2"></i> Sign up
         </a>
     </li>
     <li class="nav-item">
-        <a class="sidebar-link" id="login" asp-area="Identity" asp-page="/Account/Login">
-            <i class="fa-solid fa-right-to-bracket"></i> Login
+        <a class="nav-link text-white" id="login" asp-area="Identity" asp-page="/Account/Login">
+            <i class="fa-solid fa-right-to-bracket me-2"></i> Login
         </a>
     </li>
 }

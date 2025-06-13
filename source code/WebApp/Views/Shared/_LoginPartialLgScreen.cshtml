@@ -5,24 +5,53 @@
 
 <ul class="navbar-nav me-end">
 
+    <li class="nav-item dropdown me-2">
+        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Explore
+        </a>
+        <ul class="dropdown-menu dropdown-menu-dark">
+            <li><a class="dropdown-item" href="#">Action</a></li>
+            <li><a class="dropdown-item" href="#">Another action</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+        </ul>
+    </li>
+
+    <li class="nav-item">
+        <a id="DayOrNight" class="btn btn-outline-primary me-2 border-0" title="Light Mode"><i class="fa-regular fa-sun"></i></a>
+    </li>
+
+    <li class="nav-item">
+        <a id="Wishlist" class="btn btn-outline-primary me-2 border-0" title="Wishlist"><i class="fa-regular fa-heart"></i></a>
+    </li>
+
+    <li class="nav-item">
+        <a id="Cart" class="btn btn-outline-primary me-2 border-0" title="View Cart"><i class="fa-solid fa-cart-shopping"></i></a>
+    </li>
+
+    <li class="nav-item">
+        <a id="Notifications" class="btn btn-outline-primary me-2 border-0" title="Notifications"><i class="fa-regular fa-bell"></i></a>
+    </li>
+
+
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <a id="manage" class="sidebar-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
+            <a id="manage" class="btn btn-primary rounded-circle" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage"><i class="fa-solid fa-user"></i> @* Hello @UserManager.GetUserName(User)! *@</a>
         </li>
     }
     else
     {
-        <li class="nav-item">
-            <a class="sidebar-link text-primary" id="register" asp-area="Identity" asp-page="/Account/Register">
-                <i class="fa-solid fa-link"></i> Register
+        <li class="nav-item me-2">
+            <a class="btn btn-outline-dark text-primary" id="login" asp-area="Identity" asp-page="/Account/Login">
+                Login
             </a>
         </li>
         <li class="nav-item">
-            <a class="sidebar-link text-primary" id="login" asp-area="Identity" asp-page="/Account/Login">
-                <i class="fa-solid fa-right-to-bracket"></i> Login
+            <a class="btn btn-primary text-primary text-light" id="register" asp-area="Identity" asp-page="/Account/Register">
+                Sign up
             </a>
         </li>
+        
     }
 
 </ul>

@@ -12,8 +12,8 @@
         @foreach (var product in Model.products)
         {
             var imgUrl = Url.Content("~/" + product.ImageUrl?.Replace("\\", "/") ?? "");
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
+            <div class="col-md-4 col-sm-12">
+                <div class="card shadow mx-auto mt-2 mb-2">
                     <img src="@imgUrl" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h5 class="card-title">@product.Title</h5>

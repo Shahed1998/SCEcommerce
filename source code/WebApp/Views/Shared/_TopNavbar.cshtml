@@ -1,41 +1,99 @@
-﻿<nav class="navbar navbar-expand-lg bg-light sticky-top top_navbar" data-bs-theme="light" style="height:60px; z-index: 1099">
+﻿<nav class="navbar navbar-expand-lg bg-light sticky-top top_navbar shadow-sm" style="height: 60px; z-index: 1099;" data-bs-theme="light">
     <div class="container-fluid">
-        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="navbar-brand" data-bs-toggle="tooltip" data-bs-title="SCEcommerce">
-            <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40">
+        <!-- Brand -->
+        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="navbar-brand d-flex align-items-center" data-bs-toggle="tooltip" title="SCEcommerce">
+            <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40" class="me-2">
             <span class="">SCEcommerce</span>
         </a>
 
+        <!-- Search bar -->
+        <form class="d-none d-lg-flex mx-auto w-50">
+            <div class="input-group">
+                <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <input type="text" class="form-control" placeholder="Search for anything" aria-label="Search">
+            </div>
+        </form>
+
+        <!-- Login Partial for large screens -->
         <div class="d-none d-lg-block">
             <partial name="_LoginPartialLgScreen" />
         </div>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar" aria-label="Toggle navigation">
+        <!-- Offcanvas toggle button (mobile) -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasDarkNavbar" aria-controls="offcanvasDarkNavbar">
             <span class="navbar-toggler-icon"></span>
         </button>
+
+        <!-- Offcanvas menu -->
         <div class="offcanvas offcanvas-start text-bg-primary w-100" tabindex="-1" id="offcanvasDarkNavbar" aria-labelledby="offcanvasDarkNavbarLabel">
             <div class="offcanvas-header">
-                <h5 class="offcanvas-title" id="offcanvasDarkNavbarLabel"><img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40"> SCEcommerce</h5>
+                <h5 class="offcanvas-title d-flex align-items-center" id="offcanvasDarkNavbarLabel">
+                    <img src="~/images/SCEcommerce Logo.png" alt="SCEcommerce" width="40" height="40" class="me-2"> SCEcommerce
+                </h5>
                 <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
             <div class="offcanvas-body">
-                <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
+                <ul class="navbar-nav justify-content-start flex-grow-1 pe-3">
+
+                    <!-- Search bar -->
+                    <form class="d-flex w-100 mb-5">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="fa-solid fa-magnifying-glass"></i></span>
+                            <input type="text" class="form-control" placeholder="Search for anything" aria-label="Search">
+                        </div>
+                    </form>
+
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-list me-2"></i> Explore
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+
                     <li class="nav-item">
-                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Home</span>
+                        <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="nav-link text-white">
+                            <i class="fa-solid fa-house me-2"></i> Home
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Category</span>
+                        <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="nav-link text-white">
+                            <i class="fa-solid fa-list me-2"></i> Category
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
-                            <i class="fa-solid fa-link"></i> <span>Product</span>
+                        <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="nav-link text-white">
+                            <i class="fa-solid fa-box me-2"></i> Product
                         </a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="Wishlist" class="nav-link text-white" title="Wishlist"><i class="fa-regular fa-heart me-2"></i> Wishlist</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="Cart" class="nav-link text-white" title="View Cart"><i class="fa-solid fa-cart-shopping me-2"></i> View Cart</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="Notification" class="nav-link text-white" title=""><i class="fa-regular fa-bell me-2"></i> Notification</a>
+                    </li>
+                    <li class="nav-item dropdown me-2">
+                        <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fa-solid fa-gear me-2"></i> Settings
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="nav-item">
+                                <a id="DayOrNight" class="dropdown-item" title="Light Mode"><i class="fa-regular fa-sun me-2"></i> Change Mode</a>
+                            </li>
+                            <li><a class="dropdown-item" href="#">Action</a></li>
+                            <li><a class="dropdown-item" href="#">Another action</a></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
                     </li>
                     <partial name="_LoginPartial" />
                 </ul>
+                
             </div>
         </div>
     </div>
