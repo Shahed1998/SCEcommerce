@@ -7,6 +7,8 @@ using Microsoft.EntityFrameworkCore;
 using Utility.Helpers;
 using Utility.Mappings;
 using Microsoft.AspNetCore.Identity;
+using Utility.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,8 +21,14 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // With Email confirmation
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>();
 
-// Without Email confirmation
-builder.Services.AddDefaultIdentity<IdentityUser>().AddEntityFrameworkStores<ApplicationDbContext>();
+// Adds default identity customizations, good for quick setup
+//builder.Services.AddDefaultIdentity<IdentityUser>()
+//                .AddEntityFrameworkStores<ApplicationDbContext>();
+
+// Allows customization and roles
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
 
 builder.Services.AddRazorPages();
 
@@ -32,6 +40,7 @@ builder.Services.AddSingleton<HelperEncryption>();
 
 #region Services
 
+builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ICategoryManager, CategoryManager>(); 
 builder.Services.AddScoped<IProductManager, ProductManager>(); 
 

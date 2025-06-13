@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Utility.Helpers
+namespace Utility
 {
     public static class HelperObjectSerializer
     {
