@@ -1,4 +1,5 @@
 ﻿@using Microsoft.AspNetCore.Identity
+@using Utility
 
 @inject SignInManager<IdentityUser> SignInManager
 @inject UserManager<IdentityUser> UserManager
@@ -12,16 +13,21 @@
                 <i class="fa-solid fa-house me-2"></i> <span>Home</span>
             </a>
         </li>
-        <li class="sidebar-item">
-            <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
-                <i class="fa-solid fa-list me-2"></i>  <span>Category</span>
-            </a>
-        </li>
-        <li class="sidebar-item">
-            <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
-                <i class="fa-solid fa-box me-2"></i> <span>Product</span>
-            </a>
-        </li>
+
+        @if (User.IsInRole(StaticDetails.Role_Admin) || User.IsInRole(StaticDetails.Role_SuperAdmin))
+        {
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Category" asp-action="Index" class="sidebar-link">
+                    <i class="fa-solid fa-list me-2"></i>  <span>Category</span>
+                </a>
+            </li>
+            <li class="sidebar-item">
+                <a asp-area="Admin" asp-controller="Product" asp-action="Index" class="sidebar-link">
+                    <i class="fa-solid fa-box me-2"></i> <span>Product</span>
+                </a>
+            </li>
+        }
+
         <li class="sidebar-header">
             Pages
         </li>

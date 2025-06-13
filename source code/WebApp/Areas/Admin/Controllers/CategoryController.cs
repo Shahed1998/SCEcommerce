@@ -1,14 +1,17 @@
 ﻿using Manager.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Models.BusinessEntities;
 using Models.Entities;
 using System.Text.Json;
+using Utility;
 using Utility.Helpers;
 using WebApp.Controllers;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = $"{StaticDetails.Role_Admin},{StaticDetails.Role_SuperAdmin}")]
     public class CategoryController : BaseController
     {
         private readonly ICategoryManager _categoryManager;

@@ -22,6 +22,7 @@ using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Models.Entities;
 using Utility;
+using Utility.Helpers;
 
 namespace WebApp.Areas.Identity.Pages.Account
 {
@@ -108,6 +109,25 @@ namespace WebApp.Areas.Identity.Pages.Account
             public string Role { get; set; }
             [ValidateNever]
             public IEnumerable<SelectListItem> RoleList { get; set; }
+
+            [Required]
+            public string FirstName { get; set; }
+
+            [Required]
+            public string LastName { get; set; }
+
+            [Required]
+            public string UserName { get; set; }
+
+            public string Country { get; set; }
+
+            public string State { get; set; }
+
+            public int? PostalCode { get; set; }
+
+            public string PresentAddress { get; set; }
+
+            public string PermanentAddress { get; set; }
         }
 
 
@@ -139,17 +159,30 @@ namespace WebApp.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
 
-                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+                string username = string.IsNullOrWhiteSpace(Input.UserName) ? Input.Email : Input.UserName;
+
+                await _userStore.SetUserNameAsync(user, username, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+
+                user.FirstName = Input.FirstName;
+                user.LastName = Input.LastName;
+                user.UserName = Input.UserName;
+                user.Country = Input.Country;
+                user.PostalCode = Input.PostalCode;
+                user.State = Input.State;
+                user.PresentAddress = Input.PresentAddress;
+                user.PresentAddress = Input.PermanentAddress;
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User created a new account with password.");
+                    HelperSerilog.LogInformation("User created a new account with password.");
 
                     if (!string.IsNullOrWhiteSpace(Input.Role))
                     {
@@ -187,6 +220,15 @@ namespace WebApp.Areas.Identity.Pages.Account
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
+            Input = new()
+            {
+                RoleList = _roleManager.Roles.Select(r => r.Name).Select(i => new SelectListItem()
+                {
+                    Text = i,
+                    Value = i
+                })
+            };
 
             // If we got this far, something failed, redisplay form
             return Page();
