@@ -38,6 +38,7 @@ namespace WebApp.Areas.Admin.Controllers
             return View(model);
         }
 
+        [AllowAnonymous]
         public async Task<IActionResult> View(int productId)
         {
 

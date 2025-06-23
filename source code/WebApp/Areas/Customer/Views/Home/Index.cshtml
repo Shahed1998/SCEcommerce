@@ -5,20 +5,63 @@
     var count = Model.FirstItemOnPage;
 }
 
-<div class="row">
+<style>
+    .custom-card {
+        border: none;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s;
+        border-radius: 10px;
+    }
 
+        .custom-card:hover {
+            transform: translateY(-5px);
+        }
+
+    .product-image {
+        height: 200px;
+        object-fit: cover;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+    }
+
+    .card-body {
+        text-align: center;
+    }
+
+    .product-title {
+        font-weight: bold;
+        font-size: 1.1rem;
+    }
+
+    .product-description {
+        color: #777;
+        font-size: 0.9rem;
+    }
+
+    .rating {
+        color: #28a745;
+    }
+</style>
+
+<div class="row gy-4">
     @if (Model.products?.Count() > 0)
     {
         @foreach (var product in Model.products)
         {
             var imgUrl = Url.Content("~/" + product.ImageUrl?.Replace("\\", "/") ?? "");
-            <div class="col-md-4 col-sm-12">
-                <div class="card shadow mx-auto mt-2 mb-2">
-                    <img src="@imgUrl" class="card-img-top" alt="...">
+            <div class="col-md-3 col-sm-6 col-12">
+                <div class="card custom-card h-100" onclick="viewProduct(@product.Id)">
+                    <img src="@imgUrl" class="product-image w-100" alt="Product Image">
                     <div class="card-body">
-                        <h5 class="card-title">@product.Title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card’s content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+                        <h5 class="product-title">@product.Title</h5>
+                        <p class="product-description">@(product.Description?.StripHTML().Substring(0, 20) + "....." ?? string.Empty)</p>
+                        <div class="rating">
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-solid fa-star"></i>
+                            <i class="fa-regular fa-star"></i>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -26,8 +69,15 @@
     }
     else
     {
-        <div class="col-md-12">No products available.</div>
+        <div class="col-12">No products available.</div>
     }
-
-
 </div>
+
+@section Scripts {
+    <script>
+        function viewProduct(productId)
+        {
+            window.location.href = "@Url.Action("View", "Product", new { Area = "Admin" })"+ "?productId=" + productId;
+        }
+    </script>
+}
