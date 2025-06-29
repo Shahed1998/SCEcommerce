@@ -49,7 +49,7 @@ namespace Models.BusinessEntities
 
         public List<SelectListItem> CategoryList { get; set; } = new List<SelectListItem>();
 
-        
+        public string? redirectTo { get; set; }
 
     }
 }

@@ -77,7 +77,7 @@
     <script>
         function viewProduct(productId)
         {
-            window.location.href = "@Url.Action("View", "Product", new { Area = "Admin" })"+ "?productId=" + productId;
+            window.location.href = "@Url.Action("View", "Product", new { Area = "Admin", redirectTo="home" })"+ "&productId=" + productId;
         }
     </script>
 }

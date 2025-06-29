@@ -39,10 +39,12 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         [AllowAnonymous]
-        public async Task<IActionResult> View(int productId)
+        public async Task<IActionResult> View(int productId, string? redirectTo)
         {
 
             var model = await _producManager.GetWithCategory(productId);
+
+            model.redirectTo = redirectTo;
 
             ViewData["Title"] = $"Product Details";
 

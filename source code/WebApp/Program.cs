@@ -86,5 +86,9 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{area=Customer}/{controller=Home}/{action=Index}/{id?}");
 
+app.MapFallback(() =>
+{
+    return Results.RedirectToRoute("ErrorPage", new { message = "The requested route doesnot exist."});
+});
 
 app.Run();

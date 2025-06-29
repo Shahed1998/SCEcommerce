@@ -10,9 +10,20 @@
         <div class="row">
             <div class="col-6 d-flex align-items-center">Details of @Model.Title</div>
             <div class="col-6 d-flex justify-content-end">
-                <a asp-controller="Product" asp-action="Index" class="btn btn-danger">
-                    <i class="fa-solid fa-xmark"></i>
-                </a>
+
+                @if (string.IsNullOrWhiteSpace(Model.redirectTo))
+                {
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-danger">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                }
+                else
+                {
+                    <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="btn btn-danger">
+                        <i class="fa-solid fa-xmark"></i>
+                    </a>
+                }
+
             </div>
         </div>
     </div>
