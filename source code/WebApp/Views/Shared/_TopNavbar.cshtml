@@ -1,4 +1,11 @@
-﻿<nav class="navbar navbar-expand-lg bg-light sticky-top top_navbar shadow-sm" style="height: 60px; z-index: 1099;" data-bs-theme="light">
+﻿@using Microsoft.AspNetCore.Html
+@model String
+
+@{
+    var categoryDropdownHtml = Model;
+}
+
+<nav class="navbar navbar-expand-lg bg-light sticky-top top_navbar shadow-sm" style="height: 60px; z-index: 1099;" data-bs-theme="light">
     <div class="container-fluid">
         <!-- Brand -->
         <a asp-area="Customer" asp-controller="Home" asp-action="Index" class="navbar-brand d-flex align-items-center" data-bs-toggle="tooltip" title="SCEcommerce">
@@ -16,7 +23,7 @@
 
         <!-- Login Partial for large screens -->
         <div class="d-none d-lg-block">
-            <partial name="_LoginPartialLgScreen" />
+            <partial name="_LoginPartialLgScreen" model="categoryDropdownHtml"/>
         </div>
 
         <!-- Offcanvas toggle button (mobile) -->
@@ -48,9 +55,7 @@
                             <i class="fa-solid fa-list me-2"></i> Explore
                         </a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Action</a></li>
-                            <li><a class="dropdown-item" href="#">Another action</a></li>
-                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                            @Html.Raw(categoryDropdownHtml)
                         </ul>
                     </li>
 
@@ -93,7 +98,7 @@
                     </li>
                     <partial name="_LoginPartial" />
                 </ul>
-                
+
             </div>
         </div>
     </div>

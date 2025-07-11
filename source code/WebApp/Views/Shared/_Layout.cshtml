@@ -1,4 +1,19 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Html
+@using System.Text.Encodings.Web
+
+@{
+    /*
+        Razor’s default behavior only lets us render ViewComponent output once
+        Because the result is an IHtmlContent, and that type writes directly to the page and is then "empty"
+        So the IHtmlContent is converted to string and it can be reused on multiple places
+    */
+    var writer = new StringWriter();
+    IHtmlContent result = await Component.InvokeAsync("CategoryDropdown");
+    result.WriteTo(writer, HtmlEncoder.Default);
+    var categoryDropdownHtml = writer.ToString();
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -14,7 +29,7 @@
     <link href="~/lib/toastr/toastr.min.css" rel="stylesheet" />
     <link href="~/lib/select2/css/select2.min.css" rel="stylesheet" />
     <link href="~/lib/select2/css/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
-    <link href="~/lib/summernote-0.9.0-dist/summernote-bs5.min.css" rel="stylesheet" /> 
+    <link href="~/lib/summernote-0.9.0-dist/summernote-bs5.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
@@ -24,7 +39,7 @@
 
     <div class="main-container d-flex flex-column position-relative">
 
-        <partial name="_TopNavbar" />
+        <partial name="_TopNavbar" model="categoryDropdownHtml" />
 
         @* Main Body *@
         <div class="main-body d-flex flex-grow-1 w-100 mh-100 h-100 overflow-hidden">
@@ -47,10 +62,10 @@
                 </main>
             </div>
             @* Main content end *@
-            
+
         </div>
     </div>
-    
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <partial name="_ValidationScriptsPartial" />
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
